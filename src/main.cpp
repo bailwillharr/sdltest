@@ -1,32 +1,53 @@
-#include <SDL2/SDL.h>
+#include "window/window.hpp"
+
+#include "glad/glad.h"
 
 #include <iostream>
 #include <memory>
-
-class Window {
-private:
-	SDL_Window *m_handle;
-public:
-	Window(int width, int height);
-	~Window();
-};
-
-Window::Window(int width, int height)
-{
-	m_handle = SDL_CreateWindow("window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
-}
-
-Window::~Window()
-{
-	SDL_DestroyWindow(m_handle);
-}
+#include <thread>
 
 int main()
 {
 
-	std::unique_ptr<Window> win(new Window(640, 480));
+	std::unique_ptr<window::Window> win(new window::Window("sdltest"));
 
-	for (;;);
+	float red = 0.0f;
+	float green = 0.0f;
+	float blue = 0.0f;
+
+	win->setVSync(true);
+
+	// single-threaded game loop
+	while (!win->shouldClose()) {
+
+		// logic
+		if (win->getKeyPress(SDL_SCANCODE_F11)) {
+			win->toggleFullscreen();
+		}
+		if (win->getButtonPress(window::MouseButton::LEFT)) {
+			red += 0.5f;
+			if (red > 1.0f) red = 0.0f;
+		}
+		if (win->getButtonPress(window::MouseButton::MIDDLE)) {
+			green += 0.5f;
+			if (green > 1.0f) green = 0.0f;
+		}
+		if (win->getButtonPress(window::MouseButton::RIGHT)) {
+			blue += 0.5f;
+			if (blue > 1.0f) blue = 0.0f;
+		}
+		
+		// draw
+		glClearColor(red, green, blue, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		// swap
+		win->swapBuffers();
+
+		// events
+		win->getInputAndEvents();
+
+	}
 
 	return 0;
 
