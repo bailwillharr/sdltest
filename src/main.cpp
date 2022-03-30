@@ -1,4 +1,4 @@
-#include "window/window.hpp"
+#include "window.hpp"
 
 #include "glad/glad.h"
 
@@ -16,6 +16,8 @@ int main()
 	float blue = 0.0f;
 
 	win->setVSync(true);
+
+	win->setRelativeMouseMode(true);
 
 	// single-threaded game loop
 	while (!win->shouldClose()) {
@@ -36,6 +38,8 @@ int main()
 			blue += 0.5f;
 			if (blue > 1.0f) blue = 0.0f;
 		}
+
+		red += win->getMouseScrollY() * 0.01f;
 		
 		// draw
 		glClearColor(red, green, blue, 1.0f);

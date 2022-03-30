@@ -56,12 +56,26 @@ private:
 	struct {
 		std::array<bool, static_cast<int>(MouseButton::SIZE)> buttons;
 		std::array<enum ButtonDelta, 8> deltas;
+		Sint32 x;
+		Sint32 y;
+		Sint32 xrel;
+		Sint32 yrel;
+		float xscroll;
+		float yscroll;
 	} m_mouse;
 
 	// private methods
 
 	void onResize(Sint32 width, Sint32 height);
 	void resetInputDeltas();
+
+	// event methods (like callbacks)
+
+	void onWindowEvent(SDL_WindowEvent &e);
+	void onKeyEvent(SDL_KeyboardEvent &e);
+	void onMouseButtonEvent(SDL_MouseButtonEvent &e);
+	void onMouseMotionEvent(SDL_MouseMotionEvent &e);
+	void onMouseWheelEvent(SDL_MouseWheelEvent &e);
 
 public:
 	Window(std::string title);
@@ -83,6 +97,7 @@ public:
 	void show();
 	void hide();
 	void focus();
+	bool hasFocus();
 
 	void setCloseFlag();
 	bool shouldClose();
@@ -91,6 +106,9 @@ public:
 	void toggleFullscreen();
 
 	bool isFullscreen();
+
+	// Relative mouse mode captures the cursor for FPS style use. Returns false if unsupported.
+	bool setRelativeMouseMode(bool enabled);
 
 	// getting input
 
@@ -109,6 +127,19 @@ public:
 	bool getButtonPress(enum MouseButton button);
 	// returns true if button was just released
 	bool getButtonRelease(enum MouseButton button);
+
+	// retrieve x coordinate of the mouse
+	int getMouseX();
+	// retrieve y coordinate of the mouse
+	int getMouseY();
+	// retrieve dx of the mouse since the last frame
+	int getMouseXRel();
+	// retrieve dy of the mouse since the last frame
+	int getMouseYRel();
+	// retrieve amount scrolled vertically
+	float getMouseScrollX();
+	// retrieve amount scrolled horizontally
+	float getMouseScrollY();
 
 	// joystick/gamepad events (maybe), other misc events
 

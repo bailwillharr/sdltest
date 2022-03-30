@@ -1,4 +1,4 @@
-#include "window/window.hpp"
+#include "window.hpp"
 
 #include <glad/glad.h>
 
@@ -21,9 +21,15 @@ Window::Window(std::string title) : m_title(title)
 		throw std::runtime_error(errMsg);
 	}
 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3) != 0) {
+
+	}
+	if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3) != 0) {
+
+	}
+	if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE) != 0) {
+
+	}
 
 	// create the window
 	m_handle = SDL_CreateWindow(
@@ -91,11 +97,94 @@ void Window::onResize(Sint32 width, Sint32 height)
 void Window::resetInputDeltas()
 {
 	m_justResized = false;
+
 	m_keyboard.deltas.fill(ButtonDelta::SAME);
+	
 	m_mouse.deltas.fill(ButtonDelta::SAME);
+	m_mouse.xrel = 0;
+	m_mouse.yrel = 0;
+	m_mouse.xscroll = 0.0f;
+	m_mouse.yscroll = 0.0f;
 }
 
 // TODO event methods (like callbacks)
+
+void Window::onWindowEvent(SDL_WindowEvent &e)
+{
+	switch (e.event) {
+		case SDL_WINDOWEVENT_RESIZED:
+			onResize(e.data1, e.data2);
+			m_justResized = true;
+			break;
+		case SDL_WINDOWEVENT_FOCUS_GAINED:
+			m_keyboardFocus = true;
+			break;
+		case SDL_WINDOWEVENT_FOCUS_LOST:
+			m_keyboardFocus = false;
+			break;
+	}
+}
+
+void Window::onKeyEvent(SDL_KeyboardEvent &e)
+{
+	bool keyWasDown = m_keyboard.keys[e.keysym.scancode];
+	bool keyIsDown = (e.state == SDL_PRESSED);
+	m_keyboard.keys[e.keysym.scancode] = keyIsDown;
+	if (keyIsDown != keyWasDown) { // (if key was pressed or released)
+		m_keyboard.deltas[e.keysym.scancode] = keyIsDown ? ButtonDelta::PRESSED : ButtonDelta::RELEASED;
+	}
+}
+
+void Window::onMouseButtonEvent(SDL_MouseButtonEvent &e)
+{
+	enum MouseButton button = MouseButton::INVALID;
+	switch (e.button) {
+		case SDL_BUTTON_LEFT:
+			button = MouseButton::LEFT;
+			break;
+		case SDL_BUTTON_MIDDLE:
+			button = MouseButton::MIDDLE;
+			break;
+		case SDL_BUTTON_RIGHT:
+			button = MouseButton::RIGHT;
+			break;
+		case SDL_BUTTON_X1:
+			button = MouseButton::X1;
+			break;
+		case SDL_BUTTON_X2:
+			button = MouseButton::X2;
+			break;
+	}
+
+	bool buttonWasDown = m_mouse.buttons[button];
+	bool buttonIsDown = (e.state == SDL_PRESSED);
+	m_mouse.buttons[button] = buttonIsDown;
+	if (buttonIsDown != buttonWasDown) { // (if button was pressed or released)
+		// only sets delta if it hasn't already been set this frame (to detect very fast presses)
+		if (m_mouse.deltas[button] == ButtonDelta::SAME) {
+			m_mouse.deltas[button] = buttonIsDown ? ButtonDelta::PRESSED : ButtonDelta::RELEASED;
+		}
+	}
+}
+
+void Window::onMouseMotionEvent(SDL_MouseMotionEvent &e)
+{
+	m_mouse.x = e.x;
+	m_mouse.y = e.y;
+	m_mouse.xrel = e.xrel;
+	m_mouse.yrel = e.yrel;
+}
+
+void Window::onMouseWheelEvent(SDL_MouseWheelEvent &e)
+{
+	if (e.direction == SDL_MOUSEWHEEL_NORMAL) {
+		m_mouse.xscroll = e.preciseX;
+		m_mouse.yscroll = e.preciseY;
+	} else { // flipped
+		m_mouse.xscroll = -e.preciseX;
+		m_mouse.yscroll = -e.preciseY;
+	}
+}
 
 // public methods
 
@@ -112,9 +201,6 @@ void Window::swapBuffers()
 void Window::getInputAndEvents()
 {
 
-	static int iters;
-	iters++;
-
 	resetInputDeltas();
 
 	// loop through all available events
@@ -127,71 +213,25 @@ void Window::getInputAndEvents()
 				break;
 
 			case SDL_WINDOWEVENT:
-				switch (e.window.event) {
-
-					case SDL_WINDOWEVENT_RESIZED:
-						onResize(e.window.data1, e.window.data2);
-						m_justResized = true;
-						break;
-
-					case SDL_WINDOWEVENT_FOCUS_GAINED:
-						m_keyboardFocus = true;
-						break;
-
-					case SDL_WINDOWEVENT_FOCUS_LOST:
-						m_keyboardFocus = false;
-						break;
-
-				}
+				onWindowEvent(e.window);
 				break;
 
 			case SDL_KEYDOWN: // FALL THROUGH
 			case SDL_KEYUP:
-			{
-				bool keyWasDown = m_keyboard.keys[e.key.keysym.scancode];
-				bool keyIsDown = (e.key.state == SDL_PRESSED);
-				m_keyboard.keys[e.key.keysym.scancode] = keyIsDown;
-				if (keyIsDown != keyWasDown) { // (if key was pressed or released)
-					m_keyboard.deltas[e.key.keysym.scancode] = keyIsDown ? ButtonDelta::PRESSED : ButtonDelta::RELEASED;
-				}
-			}
+				onKeyEvent(e.key);
+				break;
+
+			case SDL_MOUSEBUTTONDOWN: // FALL THROUGH
+			case SDL_MOUSEBUTTONUP:
+				onMouseButtonEvent(e.button);
 				break;
 
 			case SDL_MOUSEMOTION:
+				onMouseMotionEvent(e.motion);
 				break;
 
-			// TODO: still register mouse click if PRESS and RELEASE occur on the same frame
-			case SDL_MOUSEBUTTONDOWN: // FALL THROUGH
-			case SDL_MOUSEBUTTONUP:
-			{
-				enum MouseButton button = MouseButton::INVALID;
-				switch (e.button.button) {
-					case SDL_BUTTON_LEFT:
-						button = MouseButton::LEFT;
-						break;
-					case SDL_BUTTON_MIDDLE:
-						button = MouseButton::MIDDLE;
-						break;
-					case SDL_BUTTON_RIGHT:
-						button = MouseButton::RIGHT;
-						break;
-					case SDL_BUTTON_X1:
-						button = MouseButton::X1;
-						break;
-					case SDL_BUTTON_X2:
-						button = MouseButton::X2;
-						break;
-				}
-
-				std::cout << "Button: " << (int)e.button.button << " State: " << ((e.button.state == SDL_PRESSED) ? 1 : 0) << " Iters: " << iters << "\n";
-
-				bool buttonWasDown = m_mouse.buttons[button];
-				bool buttonIsDown = (e.button.state == SDL_PRESSED);
-				m_mouse.buttons[button] = buttonIsDown;
-				if (buttonIsDown != buttonWasDown) { // (if button was pressed or released)
-					m_mouse.deltas[button] = buttonIsDown ? ButtonDelta::PRESSED : ButtonDelta::RELEASED;
-				}
-			}
+			case SDL_MOUSEWHEEL:
+				onMouseWheelEvent(e.wheel);
 				break;
 
 		}
@@ -232,6 +272,11 @@ void Window::focus()
 	m_keyboardFocus = true;
 }
 
+bool Window::hasFocus()
+{
+	return m_keyboardFocus;
+}
+
 void Window::setCloseFlag()
 {
 	m_shouldClose = true;
@@ -258,6 +303,20 @@ void Window::toggleFullscreen()
 bool Window::isFullscreen()
 {
 	return m_fullscreen;
+}
+
+bool Window::setRelativeMouseMode(bool enabled)
+{
+	int code = SDL_SetRelativeMouseMode(static_cast<SDL_bool>(enabled));
+	if (code != 0) {
+		if (code == -1) {
+			return false;
+		} else {
+			throw std::runtime_error("Unable to set relative mouse mode: ");
+		}
+	} else {
+		return true;
+	}
 }
 
 // getting input
@@ -292,6 +351,36 @@ bool Window::getButtonPress(enum MouseButton button)
 bool Window::getButtonRelease(enum MouseButton button)
 {
 	return m_mouse.deltas[button] == ButtonDelta::RELEASED;
+}
+
+int Window::getMouseX()
+{
+	return static_cast<int>(m_mouse.x);
+}
+
+int Window::getMouseY()
+{
+	return static_cast<int>(m_mouse.y);
+}
+
+int Window::getMouseXRel()
+{
+	return static_cast<int>(m_mouse.xrel);
+}
+
+int Window::getMouseYRel()
+{
+	return static_cast<int>(m_mouse.yrel);
+}
+
+float Window::getMouseScrollX()
+{
+	return m_mouse.xscroll;
+}
+
+float Window::getMouseScrollY()
+{
+	return m_mouse.yscroll;
 }
 
 // TODO game pad
