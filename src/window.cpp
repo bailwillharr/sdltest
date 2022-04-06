@@ -137,22 +137,22 @@ void Window::onKeyEvent(SDL_KeyboardEvent &e)
 
 void Window::onMouseButtonEvent(SDL_MouseButtonEvent &e)
 {
-	enum MouseButton button = MouseButton::INVALID;
+	enum MouseButton button = MouseButton::M_INVALID;
 	switch (e.button) {
 		case SDL_BUTTON_LEFT:
-			button = MouseButton::LEFT;
+			button = MouseButton::M_LEFT;
 			break;
 		case SDL_BUTTON_MIDDLE:
-			button = MouseButton::MIDDLE;
+			button = MouseButton::M_MIDDLE;
 			break;
 		case SDL_BUTTON_RIGHT:
-			button = MouseButton::RIGHT;
+			button = MouseButton::M_RIGHT;
 			break;
 		case SDL_BUTTON_X1:
-			button = MouseButton::X1;
+			button = MouseButton::M_X1;
 			break;
 		case SDL_BUTTON_X2:
-			button = MouseButton::X2;
+			button = MouseButton::M_X2;
 			break;
 	}
 
@@ -387,7 +387,5 @@ float Window::getMouseScrollY()
 
 // get timer value
 // TODO
-
-
 
 }

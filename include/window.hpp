@@ -12,13 +12,13 @@
 namespace window {
 
 enum MouseButton {
-	LEFT,
-	MIDDLE,
-	RIGHT,
-	X1,
-	X2,
-	INVALID=7,
-	SIZE=7
+	M_LEFT,
+	M_MIDDLE,
+	M_RIGHT,
+	M_X1,
+	M_X2,
+	M_INVALID=7,
+	M_SIZE=7
 };
 
 class Window : non_copyable {
@@ -54,7 +54,7 @@ private:
 	} m_keyboard;
 
 	struct {
-		std::array<bool, static_cast<int>(MouseButton::SIZE)> buttons;
+		std::array<bool, static_cast<int>(MouseButton::M_SIZE)> buttons;
 		std::array<enum ButtonDelta, 8> deltas;
 		Sint32 x;
 		Sint32 y;
@@ -80,10 +80,6 @@ private:
 public:
 	Window(std::string title);
 	~Window();
-
-	// class cannot be copied
-	Window(const Window &) = delete;
-	void operator=(const Window &) = delete;
 
 	void makeContextCurrent();
 	void swapBuffers();

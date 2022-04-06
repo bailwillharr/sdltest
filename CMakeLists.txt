@@ -5,6 +5,7 @@ project(SDLTest LANGUAGES CXX VERSION 1.0)
 add_executable(sdltest 
 	src/main.cpp
 	src/window.cpp
+	src/input.cpp
 )
 
 set_property(TARGET sdltest PROPERTY CXX_STANDARD 11)
