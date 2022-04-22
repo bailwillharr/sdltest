@@ -1,5 +1,6 @@
 #include "window.hpp"
 #include "input.hpp"
+#include "scene.hpp"
 
 #include "glad/glad.h"
 
@@ -14,6 +15,8 @@ int main()
 
 	// input class requires a reference to the window class
 	std::unique_ptr<input::Input> input(new input::Input(win));
+
+	std::unique_ptr<scene::Scene> mainScene(new scene::Scene());
 
 	// menu, settings controls
 	input->addInputButton("fullscreen", input::KEYBOARD, SDL_SCANCODE_F11);
@@ -47,7 +50,7 @@ int main()
 		}
 
 		// draw
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(0.69, 0.69, 0.420, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// swap

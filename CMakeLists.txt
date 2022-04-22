@@ -6,6 +6,9 @@ add_executable(sdltest
 	src/main.cpp
 	src/window.cpp
 	src/input.cpp
+	src/scene.cpp
+	src/object.cpp
+	src/component.cpp
 )
 
 set_property(TARGET sdltest PROPERTY CXX_STANDARD 11)
