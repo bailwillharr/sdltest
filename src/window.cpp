@@ -21,6 +21,10 @@ Window::Window(std::string title) : m_title(title)
 		throw std::runtime_error(errMsg);
 	}
 
+	m_counterFreq = SDL_GetPerformanceFrequency();
+	m_startTime = getNanos();
+	m_lastFrameTime = m_startTime;
+
 	if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3) != 0) {
 
 	}
@@ -196,6 +200,10 @@ void Window::makeContextCurrent() { if (SDL_GL_MakeCurrent(m_handle, m_glContext
 void Window::swapBuffers()
 {
 	SDL_GL_SwapWindow(m_handle);
+	m_frames++;
+	uint64_t currentFrameStamp = getNanos();
+	m_lastFrameTime = currentFrameStamp - m_lastFrameStamp;
+	m_lastFrameStamp = currentFrameStamp;
 }
 
 void Window::getInputAndEvents()
@@ -386,6 +394,36 @@ float Window::getMouseScrollY()
 // TODO game pad
 
 // get timer value
-// TODO
+uint64_t Window::getNanos()
+{
+	uint64_t count;
+
+	count = SDL_GetPerformanceCounter();
+	if (m_counterFreq == BILLION) {
+		return count;
+	} else {
+		return count * (BILLION / m_counterFreq);
+	}
+}
+
+uint64_t Window::getFrameCount()
+{
+	return m_frames;
+}
+
+uint64_t Window::getStartTime()
+{
+	return m_startTime;
+}
+
+uint64_t Window::getLastFrameTime()
+{
+	return m_lastFrameTime;
+}
+
+uint64_t Window::getFPS()
+{
+	return BILLION / m_lastFrameTime;
+}
 
 }

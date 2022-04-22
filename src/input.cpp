@@ -153,42 +153,53 @@ float Input::getAxis(std::string axisName)
 
 bool Input::getButton(std::string buttonName)
 {
+	bool isDown = false;
+
 	for (struct ButtonEntry e : m_buttonEntries) {
 		if (e.name == buttonName) {
 			if (m_enabledDevices[e.device]) {
-				return getDeviceButton(e.device, e.button);
+				if (getDeviceButton(e.device, e.button) == true) {
+					isDown = true;
+					break;
+				}
 			}
 		}
 	}
-	return false; // instead of throwing an exception, just return nothing
-	//throw std::runtime_error("Unable to find mapping in input table");
+	return isDown;
 }
 
-bool Input::getButtonDown(std::string buttonName)
+bool Input::getButtonPress(std::string buttonName)
 {
+	bool isPressed = false;
+
 	for (struct ButtonEntry e : m_buttonEntries) {
 		if (e.name == buttonName) {
 			if (m_enabledDevices[e.device]) {
-				return getDeviceButtonDown(e.device, e.button);
+				if (getDeviceButtonDown(e.device, e.button) == true) {
+					isPressed = true;
+					break;
+				}
 			}
 		}
 	}
-	return false; // instead of throwing an exception, just return nothing
-	//throw std::runtime_error("Unable to find mapping in input table");
+	return isPressed;
 }
 
-bool Input::getButtonUp(std::string buttonName)
+bool Input::getButtonRelease(std::string buttonName)
 {
+	bool isReleased = false;
+
 	for (struct ButtonEntry e : m_buttonEntries) {
 		if (e.name == buttonName) {
 			if (m_enabledDevices[e.device]) {
-				return getDeviceButtonUp(e.device, e.button);
+				if (getDeviceButtonUp(e.device, e.button) == true) {
+					isReleased = true;
+					break;
+				}
 			}
 		}
 	}
-	return false; // instead of throwing an exception, just return nothing
-	//throw std::runtime_error("Unable to find mapping in input table");
-
+	return isReleased;
 }
 
 }

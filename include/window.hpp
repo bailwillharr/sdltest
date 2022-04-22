@@ -11,6 +11,8 @@
 
 namespace window {
 
+const uint64_t BILLION = 1000000000;
+
 enum MouseButton {
 	M_LEFT,
 	M_MIDDLE,
@@ -39,6 +41,18 @@ private:
 	glm::vec2 m_winSize = glm::vec2(640, 480);
 	// actual framebuffer size
 	glm::vec2 m_fbSize;
+
+	// performance counter frequency
+	uint64_t m_counterFreq;
+
+	// number of frames swapped
+	uint64_t m_frames = 0;
+	// in nanoseconds
+	uint64_t m_startTime;
+	// in nanoseconds
+	uint64_t m_lastFrameStamp;
+	// in nanoseconds; elapsed time between frames
+	uint64_t m_lastFrameTime;
 
 	// input stuff
 
@@ -139,8 +153,13 @@ public:
 
 	// joystick/gamepad events (maybe), other misc events
 
-	// get timer value
-	// TODO
+	// return the performance counter value in nanoseconds;
+	uint64_t getNanos();
+
+	uint64_t getFrameCount();
+	uint64_t getStartTime();
+	uint64_t getLastFrameTime();
+	uint64_t getFPS();
 
 };
 

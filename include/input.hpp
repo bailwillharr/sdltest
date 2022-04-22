@@ -79,8 +79,8 @@ public:
 
 	float getAxis(std::string axisName);
 	bool getButton(std::string buttonName);
-	bool getButtonDown(std::string buttonName);
-	bool getButtonUp(std::string buttonName);
+	bool getButtonPress(std::string buttonName);
+	bool getButtonRelease(std::string buttonName);
 	
 };
 

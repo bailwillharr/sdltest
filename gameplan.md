@@ -1,3 +1,10 @@
+Object:
+- A base class that allows a class to be added to the scene graph
+
+Component:
+- A base class that signifies that a class can be added as a component
+- 
+
 Shader:
 - holds methods to activate shader program
 - holds a list of uniforms and methods to set those uniforms
