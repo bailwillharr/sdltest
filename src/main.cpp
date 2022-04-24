@@ -28,12 +28,12 @@ int main()
 	auto comp1 = mainScene->getRoot()->getComponent<component::Camera>();
 	if (comp1 != nullptr) {
 		std::cout << comp1->getID() << "\n";
-		std::cout << comp1->getName() << "\n";
+		std::cout << comp1->getTypeName() << "\n";
 	}
 	auto comp2 = mainScene->getRoot()->getComponent<component::Transform>();
 	if (comp2 != nullptr) {
 		std::cout << comp2->getID() << "\n";
-		std::cout << comp2->getName() << "\n";
+		std::cout << comp2->getTypeName() << "\n";
 	}
 
 	mainScene->getRoot()->createChild("car")->createChild("engine")->createChild("pistons");
@@ -63,8 +63,15 @@ int main()
 	win->setVSync(true);
 	win->setRelativeMouseMode(false);
 
+	uint64_t lastSecond = win->getNanos();
+
 	// single-threaded game loop
 	while (win->isRunning()) {
+
+		if (win->getNanos() >= lastSecond + window::BILLION) {
+			std::cout << "FPS: " << win->getFPS() << "\n";
+			lastSecond = win->getNanos();
+		}
 
 		// logic
 
@@ -74,18 +81,14 @@ int main()
 		if (input->getButtonPress("quit"))
 			win->setCloseFlag();
 
+
 		// draw
-		glClearColor(0.69, 0.69, 0.420, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
 
 		// swap
 		win->swapBuffers();
 
 		// events
 		win->getInputAndEvents();
-
-//		std::cout << "FPS: " << win->getFPS() << "\n";
-//		std::cout << "FOCUS: " << win->hasFocus() << "\n";
 	
 	}
 

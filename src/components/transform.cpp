@@ -13,10 +13,9 @@ Transform::Transform()
 
 Transform::~Transform()
 {
-	std::cout << "Transform component destructor\n";
 }
 
-std::string Transform::getName()
+std::string Transform::getTypeName()
 {
 	return "transform";
 }

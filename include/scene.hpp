@@ -24,6 +24,10 @@ public:
 
 	std::shared_ptr<object::Object> getRoot();
 
+	// Cache the required matrices and other data for the components present
+	// in the scene.
+	void genSceneCache();
+
 };
 
 }

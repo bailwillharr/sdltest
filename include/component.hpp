@@ -18,7 +18,17 @@ public:
 
 	int getID();
 
-	virtual std::string getName() = 0;
+	virtual std::string getTypeName() = 0;
+
+};
+
+class ComponentCache {
+
+private:
+
+public:
+	ComponentCache();
+	virtual ~ComponentCache() = 0;
 
 };
 

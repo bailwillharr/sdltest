@@ -13,10 +13,9 @@ Camera::Camera()
 
 Camera::~Camera()
 {
-	std::cout << "Camera component destructor\n";
 }
 
-std::string Camera::getName()
+std::string Camera::getTypeName()
 {
 	return "camera";
 }

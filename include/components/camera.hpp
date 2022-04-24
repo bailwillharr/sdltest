@@ -16,7 +16,7 @@ public:
 	Camera();
 	~Camera() override;
 
-	std::string getName() override;
+	std::string getTypeName() override;
 
 };
 

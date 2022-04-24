@@ -8,13 +8,13 @@
 
 namespace component {
 
-class Transform : public Component {
+class Renderer : public Component {
 
 private:
 
 public:
-	Transform();
-	~Transform() override;
+	Renderer();
+	~Renderer() override;
 
 	std::string getTypeName() override;
 
