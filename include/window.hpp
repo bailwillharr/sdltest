@@ -11,7 +11,7 @@
 
 namespace window {
 
-const uint64_t BILLION = 1000000000;
+extern const uint64_t BILLION;
 
 enum MouseButton {
 	M_LEFT,
@@ -95,22 +95,36 @@ public:
 	Window(std::string title);
 	~Window();
 
+	// Make this window the current OpenGL context.
+	// This is already done in window initialisation.
 	void makeContextCurrent();
+
+	// Tell the GPU to render the back buffer to the screen.
+	// Run this on every frame.
 	void swapBuffers();
+	// Update the window state to capture any events that have occurred.
+	// Run this on every frame.
 	void getInputAndEvents();
 
+	// if 'true', swapBuffers() will wait in order to synchronise with the
+	// monitor's refresh rate.
 	void setVSync(bool enable);
+	// Returns true if VSync is enabled.
 	bool getVSync();
 
-	bool getWindowResized();
-
-	void show();
+	// Hides the window (it will appear closed to the user).
 	void hide();
+	// Shows the window again.
+	void show();
+	// Raises the window above other windows and sets the input focus
 	void focus();
+	// Returns true if the window has focus
 	bool hasFocus();
 
+	// Sets the close flag, check this with shouldClose()
 	void setCloseFlag();
-	bool shouldClose();
+	// Returns true if the window should remain open
+	bool isRunning();
 
 	void setFullscreen(bool fullscreen);
 	void toggleFullscreen();
@@ -120,7 +134,12 @@ public:
 	// Relative mouse mode captures the cursor for FPS style use. Returns false if unsupported.
 	bool setRelativeMouseMode(bool enabled);
 
-	// getting input
+	// window events
+
+	// Returns true if the window was just resized during the previous frame
+	bool getWindowResized();
+
+	// keyboard events
 
 	// returns true if key is down
 	bool getKey(int key);
@@ -129,7 +148,7 @@ public:
 	// returns true if key was just released
 	bool getKeyRelease(int key);
 
-	// mouse events,
+	// mouse events
 
 	// returns true if button is down
 	bool getButton(enum MouseButton button);
@@ -138,24 +157,27 @@ public:
 	// returns true if button was just released
 	bool getButtonRelease(enum MouseButton button);
 
-	// retrieve x coordinate of the mouse
+	// retrieves x coordinate of the mouse
 	int getMouseX();
-	// retrieve y coordinate of the mouse
+	// retrieves y coordinate of the mouse
 	int getMouseY();
-	// retrieve dx of the mouse since the last frame
+	// retrieves dx of the mouse since the last frame
 	int getMouseXRel();
-	// retrieve dy of the mouse since the last frame
+	// retrieves dy of the mouse since the last frame
 	int getMouseYRel();
-	// retrieve amount scrolled vertically
+	// retrieves amount scrolled vertically
 	float getMouseScrollX();
-	// retrieve amount scrolled horizontally
+	// retrieves amount scrolled horizontally
 	float getMouseScrollY();
 
 	// joystick/gamepad events (maybe), other misc events
 
-	// return the performance counter value in nanoseconds;
+
+
+	// returns the performance counter value in nanoseconds;
 	uint64_t getNanos();
 
+	// returns the number of frames elapsed since window creation
 	uint64_t getFrameCount();
 	uint64_t getStartTime();
 	uint64_t getLastFrameTime();

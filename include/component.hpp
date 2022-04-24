@@ -1,19 +1,24 @@
 #pragma once
 
-#include <vector>
 #include <string>
 #include <memory>
 
-namespace object {
+namespace component {
 
-// Holds everything you would expect to find in a game scene
 class Component {
 
 private:
+	static int s_component_count;
+
+	int m_id;
 
 public:
 	Component();
-	~Component();
+	virtual ~Component() = 0;
+
+	int getID();
+
+	virtual std::string getName() = 0;
 
 };
 

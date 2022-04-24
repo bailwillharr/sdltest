@@ -2,7 +2,7 @@
 
 namespace scene {
 
-Scene::Scene() : m_sceneHead("root")
+Scene::Scene() : m_sceneRoot(new object::Object("root"))
 {
 
 }
@@ -10,6 +10,12 @@ Scene::Scene() : m_sceneHead("root")
 Scene::~Scene()
 {
 
+}
+
+
+std::shared_ptr<object::Object> Scene::getRoot()
+{
+	return m_sceneRoot;
 }
 
 }

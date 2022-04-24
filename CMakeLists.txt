@@ -9,6 +9,8 @@ add_executable(sdltest
 	src/scene.cpp
 	src/object.cpp
 	src/component.cpp
+	src/components/transform.cpp
+	src/components/camera.cpp
 )
 
 set_property(TARGET sdltest PROPERTY CXX_STANDARD 11)

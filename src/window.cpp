@@ -9,6 +9,8 @@
 
 namespace window {
 
+const uint64_t BILLION = 1000000000;
+
 Window::Window(std::string title) : m_title(title)
 {
 
@@ -290,9 +292,9 @@ void Window::setCloseFlag()
 	m_shouldClose = true;
 }
 
-bool Window::shouldClose()
+bool Window::isRunning()
 {
-	return m_shouldClose;
+	return !m_shouldClose;
 }
 
 void Window::setFullscreen(bool fullscreen)

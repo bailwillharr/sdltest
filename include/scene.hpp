@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace scene {
 
@@ -13,11 +14,13 @@ namespace scene {
 class Scene : non_copyable {
 
 private:
-	object::Object m_sceneHead;
+	std::shared_ptr<object::Object> m_sceneRoot;
 
 public:
 	Scene();
 	~Scene();
+
+	std::shared_ptr<object::Object> getRoot();
 
 };
 
