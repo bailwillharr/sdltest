@@ -44,4 +44,9 @@ void Object::printTree(int level)
 	}
 }
 
+std::list<std::shared_ptr<component::Component>> Object::getComponents()
+{
+	return m_components;
+}
+
 };

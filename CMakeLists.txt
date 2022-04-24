@@ -24,8 +24,9 @@ target_include_directories(sdltest PRIVATE include)
 # libraries
 
 # SDL2
-find_library(LIB_SDL2 SDL2)
-target_link_libraries(sdltest PRIVATE ${LIB_SDL2})
+#find_library(LIB_SDL2 SDL2)
+#target_link_libraries(sdltest PRIVATE ${LIB_SDL2})
+find_package(SDL2 REQUIRED)
 
 # GLAD
 add_subdirectory(vendor/glad)

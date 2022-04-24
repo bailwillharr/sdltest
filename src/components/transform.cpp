@@ -20,4 +20,9 @@ std::string Transform::getTypeName()
 	return "transform";
 }
 
+std::shared_ptr<ComponentCacheBase> Transform::getCacheEntry()
+{
+	return nullptr;
+}
+
 }

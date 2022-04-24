@@ -77,10 +77,10 @@ int main()
 
 		if (input->getButtonPress("fullscreen"))
 			win->toggleFullscreen();
-
 		if (input->getButtonPress("quit"))
 			win->setCloseFlag();
 
+		mainScene->genSceneCache();
 
 		// draw
 
@@ -91,6 +91,8 @@ int main()
 		win->getInputAndEvents();
 	
 	}
+
+	mainScene->printCache();
 
 	return 0;
 

@@ -26,6 +26,8 @@ public:
 
 	void printTree(int level = 0);
 
+	std::list<std::shared_ptr<component::Component>> getComponents();
+
 	// Returns the component of type T that is attached to this objecs.
 	// Returns nullptr if the component is not found.
 	template<class T> std::shared_ptr<T> getComponent();

@@ -5,6 +5,10 @@
 
 namespace component {
 
+struct ComponentCacheBase {
+	virtual ~ComponentCacheBase() = 0;
+};
+
 class Component {
 
 private:
@@ -20,15 +24,7 @@ public:
 
 	virtual std::string getTypeName() = 0;
 
-};
-
-class ComponentCache {
-
-private:
-
-public:
-	ComponentCache();
-	virtual ~ComponentCache() = 0;
+	virtual std::shared_ptr<ComponentCacheBase> getCacheEntry() = 0;
 
 };
 

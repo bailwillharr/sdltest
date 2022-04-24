@@ -1,8 +1,12 @@
 #include "component.hpp"
 
+#include <iostream>
+
 namespace component {
 
 int Component::s_component_count = 0;
+
+ComponentCacheBase::~ComponentCacheBase() { }
 
 Component::Component()
 {
@@ -10,7 +14,9 @@ Component::Component()
 	s_component_count++;
 }
 
-Component::~Component() {}
+Component::~Component()
+{
+}
 
 int Component::getID()
 {

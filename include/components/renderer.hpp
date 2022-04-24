@@ -18,6 +18,8 @@ public:
 
 	std::string getTypeName() override;
 
+	std::shared_ptr<ComponentCacheBase> getCacheEntry() override;
+
 };
 
 }
