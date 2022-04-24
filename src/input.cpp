@@ -4,6 +4,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <iostream>
 
 namespace input {
 
@@ -12,7 +13,7 @@ Input::Input(std::shared_ptr<window::Window> &win) : m_win(win)
 	m_enabledDevices.fill(true);
 }
 
-Input::~Input() { }
+Input::~Input() { std::cout << "Input class destructor\n"; }
 
 // private methods
 

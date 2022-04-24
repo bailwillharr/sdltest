@@ -81,6 +81,7 @@ Window::~Window()
 	SDL_GL_DeleteContext(m_glContext);
 	SDL_DestroyWindow(m_handle);
 	SDL_Quit();
+	std::cout << "Window class destructor\n";
 }
 
 // private methods

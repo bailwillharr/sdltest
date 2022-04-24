@@ -15,9 +15,11 @@ class Scene : non_copyable {
 
 private:
 	std::shared_ptr<object::Object> m_sceneRoot;
+	std::string m_name;
 
 public:
-	Scene();
+	// create a new empty scene
+	Scene(std::string name);
 	~Scene();
 
 	std::shared_ptr<object::Object> getRoot();

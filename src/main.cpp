@@ -1,6 +1,7 @@
 #include "window.hpp"
 #include "input.hpp"
 #include "scene.hpp"
+#include "object.hpp"
 
 #include "component.hpp"
 #include "components/transform.hpp"
@@ -20,7 +21,9 @@ int main()
 	// input class requires a reference to the window class
 	std::unique_ptr<input::Input> input(new input::Input(win));
 
-	std::unique_ptr<scene::Scene> mainScene(new scene::Scene());
+	std::unique_ptr<scene::Scene> mainScene(new scene::Scene("cubes"));
+
+	mainScene->getRoot()->createComponent<component::Camera>();
 
 	auto comp1 = mainScene->getRoot()->getComponent<component::Camera>();
 	if (comp1 != nullptr) {
@@ -32,6 +35,17 @@ int main()
 		std::cout << comp2->getID() << "\n";
 		std::cout << comp2->getName() << "\n";
 	}
+
+	mainScene->getRoot()->createChild("car")->createChild("engine")->createChild("pistons");
+	mainScene->getRoot()->getChildren().back()->getChildren().back()->createChild("camshaft");
+	mainScene->getRoot()->getChildren().back()->getChildren().back()->createChild("crankshaft");
+	mainScene->getRoot()->getChildren().back()->createChild("wheels");
+	mainScene->getRoot()->getChildren().back()->createChild("doors");
+	mainScene->getRoot()->getChildren().back()->createChild("transmission");
+	mainScene->getRoot()->getChildren().back()->getChildren().back()->createChild("flywheel");
+
+	std::cout << "TREE:\n";
+	mainScene->getRoot()->printTree();
 
 	// menu, settings controls
 	input->addInputButton("fullscreen", input::KEYBOARD, SDL_SCANCODE_F11);
@@ -46,7 +60,7 @@ int main()
 	input->addInputAxis("lookx", input::MOUSE, input::MOUSE_AXIS_X);
 	input->addInputAxis("looky", input::MOUSE, input::MOUSE_AXIS_Y);
 
-	win->setVSync(false);
+	win->setVSync(true);
 	win->setRelativeMouseMode(false);
 
 	// single-threaded game loop
