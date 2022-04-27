@@ -22,16 +22,24 @@ target_compile_options(sdltest PRIVATE -Wall -Wextra -pedantic)
 target_include_directories(sdltest PRIVATE include)
 
 # libraries
+target_link_libraries(sdltest PRIVATE mingw32)
 
 # SDL2
-#find_library(LIB_SDL2 SDL2)
-#target_link_libraries(sdltest PRIVATE ${LIB_SDL2})
 find_package(SDL2 REQUIRED)
+target_link_libraries(sdltest PRIVATE ${SDL2_LIBRARIES})
 
 # GLAD
 add_subdirectory(vendor/glad)
 target_link_libraries(sdltest PRIVATE glad)
 target_include_directories(sdltest PRIVATE vendor/glad/include)
+
+# If using MinGW and not in Debug mode, use '-mwindows'
+if (MINGW)
+	set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE TRUE)
+	if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+		set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE FALSE)
+	endif()
+endif()
 
 # install
 install(TARGETS sdltest DESTINATION bin)

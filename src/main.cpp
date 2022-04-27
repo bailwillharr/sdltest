@@ -7,14 +7,16 @@
 #include "components/transform.hpp"
 #include "components/camera.hpp"
 
-#include "glad/glad.h"
+#include <SDL2/SDL.h>
 
 #include <iostream>
 #include <memory>
 #include <thread>
 
-int main()
+int main(int argc, char *argv[])
 {
+	(void)argc;
+	(void)argv;
 
 	std::shared_ptr<window::Window> win(new window::Window("sdltest"));
 
