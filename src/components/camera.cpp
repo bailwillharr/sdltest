@@ -20,9 +20,4 @@ std::string Camera::getTypeName()
 	return "camera";
 }
 
-std::shared_ptr<ComponentCacheBase> Camera::getCacheEntry()
-{
-	return nullptr;
-}
-
 }

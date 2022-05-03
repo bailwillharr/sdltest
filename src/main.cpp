@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 	// input class requires a reference to the window class
 	std::unique_ptr<input::Input> input(new input::Input(win));
 
+	// scene stuff
 	std::unique_ptr<scene::Scene> mainScene(new scene::Scene("cubes"));
 
 	mainScene->getRoot()->createComponent<component::Camera>();
@@ -49,6 +50,8 @@ int main(int argc, char *argv[])
 	std::cout << "TREE:\n";
 	mainScene->getRoot()->printTree();
 
+
+
 	// menu, settings controls
 	input->addInputButton("fullscreen", input::KEYBOARD, SDL_SCANCODE_F11);
 	input->addInputButton("quit", input::KEYBOARD, SDL_SCANCODE_ESCAPE);
@@ -62,8 +65,10 @@ int main(int argc, char *argv[])
 	input->addInputAxis("lookx", input::MOUSE, input::MOUSE_AXIS_X);
 	input->addInputAxis("looky", input::MOUSE, input::MOUSE_AXIS_Y);
 
+
+
 	win->setVSync(true);
-	win->setRelativeMouseMode(false);
+	win->setRelativeMouseMode(true);
 
 	uint64_t lastSecond = win->getNanos();
 
@@ -82,8 +87,6 @@ int main(int argc, char *argv[])
 		if (input->getButtonPress("quit"))
 			win->setCloseFlag();
 
-		mainScene->genSceneCache();
-
 		// draw
 
 		// swap
@@ -93,8 +96,6 @@ int main(int argc, char *argv[])
 		win->getInputAndEvents();
 	
 	}
-
-	mainScene->printCache();
 
 	return 0;
 

@@ -6,17 +6,13 @@ namespace component {
 
 int Component::s_component_count = 0;
 
-ComponentCacheBase::~ComponentCacheBase() { }
-
 Component::Component()
 {
 	m_id = s_component_count;
 	s_component_count++;
 }
 
-Component::~Component()
-{
-}
+Component::~Component() { }
 
 int Component::getID()
 {

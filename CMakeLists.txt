@@ -22,7 +22,11 @@ target_compile_options(sdltest PRIVATE -Wall -Wextra -pedantic)
 target_include_directories(sdltest PRIVATE include)
 
 # libraries
-target_link_libraries(sdltest PRIVATE mingw32)
+
+# MinGW library if using it
+if (MINGW)
+	target_link_libraries(sdltest PRIVATE mingw32)
+endif()
 
 # SDL2
 find_package(SDL2 REQUIRED)

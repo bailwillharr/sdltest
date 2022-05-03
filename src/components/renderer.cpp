@@ -21,9 +21,4 @@ std::string Renderer::getTypeName()
 	return "renderer";
 }
 
-std::shared_ptr<ComponentCacheBase> Renderer::getCacheEntry()
-{
-	return nullptr;
-}
-
 }
