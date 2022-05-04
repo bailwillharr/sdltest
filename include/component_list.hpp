@@ -9,7 +9,6 @@
 
 namespace component {
 
-// Holds everything you would expect to find in a game scene
 class ComponentList {
 
 private:

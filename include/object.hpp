@@ -1,9 +1,9 @@
 #pragma once
 
-//#include "component_list.hpp"
 //#include "component.hpp"
 
 #include <list>
+#include <vector>
 #include <string>
 #include <memory>
 #include <stdexcept>
@@ -25,7 +25,8 @@ public:
 	std::string getName();
 
 	std::weak_ptr<Object> getChild(std::string name);
-	Object createChild(std::string name);
+	std::vector<std::weak_ptr<Object>> getChildren();
+	std::weak_ptr<Object> createChild(std::string name);
 
 	//std::shared_ptr<component::ComponentList> getCompList();
 
