@@ -8,12 +8,14 @@
 
 namespace input {
 
-Input::Input(std::shared_ptr<window::Window> &win) : m_win(win)
+Input::Input(const window::Window &win) : m_win(win)
 {
+	std::cout << "Input handler for '" << m_win.getTitle() << "' has been constructed\n";
+
 	m_enabledDevices.fill(true);
 }
 
-Input::~Input() { std::cout << "Input class destructor\n"; }
+Input::~Input() { std::cout << "Input handler destroyed\n"; }
 
 // private methods
 
@@ -23,13 +25,13 @@ float Input::getDeviceAxis(enum InputDevice device, int axis)
 		case MOUSE:
 			switch (axis) {
 				case MOUSE_AXIS_X:
-					return m_win->getMouseXRel();
+					return m_win.getMouseXRel();
 				case MOUSE_AXIS_Y:
-					return m_win->getMouseYRel();
+					return m_win.getMouseYRel();
 				case MOUSE_AXIS_X_SCR:
-					return m_win->getMouseScrollX();
+					return m_win.getMouseScrollX();
 				case MOUSE_AXIS_Y_SCR:
-					return m_win->getMouseScrollY();
+					return m_win.getMouseScrollY();
 				default: break;
 			}
 			break;
@@ -46,9 +48,9 @@ bool Input::getDeviceButton(enum InputDevice device, int button)
 {
 	switch (device) {
 		case MOUSE:
-			return m_win->getButton(static_cast<enum window::MouseButton>(button));
+			return m_win.getButton(static_cast<enum window::MouseButton>(button));
 		case KEYBOARD:
-			return m_win->getKey(button);
+			return m_win.getKey(button);
 		case CONTROLLER:
 			break;
 		default: break;
@@ -60,9 +62,9 @@ bool Input::getDeviceButtonDown(enum InputDevice device, int button)
 {
 	switch (device) {
 		case MOUSE:
-			return m_win->getButtonPress(static_cast<enum window::MouseButton>(button));
+			return m_win.getButtonPress(static_cast<enum window::MouseButton>(button));
 		case KEYBOARD:
-			return m_win->getKeyPress(button);
+			return m_win.getKeyPress(button);
 		case CONTROLLER:
 			break;
 		default: break;
@@ -74,9 +76,9 @@ bool Input::getDeviceButtonUp(enum InputDevice device, int button)
 {
 	switch (device) {
 		case MOUSE:
-			return m_win->getButtonRelease(static_cast<enum window::MouseButton>(button));
+			return m_win.getButtonRelease(static_cast<enum window::MouseButton>(button));
 		case KEYBOARD:
-			return m_win->getKeyRelease(button);
+			return m_win.getKeyRelease(button);
 		case CONTROLLER:
 			break;
 		default: break;

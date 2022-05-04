@@ -74,6 +74,8 @@ Window::Window(std::string title) : m_title(title)
 
 	onResize(m_winSize.x, m_winSize.y);
 
+	std::cout << "Window '" << m_title << "' has been constructed\n";
+
 }
 
 Window::~Window()
@@ -81,14 +83,13 @@ Window::~Window()
 	SDL_GL_DeleteContext(m_glContext);
 	SDL_DestroyWindow(m_handle);
 	SDL_Quit();
-	std::cout << "Window class destructor\n";
+	std::cout << "Window destroyed: '" << m_title << "'\n";
 }
 
 // private methods
 
 void Window::onResize(Sint32 width, Sint32 height)
 {
-	std::cout << "RESIZED\n";
 	// get window size
 	m_winSize.x = static_cast<GLsizei>(width);
 	m_winSize.y = static_cast<GLsizei>(height);
@@ -195,6 +196,11 @@ void Window::onMouseWheelEvent(SDL_MouseWheelEvent &e)
 
 // public methods
 
+std::string Window::getTitle() const
+{
+	return m_title;
+}
+
 void Window::makeContextCurrent() { if (SDL_GL_MakeCurrent(m_handle, m_glContext) != 0) {
 		throw std::runtime_error("Failed to make GL context current");
 	}
@@ -257,12 +263,12 @@ void Window::setVSync(bool enable)
 	}
 }
 
-bool Window::getVSync()
+bool Window::getVSync() const
 {
 	return SDL_GL_GetSwapInterval() == 0 ? false : true;
 }
 
-bool Window::getWindowResized()
+bool Window::getWindowResized() const
 {
 	return m_justResized;
 }
@@ -283,7 +289,7 @@ void Window::focus()
 	m_keyboardFocus = true;
 }
 
-bool Window::hasFocus()
+bool Window::hasFocus() const
 {
 	return m_keyboardFocus;
 }
@@ -293,7 +299,7 @@ void Window::setCloseFlag()
 	m_shouldClose = true;
 }
 
-bool Window::isRunning()
+bool Window::isRunning() const
 {
 	return !m_shouldClose;
 }
@@ -311,7 +317,7 @@ void Window::toggleFullscreen()
 	setFullscreen(!m_fullscreen);
 }
 
-bool Window::isFullscreen()
+bool Window::isFullscreen() const
 {
 	return m_fullscreen;
 }
@@ -332,64 +338,64 @@ bool Window::setRelativeMouseMode(bool enabled)
 
 // getting input
 
-bool Window::getKey(int key)
+bool Window::getKey(int key) const
 {
 	return m_keyboard.keys[key];
 }
 
-bool Window::getKeyPress(int key)
+bool Window::getKeyPress(int key) const
 {
 	return m_keyboard.deltas[key] == ButtonDelta::PRESSED;
 }
 
-bool Window::getKeyRelease(int key)
+bool Window::getKeyRelease(int key) const
 {
 	return m_keyboard.deltas[key] == ButtonDelta::RELEASED;
 }
 
 // TODO mouse input
 
-bool Window::getButton(enum MouseButton button)
+bool Window::getButton(enum MouseButton button) const
 {
 	return m_mouse.buttons[button];
 }
 
-bool Window::getButtonPress(enum MouseButton button)
+bool Window::getButtonPress(enum MouseButton button) const
 {
 	return m_mouse.deltas[button] == ButtonDelta::PRESSED;
 }
 
-bool Window::getButtonRelease(enum MouseButton button)
+bool Window::getButtonRelease(enum MouseButton button) const
 {
 	return m_mouse.deltas[button] == ButtonDelta::RELEASED;
 }
 
-int Window::getMouseX()
+int Window::getMouseX() const
 {
 	return static_cast<int>(m_mouse.x);
 }
 
-int Window::getMouseY()
+int Window::getMouseY() const
 {
 	return static_cast<int>(m_mouse.y);
 }
 
-int Window::getMouseXRel()
+int Window::getMouseXRel() const
 {
 	return static_cast<int>(m_mouse.xrel);
 }
 
-int Window::getMouseYRel()
+int Window::getMouseYRel() const
 {
 	return static_cast<int>(m_mouse.yrel);
 }
 
-float Window::getMouseScrollX()
+float Window::getMouseScrollX() const
 {
 	return m_mouse.xscroll;
 }
 
-float Window::getMouseScrollY()
+float Window::getMouseScrollY() const
 {
 	return m_mouse.yscroll;
 }
@@ -397,7 +403,7 @@ float Window::getMouseScrollY()
 // TODO game pad
 
 // get timer value
-uint64_t Window::getNanos()
+uint64_t Window::getNanos() const
 {
 	uint64_t count;
 
@@ -409,22 +415,22 @@ uint64_t Window::getNanos()
 	}
 }
 
-uint64_t Window::getFrameCount()
+uint64_t Window::getFrameCount() const
 {
 	return m_frames;
 }
 
-uint64_t Window::getStartTime()
+uint64_t Window::getStartTime() const
 {
 	return m_startTime;
 }
 
-uint64_t Window::getLastFrameTime()
+uint64_t Window::getLastFrameTime() const
 {
 	return m_lastFrameTime;
 }
 
-uint64_t Window::getFPS()
+uint64_t Window::getFPS() const
 {
 	return BILLION / m_lastFrameTime;
 }

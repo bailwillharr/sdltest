@@ -18,7 +18,7 @@ private:
 	glm::mat4 m_modelMatrix{1.0f};
 
 public:
-	Transform();
+	Transform(std::shared_ptr<ComponentList> compList);
 	~Transform() override;
 
 	std::string getTypeName() override;

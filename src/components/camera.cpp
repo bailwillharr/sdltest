@@ -6,7 +6,7 @@
 
 namespace component {
 
-Camera::Camera()
+Camera::Camera(std::shared_ptr<ComponentList> compList) : Component(compList)
 {
 
 }

@@ -1,11 +1,12 @@
 #include "window.hpp"
 #include "input.hpp"
-#include "scene.hpp"
-#include "object.hpp"
 
-#include "component.hpp"
-#include "components/transform.hpp"
-#include "components/camera.hpp"
+#include "scene.hpp"
+//#include "object.hpp"
+
+//#include "component.hpp"
+//#include "components/transform.hpp"
+//#include "components/camera.hpp"
 
 #include <SDL2/SDL.h>
 
@@ -18,22 +19,23 @@ int main(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 
-	std::shared_ptr<window::Window> win(new window::Window("sdltest"));
+	std::unique_ptr<window::Window> win = std::make_unique<window::Window>("sdltest");
 
 	// input class requires a reference to the window class
-	std::unique_ptr<input::Input> input(new input::Input(win));
+	std::unique_ptr<input::Input> input = std::make_unique<input::Input>(*win);
 
 	// scene stuff
 	std::unique_ptr<scene::Scene> mainScene(new scene::Scene("cubes"));
 
-	mainScene->getRoot()->createComponent<component::Camera>();
+	/*
+	mainScene->getRoot()->getCompList()->createComponent<component::Camera>(std::make_shared<component::Camera>(mainScene->getRoot()->getCompList()));
 
-	auto comp1 = mainScene->getRoot()->getComponent<component::Camera>();
+	auto comp1 = mainScene->getRoot()->getCompList()->getComponent<component::Camera>();
 	if (comp1 != nullptr) {
 		std::cout << comp1->getID() << "\n";
 		std::cout << comp1->getTypeName() << "\n";
 	}
-	auto comp2 = mainScene->getRoot()->getComponent<component::Transform>();
+	auto comp2 = mainScene->getRoot()->getCompList()->getComponent<component::Transform>();
 	if (comp2 != nullptr) {
 		std::cout << comp2->getID() << "\n";
 		std::cout << comp2->getTypeName() << "\n";
@@ -49,6 +51,8 @@ int main(int argc, char *argv[])
 
 	std::cout << "TREE:\n";
 	mainScene->getRoot()->printTree();
+
+	*/
 
 
 

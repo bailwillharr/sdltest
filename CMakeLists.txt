@@ -8,13 +8,13 @@ add_executable(sdltest
 	src/input.cpp
 	src/scene.cpp
 	src/object.cpp
-	src/component.cpp
-	src/components/transform.cpp
-	src/components/camera.cpp
-	src/components/renderer.cpp
+	#	src/component.cpp
+	#	src/components/transform.cpp
+	#	src/components/camera.cpp
+	#	src/components/renderer.cpp
 )
 
-set_property(TARGET sdltest PROPERTY CXX_STANDARD 11)
+set_property(TARGET sdltest PROPERTY CXX_STANDARD 14)
 set_property(TARGET sdltest PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_compile_options(sdltest PRIVATE -Wall -Wextra -pedantic)

@@ -45,7 +45,7 @@ private:
 		int low;
 	};
 
-	std::shared_ptr<window::Window> m_win;
+	const window::Window& m_win;
 
 	std::vector<struct ButtonEntry> m_buttonEntries;
 	std::vector<struct AxisEntry> m_axisEntries;
@@ -64,7 +64,7 @@ private:
 public:
 
 	// requires a window reference to get input from
-	Input(std::shared_ptr<window::Window> &win);
+	Input(const window::Window &win);
 	~Input();
 
 	void addInputButton(std::string name, enum InputDevice device, int button);

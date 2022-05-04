@@ -6,7 +6,7 @@
 
 namespace component {
 
-Transform::Transform()
+Transform::Transform(std::shared_ptr<ComponentList> compList) : Component(compList)
 {
 
 }

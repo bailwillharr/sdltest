@@ -13,7 +13,7 @@ class Camera : public Component {
 private:
 
 public:
-	Camera();
+	Camera(std::shared_ptr<ComponentList> compList);
 	~Camera() override;
 
 	std::string getTypeName() override;

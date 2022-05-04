@@ -6,7 +6,7 @@
 
 namespace component {
 
-Renderer::Renderer()
+Renderer::Renderer(std::shared_ptr<ComponentList> compList) : Component(compList)
 {
 
 }

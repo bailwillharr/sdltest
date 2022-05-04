@@ -1,25 +1,26 @@
 #include "scene.hpp"
 
+#include "object.hpp"
+
 #include <iostream>
-#include <type_traits>
 
 namespace scene {
 
-Scene::Scene(std::string name) : m_sceneRoot(new object::Object("root")), m_name(name)
+Scene::Scene(std::string name) : m_sceneRoot(std::make_shared<object::Object>("root")), m_name(name)
 {
-
+	std::cout << "Scene '" << name << "' has been constructed\n";
 }
 
 Scene::~Scene()
 {
-
+	std::cout << "Scene class destroyed: '" << m_name << "'\n";
 }
 
 // private methods
 
 // public methods
 
-std::shared_ptr<object::Object> Scene::getRoot()
+std::weak_ptr<object::Object> Scene::getRoot()
 {
 	return m_sceneRoot;
 }

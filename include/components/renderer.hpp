@@ -13,7 +13,7 @@ class Renderer : public Component {
 private:
 
 public:
-	Renderer();
+	Renderer(std::shared_ptr<ComponentList> compList);
 	~Renderer() override;
 
 	std::string getTypeName() override;

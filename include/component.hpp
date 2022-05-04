@@ -2,8 +2,11 @@
 
 #include <string>
 #include <memory>
+#include <list>
 
 namespace component {
+
+class ComponentList;
 
 class Component {
 
@@ -12,13 +15,21 @@ private:
 
 	int m_id;
 
-public:
-	Component();
-	virtual ~Component() = 0;
+	std::shared_ptr<ComponentList> m_objectComponents;
 
+public:
+	Component(std::shared_ptr<ComponentList> compList);
+	virtual ~Component() = 0;
+	
 	int getID();
 
+	
+
 	virtual std::string getTypeName() = 0;
+
+	// events
+	virtual void onUpdate();
+	virtual void onRender();
 
 };
 

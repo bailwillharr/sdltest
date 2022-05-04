@@ -23,7 +23,7 @@ public:
 	Scene(std::string name);
 	~Scene();
 
-	std::shared_ptr<object::Object> getRoot();
+	std::weak_ptr<object::Object> getRoot();
 
 };
 
