@@ -8,8 +8,8 @@ add_executable(sdltest
 	src/input.cpp
 	src/scene.cpp
 	src/object.cpp
-	#	src/component.cpp
-	#	src/components/transform.cpp
+	src/component.cpp
+	src/components/transform.cpp
 	#	src/components/camera.cpp
 	#	src/components/renderer.cpp
 )

@@ -6,13 +6,14 @@
 
 namespace component {
 
-Transform::Transform(std::shared_ptr<ComponentList> compList) : Component(compList)
+Transform::Transform(object::Object* parent) : Component(parent)
 {
-
+	std::cout << "Transform component " << getID() << " constructed\n";
 }
 
 Transform::~Transform()
 {
+	std::cout << "Transform component " << getID() << " destroyed\n";
 }
 
 std::string Transform::getTypeName()

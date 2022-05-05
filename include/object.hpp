@@ -1,6 +1,6 @@
 #pragma once
 
-//#include "component.hpp"
+#include "component.hpp"
 
 #include <list>
 #include <vector>
@@ -16,7 +16,7 @@ class Object {
 private:
 	std::string m_name;
 	std::list<std::shared_ptr<Object>> m_children{};
-	//std::shared_ptr<component::ComponentList> m_componentList{new component::ComponentList};
+	std::list<std::shared_ptr<component::Component>> m_components{};
 
 public:
 	Object(std::string name);
@@ -26,12 +26,63 @@ public:
 
 	std::weak_ptr<Object> getChild(std::string name);
 	std::vector<std::weak_ptr<Object>> getChildren();
-	std::weak_ptr<Object> createChild(std::string name);
 
-	//std::shared_ptr<component::ComponentList> getCompList();
+	std::weak_ptr<Object> createChild(std::string name);
+	void deleteChild(std::string name);
 
 	void printTree(int level = 0);
 
+	// Returns the component of type T
+	// Returns nullptr if the component is not found.
+	template<class T> std::weak_ptr<T> getComponent();
+
+	// returns the component added
+	template<class T> std::weak_ptr<T> createComponent();
+
+	template<class T> void deleteComponent();
+
 };
+
+// implementation of template functions
+
+template<class T> std::weak_ptr<T> Object::getComponent()
+{
+	if (std::is_base_of<component::Component, T>::value == false) {
+		throw std::runtime_error("getComponent() error: specified type is not a subclass of 'Component'");
+	}
+	for (std::shared_ptr<component::Component>& component : m_components) {
+		std::weak_ptr<T> derived = std::dynamic_pointer_cast<T>(component);
+		if (derived.expired() == false) {
+			return derived;
+		}
+	}
+	return std::weak_ptr<T>();
+}
+
+template <class T> std::weak_ptr<T> Object::createComponent()
+{
+	if (std::is_base_of<component::Component, T>::value == false) {
+		throw std::runtime_error("addComponent() error: specified type is not a subclass of 'Component'");
+	}
+	if (getComponent<T>().expired() == false) {
+		throw std::runtime_error("addComponent() error: attempt to add component of a type already present");
+	}
+	m_components.emplace_back(new T(this));
+	return std::dynamic_pointer_cast<T>(m_components.back());
+}
+
+template<class T> void Object::deleteComponent()
+{
+	if (std::is_base_of<component::Component, T>::value == false) {
+		throw std::runtime_error("deleteComponent() error: specified type is not a subclass of 'Component'");
+	}
+	for (std::list<std::shared_ptr<component::Component>>::iterator itr = m_components.begin(); itr != m_components.end(); ++itr) {
+		if (std::dynamic_pointer_cast<T>(*itr)) {
+			m_components.erase(itr);
+			return;
+		}
+	}
+	throw std::runtime_error("deleteComponent() error: attempt to delete component that is not present.");
+}
 
 }

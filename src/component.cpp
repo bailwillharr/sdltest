@@ -6,7 +6,7 @@ namespace component {
 
 int Component::s_component_count = 0;
 
-Component::Component(std::shared_ptr<ComponentList> compList) : m_objectComponents(compList)
+Component::Component(object::Object* parent) : m_parent(parent)
 {
 	m_id = s_component_count;
 	s_component_count++;

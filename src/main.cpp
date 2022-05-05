@@ -3,10 +3,10 @@
 
 #include "scene.hpp"
 
-//#include "object.hpp"
+#include "object.hpp"
 
-//#include "component.hpp"
-//#include "components/transform.hpp"
+#include "component.hpp"
+#include "components/transform.hpp"
 //#include "components/camera.hpp"
 
 #include <SDL2/SDL.h>
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 	input.addInputAxis("lookx", input::MOUSE, input::MOUSE_AXIS_X);
 	input.addInputAxis("looky", input::MOUSE, input::MOUSE_AXIS_Y);
 
-
+	input.addInputButton("jump", input::KEYBOARD, SDL_SCANCODE_SPACE);
 
 	win.setVSync(true);
 	win.setRelativeMouseMode(true);
@@ -96,6 +96,11 @@ int main(int argc, char *argv[])
 			win.toggleFullscreen();
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
+		if (input.getButtonPress("jump")) {
+			if (auto rootPtr = mainScene->getRoot().lock()) {
+				rootPtr->deleteComponent<component::Transform>();
+			}
+		}
 
 		// draw
 

@@ -4,9 +4,11 @@
 #include <memory>
 #include <list>
 
-namespace component {
+namespace object {
+class Object;
+}
 
-class ComponentList;
+namespace component {
 
 class Component {
 
@@ -15,16 +17,13 @@ private:
 
 	int m_id;
 
-	std::shared_ptr<ComponentList> m_objectComponents;
+	object::Object* m_parent;
 
 public:
-	Component(std::shared_ptr<ComponentList> compList);
+	Component(object::Object* parent);
 	virtual ~Component() = 0;
 	
 	int getID();
-
-	
-
 	virtual std::string getTypeName() = 0;
 
 	// events

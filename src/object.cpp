@@ -1,7 +1,6 @@
 #include "object.hpp"
 
-//#include "components/transform.hpp"
-//#include "components/camera.hpp"
+#include "components/transform.hpp"
 
 #include <vector>
 #include <memory>
@@ -14,7 +13,7 @@ namespace object {
 Object::Object(std::string name) : m_name(name)
 {
 	// all objects come with at least a transform component
-	//m_componentList->createComponent<component::Transform>(std::unique_ptr<component::Transform>(new component::Transform(m_componentList)));
+	createComponent<component::Transform>();
 	std::cout << "Object '" << name << "' has been constructed\n";
 }
 
@@ -49,8 +48,23 @@ std::vector<std::weak_ptr<Object>> Object::getChildren()
 
 std::weak_ptr<Object> Object::createChild(std::string name)
 {
+	if (getChild(name).expired() == false) {
+		throw std::runtime_error("Attempt to create child object with existing name");
+	}
 	m_children.emplace_back(std::make_shared<Object>(name));
 	return m_children.back();
+}
+
+void Object::deleteChild(std::string name)
+{
+	for (std::list<std::shared_ptr<Object>>::iterator itr = m_children.begin();
+		 itr != m_children.end(); ++itr) {
+		if ((*itr)->getName() == name) {
+			m_children.erase(itr);
+			return;
+		}
+	}
+	throw std::runtime_error("Unable to delete child '" + name + "' as it does not exist");
 }
 
 void Object::printTree(int level)
@@ -67,12 +81,5 @@ void Object::printTree(int level)
 		}
 	}
 }
-
-/*
-std::shared_ptr<component::ComponentList> Object::getCompList()
-{
-	return m_componentList;
-}
-*/
 
 };
