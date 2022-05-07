@@ -1,4 +1,4 @@
-#include "window.hpp"
+#include "engine/window.hpp"
 
 #include <glad/glad.h>
 
@@ -7,7 +7,7 @@
 #include <iostream>
 #include <stdexcept>
 
-namespace window {
+namespace engine {
 
 const uint64_t BILLION = 1000000000;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "component.hpp"
+#include "engine/ecs/component.hpp"
 
 #include <list>
 #include <vector>
@@ -8,15 +8,18 @@
 #include <memory>
 #include <stdexcept>
 
-namespace object {
+namespace engine {
+namespace ecs {
 
 // Holds everything you would expect to find in a game scene
 class Object {
 
 private:
+	static int s_object_count;
+	int m_id = s_object_count;
 	std::string m_name;
 	std::list<std::shared_ptr<Object>> m_children{};
-	std::list<std::shared_ptr<component::Component>> m_components{};
+	std::list<std::shared_ptr<Component>> m_components{};
 
 public:
 	Object(std::string name);
@@ -47,10 +50,10 @@ public:
 
 template<class T> std::weak_ptr<T> Object::getComponent()
 {
-	if (std::is_base_of<component::Component, T>::value == false) {
+	if (std::is_base_of<Component, T>::value == false) {
 		throw std::runtime_error("getComponent() error: specified type is not a subclass of 'Component'");
 	}
-	for (std::shared_ptr<component::Component>& component : m_components) {
+	for (std::shared_ptr<Component>& component : m_components) {
 		std::weak_ptr<T> derived = std::dynamic_pointer_cast<T>(component);
 		if (derived.expired() == false) {
 			return derived;
@@ -61,7 +64,7 @@ template<class T> std::weak_ptr<T> Object::getComponent()
 
 template <class T> std::weak_ptr<T> Object::createComponent()
 {
-	if (std::is_base_of<component::Component, T>::value == false) {
+	if (std::is_base_of<Component, T>::value == false) {
 		throw std::runtime_error("addComponent() error: specified type is not a subclass of 'Component'");
 	}
 	if (getComponent<T>().expired() == false) {
@@ -73,10 +76,10 @@ template <class T> std::weak_ptr<T> Object::createComponent()
 
 template<class T> void Object::deleteComponent()
 {
-	if (std::is_base_of<component::Component, T>::value == false) {
+	if (std::is_base_of<Component, T>::value == false) {
 		throw std::runtime_error("deleteComponent() error: specified type is not a subclass of 'Component'");
 	}
-	for (std::list<std::shared_ptr<component::Component>>::iterator itr = m_components.begin(); itr != m_components.end(); ++itr) {
+	for (std::list<std::shared_ptr<Component>>::iterator itr = m_components.begin(); itr != m_components.end(); ++itr) {
 		if (std::dynamic_pointer_cast<T>(*itr)) {
 			m_components.erase(itr);
 			return;
@@ -85,4 +88,4 @@ template<class T> void Object::deleteComponent()
 	throw std::runtime_error("deleteComponent() error: attempt to delete component that is not present.");
 }
 
-}
+}}

@@ -1,12 +1,12 @@
-#include "components/transform.hpp"
+#include "engine/ecs/components/transform.hpp"
 
-#include "component.hpp"
+#include "engine/ecs/component.hpp"
 
 #include <iostream>
 
-namespace component {
+namespace components {
 
-Transform::Transform(object::Object* parent) : Component(parent)
+Transform::Transform(ecs::Object* parent) : Component(parent)
 {
 	std::cout << "Transform component " << getID() << " constructed\n";
 }

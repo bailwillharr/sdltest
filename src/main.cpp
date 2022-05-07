@@ -1,13 +1,10 @@
-#include "window.hpp"
-#include "input.hpp"
+#include "engine/window.hpp"
+#include "engine/input.hpp"
 
-#include "scene.hpp"
+#include "engine/ecs/sceneroot.hpp"
 
-#include "object.hpp"
-
-#include "component.hpp"
-#include "components/transform.hpp"
-//#include "components/camera.hpp"
+#include "engine/ecs/component.hpp"
+#include "engine/ecs/components/transform.hpp"
 
 #include <SDL2/SDL.h>
 
@@ -20,51 +17,28 @@ int main(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 
-	window::Window win("sdltest");
+	engine::Window win("sdltest");
 
 	// input class requires a reference to the window class
-	input::Input input(win);
+	engine::Input input(win);
 
 	// scene stuff
-	std::unique_ptr<scene::Scene> mainScene(new scene::Scene("cubes"));
+	engine::ecs::SceneRoot mainScene("My Scene");
 
-	if (auto rootPtr = mainScene->getRoot().lock()) {
-		rootPtr->createChild("cube");
-		rootPtr->printTree();
-	}
+	mainScene.createChild("car").lock()->createChild("engine").lock()->createChild("pistons");
+	mainScene.getChildren().back().lock()->getChildren().back().lock()->createChild("camshaft");
+	mainScene.getChildren().back().lock()->getChildren().back().lock()->createChild("crankshaft");
+	mainScene.getChildren().back().lock()->createChild("wheels");
+	mainScene.getChildren().back().lock()->createChild("doors");
+	mainScene.getChildren().back().lock()->createChild("transmission");
+	mainScene.getChildren().back().lock()->getChildren().back().lock()->createChild("flywheel");
 
-	/*
-	mainScene.getRoot().getCompList().createComponent<component::Camera>(std::make_shared<component::Camera>(mainScene.getRoot().getCompList()));
-
-	auto comp1 = mainScene.getRoot().getCompList().getComponent<component::Camera>();
-	if (comp1 != nullptr) {
-		std::cout << comp1.getID() << "\n";
-		std::cout << comp1.getTypeName() << "\n";
-	}
-	auto comp2 = mainScene.getRoot().getCompList().getComponent<component::Transform>();
-	if (comp2 != nullptr) {
-		std::cout << comp2.getID() << "\n";
-		std::cout << comp2.getTypeName() << "\n";
-	}
-
-	mainScene.getRoot().createChild("car").createChild("engine").createChild("pistons");
-	mainScene.getRoot().getChildren().back().getChildren().back().createChild("camshaft");
-	mainScene.getRoot().getChildren().back().getChildren().back().createChild("crankshaft");
-	mainScene.getRoot().getChildren().back().createChild("wheels");
-	mainScene.getRoot().getChildren().back().createChild("doors");
-	mainScene.getRoot().getChildren().back().createChild("transmission");
-	mainScene.getRoot().getChildren().back().getChildren().back().createChild("flywheel");
-
-	std::cout << "TREE:\n";
-	mainScene.getRoot().printTree();
-
-	*/
-
-
+	mainScene.printTree();
 
 	// menu, settings controls
 	input.addInputButton("fullscreen", input::KEYBOARD, SDL_SCANCODE_F11);
 	input.addInputButton("quit", input::KEYBOARD, SDL_SCANCODE_ESCAPE);
+	input.addInputButton("quit", input::KEYBOARD, SDL_SCANCODE_Q);
 	// game buttons
 	input.addInputButton("fire", input::MOUSE, window::M_LEFT);
 	input.addInputButton("aim", input::MOUSE, window::M_RIGHT);
@@ -97,9 +71,7 @@ int main(int argc, char *argv[])
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
 		if (input.getButtonPress("jump")) {
-			if (auto rootPtr = mainScene->getRoot().lock()) {
-				rootPtr->deleteComponent<component::Transform>();
-			}
+			mainScene.deleteComponent<components::Transform>();
 		}
 
 		// draw

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "component.hpp"
+#include "engine/ecs/component.hpp"
 
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
@@ -10,15 +10,17 @@
 #include <string>
 #include <memory>
 
-namespace component {
+namespace engine {
+namespace ecs {
+namespace components {
 
-class Transform : public Component {
+class Transform : public ecs::Component {
 
 private:
 	glm::mat4 m_modelMatrix{1.0f};
 
 public:
-	Transform(object::Object*);
+	Transform(ecs::Object*);
 	~Transform() override;
 
 	std::string getTypeName() override;
@@ -29,4 +31,4 @@ public:
 
 };
 
-}
+}}}

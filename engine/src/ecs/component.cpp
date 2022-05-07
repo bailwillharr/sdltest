@@ -1,14 +1,14 @@
-#include "component.hpp"
+#include "engine/ecs/component.hpp"
 
 #include <iostream>
 
-namespace component {
+namespace engine {
+namespace ecs {
 
 int Component::s_component_count = 0;
 
-Component::Component(object::Object* parent) : m_parent(parent)
+Component::Component(Object* parent) : m_parent(parent)
 {
-	m_id = s_component_count;
 	s_component_count++;
 	printf("Component %d has been constructed\n", m_id);
 }
@@ -27,4 +27,4 @@ void Component::onUpdate() { }
 
 void Component::onRender() { }
 
-};
+}}

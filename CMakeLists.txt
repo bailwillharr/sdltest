@@ -4,14 +4,6 @@ project(SDLTest LANGUAGES CXX VERSION 1.0)
 
 add_executable(sdltest 
 	src/main.cpp
-	src/window.cpp
-	src/input.cpp
-	src/scene.cpp
-	src/object.cpp
-	src/component.cpp
-	src/components/transform.cpp
-	#	src/components/camera.cpp
-	#	src/components/renderer.cpp
 )
 
 set_property(TARGET sdltest PROPERTY CXX_STANDARD 14)
@@ -21,21 +13,13 @@ target_compile_options(sdltest PRIVATE -Wall -Wextra -pedantic)
 
 target_include_directories(sdltest PRIVATE include)
 
-# libraries
+# project libraries
 
-# MinGW library if using it
-if (MINGW)
-	target_link_libraries(sdltest PRIVATE mingw32)
-endif()
+add_subdirectory(engine)
+target_link_libraries(sdltest PRIVATE engine)
+target_include_directories(sdltest PRIVATE engine/include)
 
-# SDL2
-find_package(SDL2 REQUIRED)
-target_link_libraries(sdltest PRIVATE ${SDL2_LIBRARIES})
-
-# GLAD
-add_subdirectory(vendor/glad)
-target_link_libraries(sdltest PRIVATE glad)
-target_include_directories(sdltest PRIVATE vendor/glad/include)
+# external libraries
 
 # If using MinGW and not in Debug mode, use '-mwindows'
 if (MINGW)

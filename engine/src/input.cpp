@@ -1,14 +1,14 @@
-#include "input.hpp"
+#include "engine/input.hpp"
 
-#include "window.hpp"
+#include "engine/window.hpp"
 
 #include <string>
 #include <stdexcept>
 #include <iostream>
 
-namespace input {
+namespace engine {
 
-Input::Input(const window::Window &win) : m_win(win)
+Input::Input(const Window &win) : m_win(win)
 {
 	std::cout << "Input handler for '" << m_win.getTitle() << "' has been constructed\n";
 

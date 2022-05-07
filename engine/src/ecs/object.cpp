@@ -1,6 +1,6 @@
-#include "object.hpp"
+#include "engine/ecs/object.hpp"
 
-#include "components/transform.hpp"
+#include "engine/ecs/components/transform.hpp"
 
 #include <vector>
 #include <memory>
@@ -8,18 +8,22 @@
 #include <stdexcept>
 #include <iostream>
 
-namespace object {
+namespace engine {
+namespace ecs {
+
+int Object::s_object_count = 0;
 
 Object::Object(std::string name) : m_name(name)
 {
+	s_object_count++;
 	// all objects come with at least a transform component
-	createComponent<component::Transform>();
-	std::cout << "Object '" << name << "' has been constructed\n";
+	createComponent<components::Transform>();
+	std::cout << "Object " << m_id << " '" << m_name << "' has been constructed\n";
 }
 
 Object::~Object()
 {
-	std::cout << "Object class destructor: '" << m_name << "'\n";
+	std::cout << "Object " << m_id << " '" << m_name << "' has been destroyed\n";
 }
 
 std::string Object::getName()
@@ -67,10 +71,15 @@ void Object::deleteChild(std::string name)
 	throw std::runtime_error("Unable to delete child '" + name + "' as it does not exist");
 }
 
+// TODO: improve this
 void Object::printTree(int level)
 {
 	for (int i = 0; i < level; i++) {
-		std::cout << "\t";
+		if (i+1 == level) {
+			std::cout << "└───────";
+		} else {
+			std::cout << "        ";
+		}
 	}
 	std::cout << m_name << "\n";
 	for (std::weak_ptr<Object> childWP : this->getChildren()) {
@@ -82,4 +91,4 @@ void Object::printTree(int level)
 	}
 }
 
-};
+}}

@@ -4,23 +4,22 @@
 #include <memory>
 #include <list>
 
-namespace object {
-class Object;
-}
+namespace engine {
+namespace ecs {
 
-namespace component {
+class Object;
 
 class Component {
 
 private:
 	static int s_component_count;
 
-	int m_id;
+	int m_id = s_component_count;
 
-	object::Object* m_parent;
+	Object* m_parent;
 
 public:
-	Component(object::Object* parent);
+	Component(Object* parent);
 	virtual ~Component() = 0;
 	
 	int getID();
@@ -32,4 +31,4 @@ public:
 
 };
 
-}
+}}

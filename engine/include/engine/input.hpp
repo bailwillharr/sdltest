@@ -1,15 +1,15 @@
 #pragma once
 
-#include "window.hpp"
+#include "engine/window.hpp"
 
-#include "util/noncopyable.hpp"
+#include "engine/util/noncopyable.hpp"
 
 #include <array>
 #include <vector>
 #include <string>
 #include <memory>
 
-namespace input {
+namespace engine {
 
 enum InputDevice {
 	MOUSE,
@@ -45,7 +45,7 @@ private:
 		int low;
 	};
 
-	const window::Window& m_win;
+	const Window& m_win;
 
 	std::vector<struct ButtonEntry> m_buttonEntries;
 	std::vector<struct AxisEntry> m_axisEntries;
@@ -64,7 +64,7 @@ private:
 public:
 
 	// requires a window reference to get input from
-	Input(const window::Window &win);
+	Input(const Window &win);
 	~Input();
 
 	void addInputButton(std::string name, enum InputDevice device, int button);

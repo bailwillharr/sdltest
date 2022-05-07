@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util/noncopyable.hpp"
+#include "engine/util/noncopyable.hpp"
 
 #include <SDL2/SDL.h>
 
@@ -9,7 +9,7 @@
 #include <array>
 #include <string>
 
-namespace window {
+namespace engine {
 
 extern const uint64_t BILLION;
 
