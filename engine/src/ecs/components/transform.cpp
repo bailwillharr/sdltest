@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+namespace engine {
+namespace ecs {
 namespace components {
 
 Transform::Transform(ecs::Object* parent) : Component(parent)
@@ -21,4 +23,4 @@ std::string Transform::getTypeName()
 	return "transform";
 }
 
-}
+}}}

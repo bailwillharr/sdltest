@@ -36,20 +36,20 @@ int main(int argc, char *argv[])
 	mainScene.printTree();
 
 	// menu, settings controls
-	input.addInputButton("fullscreen", input::KEYBOARD, SDL_SCANCODE_F11);
-	input.addInputButton("quit", input::KEYBOARD, SDL_SCANCODE_ESCAPE);
-	input.addInputButton("quit", input::KEYBOARD, SDL_SCANCODE_Q);
+	input.addInputButton("fullscreen", engine::KEYBOARD, SDL_SCANCODE_F11);
+	input.addInputButton("quit", engine::KEYBOARD, SDL_SCANCODE_ESCAPE);
+	input.addInputButton("quit", engine::KEYBOARD, SDL_SCANCODE_Q);
 	// game buttons
-	input.addInputButton("fire", input::MOUSE, window::M_LEFT);
-	input.addInputButton("aim", input::MOUSE, window::M_RIGHT);
+	input.addInputButton("fire", engine::MOUSE, engine::M_LEFT);
+	input.addInputButton("aim", engine::MOUSE, engine::M_RIGHT);
 	// game movement
-	input.addInputButtonAsAxis("movex", input::KEYBOARD, SDL_SCANCODE_D, SDL_SCANCODE_A);
-	input.addInputButtonAsAxis("movey", input::KEYBOARD, SDL_SCANCODE_W, SDL_SCANCODE_S);
+	input.addInputButtonAsAxis("movex", engine::KEYBOARD, SDL_SCANCODE_D, SDL_SCANCODE_A);
+	input.addInputButtonAsAxis("movey", engine::KEYBOARD, SDL_SCANCODE_W, SDL_SCANCODE_S);
 	// looking around
-	input.addInputAxis("lookx", input::MOUSE, input::MOUSE_AXIS_X);
-	input.addInputAxis("looky", input::MOUSE, input::MOUSE_AXIS_Y);
+	input.addInputAxis("lookx", engine::MOUSE, engine::MOUSE_AXIS_X);
+	input.addInputAxis("looky", engine::MOUSE, engine::MOUSE_AXIS_Y);
 
-	input.addInputButton("jump", input::KEYBOARD, SDL_SCANCODE_SPACE);
+	input.addInputButton("jump", engine::KEYBOARD, SDL_SCANCODE_SPACE);
 
 	win.setVSync(true);
 	win.setRelativeMouseMode(true);
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 	// single-threaded game loop
 	while (win.isRunning()) {
 
-		if (win.getNanos() >= lastSecond + window::BILLION) {
+		if (win.getNanos() >= lastSecond + engine::BILLION) {
 			std::cout << "FPS: " << win.getFPS() << "\n";
 			lastSecond = win.getNanos();
 		}
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
 		if (input.getButtonPress("jump")) {
-			mainScene.deleteComponent<components::Transform>();
+			mainScene.createComponent<engine::ecs::components::Transform>();
 		}
 
 		// draw

@@ -48,7 +48,7 @@ bool Input::getDeviceButton(enum InputDevice device, int button)
 {
 	switch (device) {
 		case MOUSE:
-			return m_win.getButton(static_cast<enum window::MouseButton>(button));
+			return m_win.getButton(static_cast<enum MouseButton>(button));
 		case KEYBOARD:
 			return m_win.getKey(button);
 		case CONTROLLER:
@@ -62,7 +62,7 @@ bool Input::getDeviceButtonDown(enum InputDevice device, int button)
 {
 	switch (device) {
 		case MOUSE:
-			return m_win.getButtonPress(static_cast<enum window::MouseButton>(button));
+			return m_win.getButtonPress(static_cast<enum MouseButton>(button));
 		case KEYBOARD:
 			return m_win.getKeyPress(button);
 		case CONTROLLER:
@@ -76,7 +76,7 @@ bool Input::getDeviceButtonUp(enum InputDevice device, int button)
 {
 	switch (device) {
 		case MOUSE:
-			return m_win.getButtonRelease(static_cast<enum window::MouseButton>(button));
+			return m_win.getButtonRelease(static_cast<enum MouseButton>(button));
 		case KEYBOARD:
 			return m_win.getKeyRelease(button);
 		case CONTROLLER:
