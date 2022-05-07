@@ -22,22 +22,22 @@ Input::~Input() { std::cout << "Input handler destroyed\n"; }
 float Input::getDeviceAxis(enum InputDevice device, int axis)
 {
 	switch (device) {
-		case MOUSE:
-			switch (axis) {
-				case MOUSE_AXIS_X:
+		case InputDevice::MOUSE:
+			switch (static_cast<MouseAxis>(axis)) {
+				case MouseAxis::X:
 					return m_win.getMouseXRel();
-				case MOUSE_AXIS_Y:
+				case MouseAxis::Y:
 					return m_win.getMouseYRel();
-				case MOUSE_AXIS_X_SCR:
+				case MouseAxis::X_SCR:
 					return m_win.getMouseScrollX();
-				case MOUSE_AXIS_Y_SCR:
+				case MouseAxis::Y_SCR:
 					return m_win.getMouseScrollY();
 				default: break;
 			}
 			break;
-		case KEYBOARD:
+		case InputDevice::KEYBOARD:
 			break;
-		case CONTROLLER: // fall-through (as of right now)
+		case InputDevice::CONTROLLER:
 			break;
 		default: break;
 	}
@@ -47,11 +47,11 @@ float Input::getDeviceAxis(enum InputDevice device, int axis)
 bool Input::getDeviceButton(enum InputDevice device, int button)
 {
 	switch (device) {
-		case MOUSE:
+		case InputDevice::MOUSE:
 			return m_win.getButton(static_cast<enum MouseButton>(button));
-		case KEYBOARD:
+		case InputDevice::KEYBOARD:
 			return m_win.getKey(button);
-		case CONTROLLER:
+		case InputDevice::CONTROLLER:
 			break;
 		default: break;
 	}
@@ -61,11 +61,11 @@ bool Input::getDeviceButton(enum InputDevice device, int button)
 bool Input::getDeviceButtonDown(enum InputDevice device, int button)
 {
 	switch (device) {
-		case MOUSE:
+		case InputDevice::MOUSE:
 			return m_win.getButtonPress(static_cast<enum MouseButton>(button));
-		case KEYBOARD:
+		case InputDevice::KEYBOARD:
 			return m_win.getKeyPress(button);
-		case CONTROLLER:
+		case InputDevice::CONTROLLER:
 			break;
 		default: break;
 	}
@@ -75,11 +75,11 @@ bool Input::getDeviceButtonDown(enum InputDevice device, int button)
 bool Input::getDeviceButtonUp(enum InputDevice device, int button)
 {
 	switch (device) {
-		case MOUSE:
+		case InputDevice::MOUSE:
 			return m_win.getButtonRelease(static_cast<enum MouseButton>(button));
-		case KEYBOARD:
+		case InputDevice::KEYBOARD:
 			return m_win.getKeyRelease(button);
-		case CONTROLLER:
+		case InputDevice::CONTROLLER:
 			break;
 		default: break;
 	}
@@ -129,19 +129,19 @@ void Input::delInputAxis(int index)
 
 void Input::setDeviceActive(enum InputDevice device, bool active)
 {
-	m_enabledDevices[device] = active;
+	m_enabledDevices[static_cast<int>(device)] = active;
 }
 
 bool Input::getDeviceActive(enum InputDevice device)
 {
-	return m_enabledDevices[device];
+	return m_enabledDevices[static_cast<int>(device)];
 }
 
 float Input::getAxis(std::string axisName)
 {
 	for (struct AxisEntry e : m_axisEntries) {
 		if (e.name == axisName) {
-			if (m_enabledDevices[e.device]) {
+			if (m_enabledDevices[static_cast<int>(e.device)]) {
 				if (e.isButtonAxis) {
 					return getButtonAxis(e.device, e.high, e.low);
 				} else {
@@ -160,7 +160,7 @@ bool Input::getButton(std::string buttonName)
 
 	for (struct ButtonEntry e : m_buttonEntries) {
 		if (e.name == buttonName) {
-			if (m_enabledDevices[e.device]) {
+			if (m_enabledDevices[static_cast<int>(e.device)]) {
 				if (getDeviceButton(e.device, e.button) == true) {
 					isDown = true;
 					break;
@@ -177,7 +177,7 @@ bool Input::getButtonPress(std::string buttonName)
 
 	for (struct ButtonEntry e : m_buttonEntries) {
 		if (e.name == buttonName) {
-			if (m_enabledDevices[e.device]) {
+			if (m_enabledDevices[static_cast<int>(e.device)]) {
 				if (getDeviceButtonDown(e.device, e.button) == true) {
 					isPressed = true;
 					break;
@@ -194,7 +194,7 @@ bool Input::getButtonRelease(std::string buttonName)
 
 	for (struct ButtonEntry e : m_buttonEntries) {
 		if (e.name == buttonName) {
-			if (m_enabledDevices[e.device]) {
+			if (m_enabledDevices[static_cast<int>(e.device)]) {
 				if (getDeviceButtonUp(e.device, e.button) == true) {
 					isReleased = true;
 					break;

@@ -13,7 +13,7 @@ namespace engine {
 
 extern const uint64_t BILLION;
 
-enum MouseButton {
+enum class MouseButton : int {
 	M_LEFT,
 	M_MIDDLE,
 	M_RIGHT,
@@ -154,11 +154,11 @@ public:
 	// mouse events
 
 	// returns true if button is down
-	bool getButton(enum MouseButton button) const;
+	bool getButton(MouseButton button) const;
 	// returns true if button was just pressed
-	bool getButtonPress(enum MouseButton button) const;
+	bool getButtonPress(MouseButton button) const;
 	// returns true if button was just released
-	bool getButtonRelease(enum MouseButton button) const;
+	bool getButtonRelease(MouseButton button) const;
 
 	// retrieves x coordinate of the mouse
 	int getMouseX() const;

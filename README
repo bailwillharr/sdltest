@@ -1,0 +1,6 @@
+a random game engine thing
+
+libraries:
+- SDL2
+- GLM
+- 

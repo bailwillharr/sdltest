@@ -2,6 +2,8 @@
 
 #include "engine/ecs/component.hpp"
 
+#include "engine/ecs/components/transform.hpp"
+
 #include <list>
 #include <vector>
 #include <string>
@@ -78,6 +80,9 @@ template<class T> void Object::deleteComponent()
 {
 	if (std::is_base_of<Component, T>::value == false) {
 		throw std::runtime_error("deleteComponent() error: specified type is not a subclass of 'Component'");
+	}
+	if (std::is_same<T, components::Transform>::value) {
+		throw std::runtime_error("deleteComponent() error: attempt to remove the 'Transform' component");
 	}
 	for (std::list<std::shared_ptr<Component>>::iterator itr = m_components.begin(); itr != m_components.end(); ++itr) {
 		if (std::dynamic_pointer_cast<T>(*itr)) {

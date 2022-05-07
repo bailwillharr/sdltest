@@ -11,18 +11,18 @@
 
 namespace engine {
 
-enum InputDevice {
+enum class InputDevice : int {
 	MOUSE,
 	KEYBOARD,
 	CONTROLLER,
-	INPUTDEVICE_SIZE
+	SIZE
 };
 
-enum MouseAxis {
-	MOUSE_AXIS_X,
-	MOUSE_AXIS_Y,
-	MOUSE_AXIS_X_SCR,
-	MOUSE_AXIS_Y_SCR
+enum class MouseAxis : int {
+	X,
+	Y,
+	X_SCR,
+	Y_SCR
 };
 
 // This class should be used to get platform/input-device independent input
@@ -50,7 +50,7 @@ private:
 	std::vector<struct ButtonEntry> m_buttonEntries;
 	std::vector<struct AxisEntry> m_axisEntries;
 
-	std::array<bool, INPUTDEVICE_SIZE> m_enabledDevices;
+	std::array<bool, static_cast<int>(InputDevice::SIZE)> m_enabledDevices;
 
 	// private methods
 

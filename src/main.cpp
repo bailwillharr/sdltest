@@ -36,20 +36,20 @@ int main(int argc, char *argv[])
 	mainScene.printTree();
 
 	// menu, settings controls
-	input.addInputButton("fullscreen", engine::KEYBOARD, SDL_SCANCODE_F11);
-	input.addInputButton("quit", engine::KEYBOARD, SDL_SCANCODE_ESCAPE);
-	input.addInputButton("quit", engine::KEYBOARD, SDL_SCANCODE_Q);
+	input.addInputButton("fullscreen", engine::InputDevice::KEYBOARD, SDL_SCANCODE_F11);
+	input.addInputButton("quit", engine::InputDevice::KEYBOARD, SDL_SCANCODE_ESCAPE);
+	input.addInputButton("quit", engine::InputDevice::KEYBOARD, SDL_SCANCODE_Q);
 	// game buttons
-	input.addInputButton("fire", engine::MOUSE, engine::M_LEFT);
-	input.addInputButton("aim", engine::MOUSE, engine::M_RIGHT);
+	input.addInputButton("fire", engine::InputDevice::MOUSE, static_cast<int>(engine::MouseButton::M_LEFT));
+	input.addInputButton("aim", engine::InputDevice::MOUSE, static_cast<int>(engine::MouseButton::M_RIGHT));
 	// game movement
-	input.addInputButtonAsAxis("movex", engine::KEYBOARD, SDL_SCANCODE_D, SDL_SCANCODE_A);
-	input.addInputButtonAsAxis("movey", engine::KEYBOARD, SDL_SCANCODE_W, SDL_SCANCODE_S);
+	input.addInputButtonAsAxis("movex", engine::InputDevice::KEYBOARD, SDL_SCANCODE_D, SDL_SCANCODE_A);
+	input.addInputButtonAsAxis("movey", engine::InputDevice::KEYBOARD, SDL_SCANCODE_W, SDL_SCANCODE_S);
 	// looking around
-	input.addInputAxis("lookx", engine::MOUSE, engine::MOUSE_AXIS_X);
-	input.addInputAxis("looky", engine::MOUSE, engine::MOUSE_AXIS_Y);
+	input.addInputAxis("lookx", engine::InputDevice::MOUSE, static_cast<int>(engine::MouseAxis::X));
+	input.addInputAxis("looky", engine::InputDevice::MOUSE, static_cast<int>(engine::MouseAxis::Y));
 
-	input.addInputButton("jump", engine::KEYBOARD, SDL_SCANCODE_SPACE);
+	input.addInputButton("jump", engine::InputDevice::KEYBOARD, SDL_SCANCODE_SPACE);
 
 	win.setVSync(true);
 	win.setRelativeMouseMode(true);
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
 		if (input.getButtonPress("jump")) {
-			mainScene.createComponent<engine::ecs::components::Transform>();
+			std::cout << mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()->getID() << "\n";
 		}
 
 		// draw

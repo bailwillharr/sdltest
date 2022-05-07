@@ -164,13 +164,13 @@ void Window::onMouseButtonEvent(SDL_MouseButtonEvent &e)
 			break;
 	}
 
-	bool buttonWasDown = m_mouse.buttons[button];
+	bool buttonWasDown = m_mouse.buttons[static_cast<int>(button)];
 	bool buttonIsDown = (e.state == SDL_PRESSED);
-	m_mouse.buttons[button] = buttonIsDown;
+	m_mouse.buttons[static_cast<int>(button)] = buttonIsDown;
 	if (buttonIsDown != buttonWasDown) { // (if button was pressed or released)
 		// only sets delta if it hasn't already been set this frame (to detect very fast presses)
-		if (m_mouse.deltas[button] == ButtonDelta::SAME) {
-			m_mouse.deltas[button] = buttonIsDown ? ButtonDelta::PRESSED : ButtonDelta::RELEASED;
+		if (m_mouse.deltas[static_cast<int>(button)] == ButtonDelta::SAME) {
+			m_mouse.deltas[static_cast<int>(button)] = buttonIsDown ? ButtonDelta::PRESSED : ButtonDelta::RELEASED;
 		}
 	}
 }
@@ -355,19 +355,19 @@ bool Window::getKeyRelease(int key) const
 
 // TODO mouse input
 
-bool Window::getButton(enum MouseButton button) const
+bool Window::getButton(MouseButton button) const
 {
-	return m_mouse.buttons[button];
+	return m_mouse.buttons[static_cast<int>(button)];
 }
 
-bool Window::getButtonPress(enum MouseButton button) const
+bool Window::getButtonPress(MouseButton button) const
 {
-	return m_mouse.deltas[button] == ButtonDelta::PRESSED;
+	return m_mouse.deltas[static_cast<int>(button)] == ButtonDelta::PRESSED;
 }
 
-bool Window::getButtonRelease(enum MouseButton button) const
+bool Window::getButtonRelease(MouseButton button) const
 {
-	return m_mouse.deltas[button] == ButtonDelta::RELEASED;
+	return m_mouse.deltas[static_cast<int>(button)] == ButtonDelta::RELEASED;
 }
 
 int Window::getMouseX() const
