@@ -15,15 +15,15 @@ private:
 	static int s_component_count;
 
 	int m_id = s_component_count;
+	std::string m_typeName;
 
 	Object* m_parent;
 
 public:
-	Component(Object* parent);
+	Component(Object* parent, std::string typeName);
 	virtual ~Component() = 0;
 	
 	int getID();
-	virtual std::string getTypeName() = 0;
 
 	// events
 	virtual void onUpdate();

@@ -23,8 +23,6 @@ public:
 	Transform(ecs::Object*);
 	~Transform() override;
 
-	std::string getTypeName() override;
-
 	glm::vec3 getPosition();
 	glm::vec3 getScale();
 	glm::quat getRotation();

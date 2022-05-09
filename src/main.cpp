@@ -10,6 +10,12 @@
 #include <memory>
 #include <thread>
 
+class MyComponent : public engine::ecs::Component {
+public:
+	MyComponent(engine::ecs::Object* parent) : Component(parent, "MyComponent") {}
+	~MyComponent() override {}
+};
+
 int main(int argc, char *argv[])
 {
 	(void)argc;
@@ -32,6 +38,8 @@ int main(int argc, char *argv[])
 	mainScene.getChildren().back().lock()->getChildren().back().lock()->createChild("flywheel");
 
 	mainScene.printTree();
+
+	mainScene.createComponent<MyComponent>();
 
 	// menu, settings controls
 	input.addInputButton("fullscreen", engine::inputs::Key::F11);

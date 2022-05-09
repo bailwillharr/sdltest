@@ -7,15 +7,15 @@ namespace ecs {
 
 int Component::s_component_count = 0;
 
-Component::Component(Object* parent) : m_parent(parent)
+Component::Component(Object* parent, std::string typeName) : m_typeName(typeName), m_parent(parent)
 {
 	s_component_count++;
-	printf("Component %d has been constructed\n", m_id);
+	std::cout << "Component " << m_id << " of type " << m_typeName << " has been constructed\n";
 }
 
 Component::~Component()
 {
-	printf("Component %d has been destructed\n", m_id);
+	std::cout << "Component " << m_id << " of type " << m_typeName << " has been destructed\n";
 }
 
 int Component::getID()

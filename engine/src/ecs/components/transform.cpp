@@ -8,19 +8,12 @@ namespace engine {
 namespace ecs {
 namespace components {
 
-Transform::Transform(ecs::Object* parent) : Component(parent)
+Transform::Transform(ecs::Object* parent) : Component(parent, "transform")
 {
-	std::cerr << "Transform component " << getID() << " constructed\n";
 }
 
 Transform::~Transform()
 {
-	std::cerr << "Transform component " << getID() << " destroyed\n";
-}
-
-std::string Transform::getTypeName()
-{
-	return "transform";
 }
 
 }}}
