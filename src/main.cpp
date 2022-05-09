@@ -13,7 +13,9 @@
 class MyComponent : public engine::ecs::Component {
 public:
 	MyComponent(engine::ecs::Object* parent) : Component(parent, "MyComponent") {}
-	~MyComponent() override {}
+	void onUpdate() override { std::cout << "UPDATING!!!\n"; }
+	void onRender() override { std::cout << "RENDERING!!!\n"; }
+	void doThings() {}
 };
 
 int main(int argc, char *argv[])
@@ -81,6 +83,9 @@ int main(int argc, char *argv[])
 		}
 
 		// draw
+		std::shared_ptr<engine::ecs::Component> myComp;
+		myComp = mainScene.getComponent<MyComponent>().lock();
+		myComp->onRender();
 
 		// swap
 		win.swapBuffers();
