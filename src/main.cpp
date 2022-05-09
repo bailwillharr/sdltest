@@ -13,8 +13,12 @@
 class MyComponent : public engine::ecs::Component {
 public:
 	MyComponent(engine::ecs::Object* parent) : Component(parent, "MyComponent") {}
-	void onUpdate() override { std::cout << "UPDATING!!!\n"; }
-	void onRender() override { std::cout << "RENDERING!!!\n"; }
+	void onUpdate(glm::mat4 transform) override {
+		std::cout << "UPDATING!!! transform[0][0]: " << transform[0][0] << "\n";
+	}
+	void onRender(glm::mat4 transform) override {
+		std::cout << "RENDERING!!! transform[0][0]: " << transform[0][0] << "\n";
+	}
 	void doThings() {}
 };
 
@@ -31,17 +35,18 @@ int main(int argc, char *argv[])
 	// scene stuff
 	engine::ecs::SceneRoot mainScene("My Scene");
 
-	mainScene.createChild("car").lock()->createChild("engine").lock()->createChild("pistons");
-	mainScene.getChildren().back().lock()->getChildren().back().lock()->createChild("camshaft");
-	mainScene.getChildren().back().lock()->getChildren().back().lock()->createChild("crankshaft");
-	mainScene.getChildren().back().lock()->createChild("wheels");
-	mainScene.getChildren().back().lock()->createChild("doors");
-	mainScene.getChildren().back().lock()->createChild("transmission");
-	mainScene.getChildren().back().lock()->getChildren().back().lock()->createChild("flywheel");
+	mainScene.createChild("car").lock()->createComponent<MyComponent>();
+	mainScene.getChild("car").lock()
+		->getComponent<engine::ecs::components::Transform>().lock()
+		->m_transformMatrix = glm::mat4{4.0f};
+
+	mainScene.getChild("car").lock()
+		->createChild("engine").lock()->createComponent<MyComponent>();
+	mainScene.getChild("car").lock()->getChild("engine").lock()
+		->getComponent<engine::ecs::components::Transform>().lock()
+		->m_transformMatrix = glm::mat4{4.0f};
 
 	mainScene.printTree();
-
-	mainScene.createComponent<MyComponent>();
 
 	// menu, settings controls
 	input.addInputButton("fullscreen", engine::inputs::Key::F11);
@@ -59,7 +64,7 @@ int main(int argc, char *argv[])
 
 	input.addInputButton("jump", engine::inputs::Key::SPACE);
 
-	win.setVSync(false);
+	win.setVSync(true);
 	win.setRelativeMouseMode(false);
 
 	uint64_t lastTick = win.getNanos();
@@ -73,6 +78,7 @@ int main(int argc, char *argv[])
 		}
 
 		// logic
+		mainScene.updateScene();
 
 		if (input.getButtonPress("fullscreen"))
 			win.toggleFullscreen();
@@ -83,9 +89,7 @@ int main(int argc, char *argv[])
 		}
 
 		// draw
-		std::shared_ptr<engine::ecs::Component> myComp;
-		myComp = mainScene.getComponent<MyComponent>().lock();
-		myComp->onRender();
+		mainScene.renderScene();
 
 		// swap
 		win.swapBuffers();

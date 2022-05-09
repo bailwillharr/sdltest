@@ -17,11 +17,12 @@ namespace components {
 class Transform : public ecs::Component {
 
 private:
-	glm::mat4 m_modelMatrix{1.0f};
 
 public:
 	Transform(ecs::Object*);
 	~Transform() override;
+	
+	glm::mat4 m_transformMatrix{1.0f};
 
 	glm::vec3 getPosition();
 	glm::vec3 getScale();

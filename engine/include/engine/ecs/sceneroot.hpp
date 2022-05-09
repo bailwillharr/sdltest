@@ -26,6 +26,9 @@ public:
 	SceneRoot(std::string name);
 	~SceneRoot();
 
+	void updateScene();
+	void renderScene();
+
 };
 
 }}

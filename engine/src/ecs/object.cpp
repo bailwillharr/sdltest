@@ -91,4 +91,67 @@ void Object::printTree(int level)
 	}
 }
 
+void Object::updateComponents(glm::mat4 transform)
+{
+	for (std::weak_ptr<Component> weakComp : m_components) {
+		if (auto comp = weakComp.lock()) {
+			comp->onUpdate(transform);
+		} else {
+			throw std::runtime_error("Unable to get lock on component under " + m_name);
+		}
+	}
+}
+
+void Object::renderComponents(glm::mat4 transform)
+{
+	for (std::weak_ptr<Component> weakComp : m_components) {
+		if (auto comp = weakComp.lock()) {
+			comp->onRender(transform);
+		} else {
+			throw std::runtime_error("Unable to get lock on component under " + m_name);
+		}
+	}
+}
+
+void Object::updateObjectAndChildren(glm::mat4 parentTransform)
+{
+	glm::mat4 newTransform;
+	if (auto transform = getComponent<components::Transform>().lock()) {
+		newTransform = parentTransform * transform->m_transformMatrix;
+	} else {
+		throw std::runtime_error("Unable to get lock on Transform component under " + m_name);
+	}
+
+	updateComponents(newTransform);
+
+	for (std::weak_ptr<Object> weakObj : m_children) {
+		if (auto obj = weakObj.lock()) {
+			obj->updateObjectAndChildren(newTransform);
+		} else {
+			throw std::runtime_error("Unable to get lock on object under " + m_name);
+		}	
+	}
+}
+
+void Object::renderObjectAndChildren(glm::mat4 parentTransform)
+{
+	glm::mat4 newTransform;
+	if (auto transform = getComponent<components::Transform>().lock()) {
+		newTransform = parentTransform * transform->m_transformMatrix;
+	} else {
+		throw std::runtime_error("Unable to get lock on Transform component under " + m_name);
+	}
+
+	renderComponents(newTransform);
+
+	for (std::weak_ptr<Object> weakObj : m_children) {
+		if (auto obj = weakObj.lock()) {
+			obj->renderObjectAndChildren(newTransform);
+		} else {
+			throw std::runtime_error("Unable to get lock on object under " + m_name);
+		}	
+	}
+
+}
+
 }}

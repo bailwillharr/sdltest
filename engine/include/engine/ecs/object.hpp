@@ -46,6 +46,12 @@ public:
 
 	template<class T> void deleteComponent();
 
+	void updateComponents(glm::mat4 transform);
+	void renderComponents(glm::mat4 transform);
+
+	void updateObjectAndChildren(glm::mat4 transform);
+	void renderObjectAndChildren(glm::mat4 transform);
+
 };
 
 // implementation of template functions

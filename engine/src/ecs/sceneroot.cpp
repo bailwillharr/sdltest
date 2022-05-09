@@ -19,4 +19,14 @@ SceneRoot::~SceneRoot()
 
 // public methods
 
+void SceneRoot::updateScene()
+{
+	updateObjectAndChildren(glm::mat4{1.0f});
+}
+
+void SceneRoot::renderScene()
+{
+	renderObjectAndChildren(glm::mat4{1.0f});
+}
+
 }}

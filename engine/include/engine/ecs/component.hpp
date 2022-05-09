@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/mat4x4.hpp>
+
 #include <string>
 #include <memory>
 #include <list>
@@ -26,8 +28,8 @@ public:
 	int getID();
 
 	// events
-	virtual void onUpdate();
-	virtual void onRender();
+	virtual void onUpdate(glm::mat4 transform);
+	virtual void onRender(glm::mat4 transform);
 
 };
 

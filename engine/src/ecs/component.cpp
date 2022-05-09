@@ -23,8 +23,8 @@ int Component::getID()
 	return m_id;
 }
 
-void Component::onUpdate() { }
+void Component::onUpdate(glm::mat4 transform) { }
 
-void Component::onRender() { }
+void Component::onRender(glm::mat4 transform) { }
 
 }}
