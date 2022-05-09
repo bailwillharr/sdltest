@@ -268,6 +268,11 @@ bool Window::getVSync() const
 	return SDL_GL_GetSwapInterval() == 0 ? false : true;
 }
 
+void Window::setTitle(std::string title)
+{
+	SDL_SetWindowTitle(m_handle, title.c_str());
+}
+
 bool Window::getWindowResized() const
 {
 	return m_justResized;

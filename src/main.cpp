@@ -51,17 +51,17 @@ int main(int argc, char *argv[])
 
 	input.addInputButton("jump", engine::inputs::Key::SPACE);
 
-	win.setVSync(true);
+	win.setVSync(false);
 	win.setRelativeMouseMode(true);
 
-	uint64_t lastSecond = win.getNanos();
+	uint64_t lastTick = win.getNanos();
 
 	// single-threaded game loop
 	while (win.isRunning()) {
 
-		if (win.getNanos() >= lastSecond + engine::BILLION) {
-			lastSecond = win.getNanos();
-			std::cerr << "FPS: " << win.getFPS() << " frame time: " << win.getLastFrameTime() << "\n";
+		if (win.getNanos() >= lastTick + (engine::BILLION / 20)) {
+			lastTick = win.getNanos();
+			win.setTitle(std::to_string(win.getFPS()) + " fps");
 		}
 
 		// logic

@@ -108,6 +108,8 @@ public:
 	// Returns true if VSync is enabled.
 	bool getVSync() const;
 
+	void setTitle(std::string title);
+
 	// Hides the window (it will appear closed to the user).
 	void hide();
 	// Shows the window again.
