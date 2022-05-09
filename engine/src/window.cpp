@@ -74,7 +74,7 @@ Window::Window(std::string title) : m_title(title)
 
 	onResize(m_winSize.x, m_winSize.y);
 
-	std::cout << "Window '" << m_title << "' has been constructed\n";
+	std::cerr << "Window '" << m_title << "' has been constructed\n";
 
 }
 
@@ -83,7 +83,7 @@ Window::~Window()
 	SDL_GL_DeleteContext(m_glContext);
 	SDL_DestroyWindow(m_handle);
 	SDL_Quit();
-	std::cout << "Window destroyed: '" << m_title << "'\n";
+	std::cerr << "Window destroyed: '" << m_title << "'\n";
 }
 
 // private methods

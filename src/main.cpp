@@ -6,7 +6,7 @@
 #include "engine/ecs/component.hpp"
 #include "engine/ecs/components/transform.hpp"
 
-#include <SDL2/SDL.h>
+#include "../engine/vendor/glad/include/glad/glad.h"
 
 #include <iostream>
 #include <memory>
@@ -60,9 +60,9 @@ int main(int argc, char *argv[])
 	while (win.isRunning()) {
 
 		if (win.getNanos() >= lastSecond + engine::BILLION) {
-			std::cout << "FPS: " << win.getFPS() << "\n";
 			lastSecond = win.getNanos();
 		}
+		std::cerr << "FPS: " << win.getFPS() << " frame time: " << win.getLastFrameTime() << "\n";
 
 		// logic
 
@@ -71,10 +71,12 @@ int main(int argc, char *argv[])
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
 		if (input.getButtonPress("jump")) {
-			std::cout << mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()->getID() << "\n";
+			std::cerr << mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()->getID() << "\n";
 		}
 
 		// draw
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 
 		// swap
 		win.swapBuffers();

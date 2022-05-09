@@ -10,12 +10,12 @@ namespace engine {
 
 Input::Input(const Window &win) : m_win(win)
 {
-	std::cout << "Input handler for '" << m_win.getTitle() << "' has been constructed\n";
+	std::cerr << "Input handler for '" << m_win.getTitle() << "' has been constructed\n";
 
 	m_enabledDevices.fill(true);
 }
 
-Input::~Input() { std::cout << "Input handler destroyed\n"; }
+Input::~Input() { std::cerr << "Input handler destroyed\n"; }
 
 // private methods
 

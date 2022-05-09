@@ -18,12 +18,12 @@ Object::Object(std::string name) : m_name(name)
 	s_object_count++;
 	// all objects come with at least a transform component
 	createComponent<components::Transform>();
-	std::cout << "Object " << m_id << " '" << m_name << "' has been constructed\n";
+	std::cerr << "Object " << m_id << " '" << m_name << "' has been constructed\n";
 }
 
 Object::~Object()
 {
-	std::cout << "Object " << m_id << " '" << m_name << "' has been destroyed\n";
+	std::cerr << "Object " << m_id << " '" << m_name << "' has been destroyed\n";
 }
 
 std::string Object::getName()
@@ -76,12 +76,12 @@ void Object::printTree(int level)
 {
 	for (int i = 0; i < level; i++) {
 		if (i+1 == level) {
-			std::cout << "└───────";
+			std::cerr << "└───────";
 		} else {
-			std::cout << "        ";
+			std::cerr << "        ";
 		}
 	}
-	std::cout << m_name << "\n";
+	std::cerr << m_name << "\n";
 	for (std::weak_ptr<Object> childWP : this->getChildren()) {
 		if (auto child = childWP.lock()) {
 			child->printTree(level+1);
