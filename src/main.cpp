@@ -6,8 +6,6 @@
 #include "engine/ecs/component.hpp"
 #include "engine/ecs/components/transform.hpp"
 
-#include "../engine/vendor/glad/include/glad/glad.h"
-
 #include <iostream>
 #include <memory>
 #include <thread>
@@ -52,14 +50,14 @@ int main(int argc, char *argv[])
 	input.addInputButton("jump", engine::inputs::Key::SPACE);
 
 	win.setVSync(false);
-	win.setRelativeMouseMode(true);
+	win.setRelativeMouseMode(false);
 
 	uint64_t lastTick = win.getNanos();
 
 	// single-threaded game loop
 	while (win.isRunning()) {
 
-		if (win.getNanos() >= lastTick + (engine::BILLION / 20)) {
+		if (win.getNanos() >= lastTick + (engine::BILLION/20)) {
 			lastTick = win.getNanos();
 			win.setTitle(std::to_string(win.getFPS()) + " fps");
 		}
@@ -75,8 +73,6 @@ int main(int argc, char *argv[])
 		}
 
 		// draw
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
 
 		// swap
 		win.swapBuffers();
