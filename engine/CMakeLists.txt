@@ -32,6 +32,10 @@ find_package(SDL2 REQUIRED)
 target_link_libraries(engine PUBLIC ${SDL2_LIBRARIES})
 target_include_directories(engine PUBLIC ${SDL2_INCLUDE_DIRS})
 
+# GLM
+find_package(glm REQUIRED)
+target_include_directories(engine PUBLIC ${GLM_INCLUDE_DIRS})
+
 # GLAD
 add_subdirectory(vendor/glad)
 target_link_libraries(engine PRIVATE glad)
