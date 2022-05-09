@@ -36,20 +36,20 @@ int main(int argc, char *argv[])
 	mainScene.printTree();
 
 	// menu, settings controls
-	input.addInputButton("fullscreen", engine::InputDevice::KEYBOARD, SDL_SCANCODE_F11);
-	input.addInputButton("quit", engine::InputDevice::KEYBOARD, SDL_SCANCODE_ESCAPE);
-	input.addInputButton("quit", engine::InputDevice::KEYBOARD, SDL_SCANCODE_Q);
+	input.addInputButton("fullscreen", engine::inputs::Key::F11);
+	input.addInputButton("quit", engine::inputs::Key::ESCAPE);
+	input.addInputButton("quit", engine::inputs::Key::Q);
 	// game buttons
-	input.addInputButton("fire", engine::InputDevice::MOUSE, static_cast<int>(engine::MouseButton::M_LEFT));
-	input.addInputButton("aim", engine::InputDevice::MOUSE, static_cast<int>(engine::MouseButton::M_RIGHT));
+	input.addInputButton("fire", engine::inputs::MouseButton::M_LEFT);
+	input.addInputButton("aim", engine::inputs::MouseButton::M_RIGHT);
 	// game movement
-	input.addInputButtonAsAxis("movex", engine::InputDevice::KEYBOARD, SDL_SCANCODE_D, SDL_SCANCODE_A);
-	input.addInputButtonAsAxis("movey", engine::InputDevice::KEYBOARD, SDL_SCANCODE_W, SDL_SCANCODE_S);
+	input.addInputButtonAsAxis("movex", engine::inputs::Key::D, engine::inputs::Key::A);
+	input.addInputButtonAsAxis("movey", engine::inputs::Key::W, engine::inputs::Key::S);
 	// looking around
-	input.addInputAxis("lookx", engine::InputDevice::MOUSE, static_cast<int>(engine::MouseAxis::X));
-	input.addInputAxis("looky", engine::InputDevice::MOUSE, static_cast<int>(engine::MouseAxis::Y));
+	input.addInputAxis("lookx", engine::inputs::MouseAxis::X);
+	input.addInputAxis("looky", engine::inputs::MouseAxis::Y);
 
-	input.addInputButton("jump", engine::InputDevice::KEYBOARD, SDL_SCANCODE_SPACE);
+	input.addInputButton("jump", engine::inputs::Key::SPACE);
 
 	win.setVSync(true);
 	win.setRelativeMouseMode(true);
@@ -61,8 +61,8 @@ int main(int argc, char *argv[])
 
 		if (win.getNanos() >= lastSecond + engine::BILLION) {
 			lastSecond = win.getNanos();
+			std::cerr << "FPS: " << win.getFPS() << " frame time: " << win.getLastFrameTime() << "\n";
 		}
-		std::cerr << "FPS: " << win.getFPS() << " frame time: " << win.getLastFrameTime() << "\n";
 
 		// logic
 

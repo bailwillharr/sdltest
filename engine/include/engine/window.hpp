@@ -2,6 +2,9 @@
 
 #include "engine/util/noncopyable.hpp"
 
+#include "engine/inputs/keyboard.hpp"
+#include "engine/inputs/mouse.hpp"
+
 #include <SDL2/SDL.h>
 
 #include <glm/vec2.hpp>
@@ -12,16 +15,6 @@
 namespace engine {
 
 extern const uint64_t BILLION;
-
-enum class MouseButton : int {
-	M_LEFT,
-	M_MIDDLE,
-	M_RIGHT,
-	M_X1,
-	M_X2,
-	M_INVALID=7,
-	M_SIZE=7
-};
 
 class Window : non_copyable {
 
@@ -68,7 +61,7 @@ private:
 	} m_keyboard;
 
 	struct {
-		std::array<bool, static_cast<int>(MouseButton::M_SIZE)> buttons;
+		std::array<bool, static_cast<int>(inputs::MouseButton::M_SIZE)> buttons;
 		std::array<enum ButtonDelta, 8> deltas;
 		Sint32 x;
 		Sint32 y;
@@ -145,20 +138,20 @@ public:
 	// keyboard events
 
 	// returns true if key is down
-	bool getKey(int key) const;
+	bool getKey(inputs::Key key) const;
 	// returns true if key was just pressed
-	bool getKeyPress(int key) const;
+	bool getKeyPress(inputs::Key key) const;
 	// returns true if key was just released
-	bool getKeyRelease(int key) const;
+	bool getKeyRelease(inputs::Key key) const;
 
 	// mouse events
 
 	// returns true if button is down
-	bool getButton(MouseButton button) const;
+	bool getButton(inputs::MouseButton button) const;
 	// returns true if button was just pressed
-	bool getButtonPress(MouseButton button) const;
+	bool getButtonPress(inputs::MouseButton button) const;
 	// returns true if button was just released
-	bool getButtonRelease(MouseButton button) const;
+	bool getButtonRelease(inputs::MouseButton button) const;
 
 	// retrieves x coordinate of the mouse
 	int getMouseX() const;

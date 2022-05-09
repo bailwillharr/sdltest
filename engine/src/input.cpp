@@ -23,14 +23,14 @@ float Input::getDeviceAxis(enum InputDevice device, int axis)
 {
 	switch (device) {
 		case InputDevice::MOUSE:
-			switch (static_cast<MouseAxis>(axis)) {
-				case MouseAxis::X:
+			switch (static_cast<inputs::MouseAxis>(axis)) {
+				case inputs::MouseAxis::X:
 					return m_win.getMouseXRel();
-				case MouseAxis::Y:
+				case inputs::MouseAxis::Y:
 					return m_win.getMouseYRel();
-				case MouseAxis::X_SCR:
+				case inputs::MouseAxis::X_SCR:
 					return m_win.getMouseScrollX();
-				case MouseAxis::Y_SCR:
+				case inputs::MouseAxis::Y_SCR:
 					return m_win.getMouseScrollY();
 				default: break;
 			}
@@ -48,9 +48,9 @@ bool Input::getDeviceButton(enum InputDevice device, int button)
 {
 	switch (device) {
 		case InputDevice::MOUSE:
-			return m_win.getButton(static_cast<enum MouseButton>(button));
+			return m_win.getButton(static_cast<inputs::MouseButton>(button));
 		case InputDevice::KEYBOARD:
-			return m_win.getKey(button);
+			return m_win.getKey(static_cast<inputs::Key>(button));
 		case InputDevice::CONTROLLER:
 			break;
 		default: break;
@@ -62,9 +62,9 @@ bool Input::getDeviceButtonDown(enum InputDevice device, int button)
 {
 	switch (device) {
 		case InputDevice::MOUSE:
-			return m_win.getButtonPress(static_cast<enum MouseButton>(button));
+			return m_win.getButtonPress(static_cast<enum inputs::MouseButton>(button));
 		case InputDevice::KEYBOARD:
-			return m_win.getKeyPress(button);
+			return m_win.getKeyPress(static_cast<enum inputs::Key>(button));
 		case InputDevice::CONTROLLER:
 			break;
 		default: break;
@@ -76,9 +76,9 @@ bool Input::getDeviceButtonUp(enum InputDevice device, int button)
 {
 	switch (device) {
 		case InputDevice::MOUSE:
-			return m_win.getButtonRelease(static_cast<enum MouseButton>(button));
+			return m_win.getButtonRelease(static_cast<enum inputs::MouseButton>(button));
 		case InputDevice::KEYBOARD:
-			return m_win.getKeyRelease(button);
+			return m_win.getKeyRelease(static_cast<enum inputs::Key>(button));
 		case InputDevice::CONTROLLER:
 			break;
 		default: break;
@@ -98,19 +98,48 @@ float Input::getButtonAxis(enum InputDevice device, int high, int low)
 
 // public methods
 
-void Input::addInputButton(std::string name, enum InputDevice device, int button)
+void Input::addInputButton(std::string name, InputDevice device, int button)
 {
 	m_buttonEntries.push_back( { name, device, button } );
 }
 
-void Input::addInputAxis(std::string name, enum InputDevice device, int axis)
+void Input::addInputAxis(std::string name, InputDevice device, int axis)
 {
 	m_axisEntries.push_back( { name, device, axis, false, 0, 0 } );
 }
 
-void Input::addInputButtonAsAxis(std::string name, enum InputDevice device, int high, int low)
+void Input::addInputButtonAsAxis(std::string name, InputDevice device, int high, int low)
 {
 	m_axisEntries.push_back( { name, device, 0, true, high, low } );
+}
+
+// OVERLOADS:
+
+// Add a mouse input
+void Input::addInputButton(std::string name, inputs::MouseButton button)
+{
+	addInputButton(name, InputDevice::MOUSE, static_cast<int>(button));
+}
+
+void Input::addInputAxis(std::string name, inputs::MouseAxis axis)
+{
+	addInputAxis(name, InputDevice::MOUSE, static_cast<int>(axis));
+}
+
+void Input::addInputButtonAsAxis(std::string name, inputs::MouseButton high, inputs::MouseButton low)
+{
+	addInputButtonAsAxis(name, InputDevice::MOUSE, static_cast<int>(high), static_cast<int>(low));
+}
+
+// Add a keyboard input (TODO: add KeyboardButton enum class)
+void Input::addInputButton(std::string name, inputs::Key button)
+{
+	addInputButton(name, InputDevice::KEYBOARD, static_cast<int>(button));
+}
+
+void Input::addInputButtonAsAxis(std::string name, inputs::Key high, inputs::Key low)
+{
+	addInputButtonAsAxis(name, InputDevice::KEYBOARD, static_cast<int>(high), static_cast<int>(low));
 }
 
 void Input::delInputButton(int index)

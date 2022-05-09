@@ -1,8 +1,11 @@
 #pragma once
 
+#include "engine/util/noncopyable.hpp"
+
 #include "engine/window.hpp"
 
-#include "engine/util/noncopyable.hpp"
+#include "engine/inputs/keyboard.hpp"
+#include "engine/inputs/mouse.hpp"
 
 #include <array>
 #include <vector>
@@ -16,13 +19,6 @@ enum class InputDevice : int {
 	KEYBOARD,
 	CONTROLLER,
 	SIZE
-};
-
-enum class MouseAxis : int {
-	X,
-	Y,
-	X_SCR,
-	Y_SCR
 };
 
 // This class should be used to get platform/input-device independent input
@@ -61,17 +57,25 @@ private:
 
 	float getButtonAxis(enum InputDevice device, int high, int low);
 
+	void addInputButton(std::string name, InputDevice device, int button);
+	void addInputAxis(std::string name, InputDevice device, int axis);
+	void addInputButtonAsAxis(std::string name, InputDevice device, int high, int low);
+
 public:
 
 	// requires a window reference to get input from
 	Input(const Window &win);
 	~Input();
 
-	void addInputButton(std::string name, enum InputDevice device, int button);
-	void delInputButton(int index);
+	// Add a mouse input
+	void addInputButton(std::string name, inputs::MouseButton button);
+	void addInputAxis(std::string name, inputs::MouseAxis axis);
+	void addInputButtonAsAxis(std::string name, inputs::MouseButton high, inputs::MouseButton low);
+	// Add a keyboard input
+	void addInputButton(std::string name, inputs::Key button);
+	void addInputButtonAsAxis(std::string name, inputs::Key high, inputs::Key low);
 
-	void addInputAxis(std::string name, enum InputDevice device, int axis);
-	void addInputButtonAsAxis(std::string name, enum InputDevice device, int high, int low);
+	void delInputButton(int index);
 	void delInputAxis(int index);
 
 	void setDeviceActive(enum InputDevice device, bool active);

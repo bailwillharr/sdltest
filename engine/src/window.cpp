@@ -145,22 +145,22 @@ void Window::onKeyEvent(SDL_KeyboardEvent &e)
 
 void Window::onMouseButtonEvent(SDL_MouseButtonEvent &e)
 {
-	enum MouseButton button = MouseButton::M_INVALID;
+	enum inputs::MouseButton button = inputs::MouseButton::M_INVALID;
 	switch (e.button) {
 		case SDL_BUTTON_LEFT:
-			button = MouseButton::M_LEFT;
+			button = inputs::MouseButton::M_LEFT;
 			break;
 		case SDL_BUTTON_MIDDLE:
-			button = MouseButton::M_MIDDLE;
+			button = inputs::MouseButton::M_MIDDLE;
 			break;
 		case SDL_BUTTON_RIGHT:
-			button = MouseButton::M_RIGHT;
+			button = inputs::MouseButton::M_RIGHT;
 			break;
 		case SDL_BUTTON_X1:
-			button = MouseButton::M_X1;
+			button = inputs::MouseButton::M_X1;
 			break;
 		case SDL_BUTTON_X2:
-			button = MouseButton::M_X2;
+			button = inputs::MouseButton::M_X2;
 			break;
 	}
 
@@ -338,34 +338,34 @@ bool Window::setRelativeMouseMode(bool enabled)
 
 // getting input
 
-bool Window::getKey(int key) const
+bool Window::getKey(inputs::Key key) const
 {
-	return m_keyboard.keys[key];
+	return m_keyboard.keys[static_cast<int>(key)];
 }
 
-bool Window::getKeyPress(int key) const
+bool Window::getKeyPress(inputs::Key key) const
 {
-	return m_keyboard.deltas[key] == ButtonDelta::PRESSED;
+	return m_keyboard.deltas[static_cast<int>(key)] == ButtonDelta::PRESSED;
 }
 
-bool Window::getKeyRelease(int key) const
+bool Window::getKeyRelease(inputs::Key key) const
 {
-	return m_keyboard.deltas[key] == ButtonDelta::RELEASED;
+	return m_keyboard.deltas[static_cast<int>(key)] == ButtonDelta::RELEASED;
 }
 
 // TODO mouse input
 
-bool Window::getButton(MouseButton button) const
+bool Window::getButton(inputs::MouseButton button) const
 {
 	return m_mouse.buttons[static_cast<int>(button)];
 }
 
-bool Window::getButtonPress(MouseButton button) const
+bool Window::getButtonPress(inputs::MouseButton button) const
 {
 	return m_mouse.deltas[static_cast<int>(button)] == ButtonDelta::PRESSED;
 }
 
-bool Window::getButtonRelease(MouseButton button) const
+bool Window::getButtonRelease(inputs::MouseButton button) const
 {
 	return m_mouse.deltas[static_cast<int>(button)] == ButtonDelta::RELEASED;
 }
