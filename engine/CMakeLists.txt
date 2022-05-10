@@ -10,7 +10,8 @@ add_library(engine STATIC
 	src/ecs/component.cpp
 	src/ecs/components/transform.cpp
 	src/ecs/components/renderer.cpp
-	#	src/components/camera.cpp
+	src/rendering/material.cpp
+	src/rendering/shader.cpp
 )
 
 set_property(TARGET engine PROPERTY CXX_STANDARD 14)
