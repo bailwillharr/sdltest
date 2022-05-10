@@ -12,8 +12,9 @@ Shader:
 
 Material:
 - A material class holds:
-	- a shader reference
-	- uniform setters for shader properties (float, vec3, mat4, etc.)
+	- Inherit from shader:
+		- a shader reference
+		- uniform setters for shader properties (float, vec3, mat4, etc.)
 	- one or more textures
 
 Renderer:
