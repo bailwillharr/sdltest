@@ -4,7 +4,7 @@ namespace engine {
 namespace ecs {
 namespace components {
 
-Renderer::Renderer(ecs::Object* parent) : Component(parent, "renderer")
+Renderer::Renderer(ecs::Object* parent) : Component(parent, "renderer"), m_shader(std::make_shared<rendering::Shader>("basic"))
 {
 
 }

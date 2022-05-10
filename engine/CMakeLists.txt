@@ -39,5 +39,5 @@ target_include_directories(engine PUBLIC ${GLM_INCLUDE_DIRS})
 
 # GLAD
 add_subdirectory(vendor/glad)
-target_link_libraries(engine PRIVATE glad)
-target_include_directories(engine PRIVATE vendor/glad/include)
+target_link_libraries(engine PUBLIC glad)
+target_include_directories(engine PUBLIC vendor/glad/include)

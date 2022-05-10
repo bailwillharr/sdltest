@@ -80,6 +80,21 @@ Shader::Shader(std::string name)
         throw std::runtime_error("Program linking error with " + vertexShaderPath + " and " + fragmentShaderPath + " log:\n" + log_msg);
     }
 
+	// now get uniforms
+	GLint count;
+	glGetProgramiv(m_program, GL_ACTIVE_UNIFORMS, &count);
+	for (int i = 0; i < count; i++) {
+		char nameBuf[64] = {};
+		GLint size;
+		GLenum type;
+		glGetActiveUniform(m_program, i, 63, NULL, &size, &type, nameBuf);
+		m_uniforms.push_back({
+			std::string(nameBuf),
+			size,
+			static_cast<UniformType>(type)
+		});
+	}
+
 }
 
 Shader::~Shader()

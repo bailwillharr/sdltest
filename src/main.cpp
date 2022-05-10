@@ -5,6 +5,7 @@
 
 #include "engine/ecs/component.hpp"
 #include "engine/ecs/components/transform.hpp"
+#include "engine/ecs/components/renderer.hpp"
 
 #include <iostream>
 #include <memory>
@@ -36,6 +37,9 @@ int main(int argc, char *argv[])
 	engine::ecs::SceneRoot mainScene("My Scene");
 
 	mainScene.createChild("car").lock()->createComponent<MyComponent>();
+
+	mainScene.getChild("car").lock()->createComponent<engine::ecs::components::Renderer>();
+
 	mainScene.getChild("car").lock()
 		->getComponent<engine::ecs::components::Transform>().lock()
 		->m_transformMatrix = glm::mat4{4.0f};
