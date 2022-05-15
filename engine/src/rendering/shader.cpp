@@ -95,11 +95,19 @@ Shader::Shader(std::string name)
 		});
 	}
 
+    std::cout << "Created shader\n";
+
 }
 
 Shader::~Shader()
 {
 	glDeleteProgram(m_program);
+    std::cout << "Destroyed shader\n";
+}
+
+const std::vector<Uniform>& Shader::getUniforms()
+{
+    return m_uniforms;
 }
 
 }}

@@ -8,20 +8,18 @@
 namespace engine {
 namespace rendering {
 
-class Shader {
-private:
-
-	// types: structs, enums etc
-
-	enum class UniformType {
+enum class UniformType {
 		FLOAT_MAT4 = GL_FLOAT_MAT4
-	};
+};
 
-	struct Uniform {
+struct Uniform {
 		std::string name;
 		GLint size;
 		UniformType type;
-	};
+};
+
+class Shader {
+private:
 
 	// fields
 
@@ -32,6 +30,9 @@ private:
 public:
 	Shader(std::string name);
 	~Shader();
+
+	const std::vector<Uniform>& getUniforms();
+
 };
 
 }}
