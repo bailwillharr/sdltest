@@ -22,7 +22,7 @@ Renderer::Renderer(ecs::Object* parent) : Component(parent, "renderer")
 	}
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_mesh->getVerticesSize(), &(tmpIndices[0]), GL_STATIC_DRAW);
 
-	glEnableVertexAttribArray(m_material->getAttribLocation("v_Pos"), )
+	//glEnableVertexAttribArray(m_material->getAttribLocation("v_Pos"), )
 
 }
 

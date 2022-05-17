@@ -5,7 +5,11 @@
 #include "engine/inputs/keyboard.hpp"
 #include "engine/inputs/mouse.hpp"
 
+#ifdef _MSC_VER
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 
 #include <glm/vec2.hpp>
 

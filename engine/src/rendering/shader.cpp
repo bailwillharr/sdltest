@@ -137,7 +137,7 @@ bool Shader::setUniform(const std::string& name, const glm::mat4& m)
 
 int Shader::getAttribLocation(const std::string& name) const
 {
-	return m_attributes.at(name);
+	return m_attributes.at(name).location;
 }
 
 }}
