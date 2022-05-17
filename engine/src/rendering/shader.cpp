@@ -101,7 +101,7 @@ Shader::Shader(std::string name)
 		GLint size;
 		GLenum type;
 		glGetActiveAttrib(m_program, i, 63, NULL, &size, &type, nameBuf);
-		m_uniforms[nameBuf] = Uniform{size, static_cast<UniformType>(type), (GLuint)i};
+		m_attributes[nameBuf] = Attribute{size, static_cast<UniformType>(type), (GLuint)i};
 	}
 
 
