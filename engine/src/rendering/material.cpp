@@ -5,7 +5,7 @@
 namespace engine{
 namespace rendering {
 
-Material::Material()
+Material::Material() : Shader("texture")
 {
 	std::cout << "Hello world!\n";
 }

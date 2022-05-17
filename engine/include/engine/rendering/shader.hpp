@@ -2,8 +2,10 @@
 
 #include <glad/glad.h>
 
+#include <glm/mat4x4.hpp>
+
 #include <string>
-#include <vector>
+#include <unordered_map>
 
 namespace engine {
 namespace rendering {
@@ -13,25 +15,29 @@ enum class UniformType {
 };
 
 struct Uniform {
-		std::string name;
 		GLint size;
 		UniformType type;
+		GLuint location;
 };
 
 class Shader {
 private:
 
+	static GLuint s_activeProgram;
+
 	// fields
 
 	GLuint m_program;
 
-	std::vector<Uniform> m_uniforms{};
+	std::unordered_map<std::string, Uniform> m_uniforms{};
+
+	void makeActive();
 
 public:
 	Shader(std::string name);
 	~Shader();
 
-	const std::vector<Uniform>& getUniforms();
+	bool setUniform(const std::string& name, const glm::mat4& m);
 
 };
 

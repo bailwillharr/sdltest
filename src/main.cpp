@@ -20,7 +20,7 @@ public:
 	void onRender(glm::mat4 transform) override {
 		std::cout << "RENDERING!!! transform[0][0]: " << transform[0][0] << "\n";
 	}
-	void doThings() {}
+	void doThings() { std::cout << "YEE YEE\n"; }
 };
 
 int main(int argc, char *argv[])

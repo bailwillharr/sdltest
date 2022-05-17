@@ -9,6 +9,9 @@
 namespace engine{
 namespace rendering {
 
+// I've got to do this because of GL's stupid state machine
+GLuint Shader::s_activeProgram = 0;
+
 static GLuint compile(const char *path, GLenum type)
 {
     FILE *fp = fopen(path, "r");
@@ -88,11 +91,7 @@ Shader::Shader(std::string name)
 		GLint size;
 		GLenum type;
 		glGetActiveUniform(m_program, i, 63, NULL, &size, &type, nameBuf);
-		m_uniforms.push_back({
-			std::string(nameBuf),
-			size,
-			static_cast<UniformType>(type)
-		});
+		m_uniforms[nameBuf] = Uniform{size, static_cast<UniformType>(type), (GLuint)i};
 	}
 
     std::cout << "Created shader\n";
@@ -105,9 +104,24 @@ Shader::~Shader()
     std::cout << "Destroyed shader\n";
 }
 
-const std::vector<Uniform>& Shader::getUniforms()
+void Shader::makeActive()
 {
-    return m_uniforms;
+	if (s_activeProgram != m_program) {
+		glUseProgram(m_program);
+	}
+}
+
+bool Shader::setUniform(const std::string& name, const glm::mat4& m)
+{
+	makeActive();
+	Uniform u;
+	try {
+		u = m_uniforms.at(name);
+	} catch (std::out_of_range &e) {
+		return false;
+	}
+	glUniformMatrix4fv(u.location, 1, GL_FALSE, &m[0][0]);
+	return true;
 }
 
 }}
