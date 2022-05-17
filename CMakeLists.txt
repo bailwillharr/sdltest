@@ -33,12 +33,11 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 	set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE FALSE)
 endif()
 
-# install:
-
 add_custom_command(
 	TARGET sdltest POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E create_symlink
 	${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:sdltest>/res)
 
+# install:
 install(TARGETS sdltest DESTINATION bin)
 install(DIRECTORY res/ DESTINATION share/sdltest)
