@@ -19,15 +19,15 @@ Input::~Input() { std::cerr << "Input handler destroyed\n"; }
 
 // private methods
 
-float Input::getDeviceAxis(enum InputDevice device, int axis)
+float Input::getDeviceAxis(enum InputDevice device, int axis) const
 {
 	switch (device) {
 		case InputDevice::MOUSE:
 			switch (static_cast<inputs::MouseAxis>(axis)) {
 				case inputs::MouseAxis::X:
-					return m_win.getMouseXRel();
+					return static_cast<float>(m_win.getMouseXRel());
 				case inputs::MouseAxis::Y:
-					return m_win.getMouseYRel();
+					return static_cast<float>(m_win.getMouseYRel());
 				case inputs::MouseAxis::X_SCR:
 					return m_win.getMouseScrollX();
 				case inputs::MouseAxis::Y_SCR:
@@ -44,7 +44,7 @@ float Input::getDeviceAxis(enum InputDevice device, int axis)
 	throw std::runtime_error("Error getting device axis");
 }
 
-bool Input::getDeviceButton(enum InputDevice device, int button)
+bool Input::getDeviceButton(enum InputDevice device, int button) const
 {
 	switch (device) {
 		case InputDevice::MOUSE:
@@ -58,7 +58,7 @@ bool Input::getDeviceButton(enum InputDevice device, int button)
 	throw std::runtime_error("Error getting device button");
 }
 
-bool Input::getDeviceButtonDown(enum InputDevice device, int button)
+bool Input::getDeviceButtonDown(enum InputDevice device, int button) const
 {
 	switch (device) {
 		case InputDevice::MOUSE:
@@ -72,7 +72,7 @@ bool Input::getDeviceButtonDown(enum InputDevice device, int button)
 	throw std::runtime_error("Error getting device button");
 }
 
-bool Input::getDeviceButtonUp(enum InputDevice device, int button)
+bool Input::getDeviceButtonUp(enum InputDevice device, int button) const
 {
 	switch (device) {
 		case InputDevice::MOUSE:
@@ -86,7 +86,7 @@ bool Input::getDeviceButtonUp(enum InputDevice device, int button)
 	throw std::runtime_error("Error getting device button");
 }
 
-float Input::getButtonAxis(enum InputDevice device, int high, int low)
+float Input::getButtonAxis(enum InputDevice device, int high, int low) const
 {
 	float value = 0.0f;
 	if (getDeviceButton(device, high)) value += 10.0f;
@@ -161,14 +161,14 @@ void Input::setDeviceActive(enum InputDevice device, bool active)
 	m_enabledDevices[static_cast<int>(device)] = active;
 }
 
-bool Input::getDeviceActive(enum InputDevice device)
+bool Input::getDeviceActive(enum InputDevice device) const
 {
 	return m_enabledDevices[static_cast<int>(device)];
 }
 
-float Input::getAxis(std::string axisName)
+float Input::getAxis(std::string axisName) const
 {
-	for (struct AxisEntry e : m_axisEntries) {
+	for (const AxisEntry& e : m_axisEntries) {
 		if (e.name == axisName) {
 			if (m_enabledDevices[static_cast<int>(e.device)]) {
 				if (e.isButtonAxis) {
@@ -183,11 +183,11 @@ float Input::getAxis(std::string axisName)
 //	throw std::runtime_error("Unable to find mapping in input table");
 }
 
-bool Input::getButton(std::string buttonName)
+bool Input::getButton(std::string buttonName) const
 {
 	bool isDown = false;
 
-	for (struct ButtonEntry e : m_buttonEntries) {
+	for (const ButtonEntry& e : m_buttonEntries) {
 		if (e.name == buttonName) {
 			if (m_enabledDevices[static_cast<int>(e.device)]) {
 				if (getDeviceButton(e.device, e.button) == true) {
@@ -200,11 +200,11 @@ bool Input::getButton(std::string buttonName)
 	return isDown;
 }
 
-bool Input::getButtonPress(std::string buttonName)
+bool Input::getButtonPress(std::string buttonName) const
 {
 	bool isPressed = false;
 
-	for (struct ButtonEntry e : m_buttonEntries) {
+	for (const ButtonEntry& e : m_buttonEntries) {
 		if (e.name == buttonName) {
 			if (m_enabledDevices[static_cast<int>(e.device)]) {
 				if (getDeviceButtonDown(e.device, e.button) == true) {
@@ -217,11 +217,11 @@ bool Input::getButtonPress(std::string buttonName)
 	return isPressed;
 }
 
-bool Input::getButtonRelease(std::string buttonName)
+bool Input::getButtonRelease(std::string buttonName) const
 {
 	bool isReleased = false;
 
-	for (struct ButtonEntry e : m_buttonEntries) {
+	for (const ButtonEntry& e : m_buttonEntries) {
 		if (e.name == buttonName) {
 			if (m_enabledDevices[static_cast<int>(e.device)]) {
 				if (getDeviceButtonUp(e.device, e.button) == true) {

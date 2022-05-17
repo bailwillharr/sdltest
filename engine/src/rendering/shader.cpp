@@ -102,11 +102,8 @@ Shader::Shader(std::string name)
 		GLenum type;
 		glGetActiveAttrib(m_program, i, 63, NULL, &size, &type, nameBuf);
 		m_attributes[nameBuf] = Attribute{size, static_cast<UniformType>(type), (GLuint)i};
+        std::cout << "Attrib " << nameBuf << " index: " << i << "\n";
 	}
-
-
-
-    std::cout << "Created shader\n";
 
 }
 

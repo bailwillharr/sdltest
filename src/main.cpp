@@ -21,6 +21,7 @@ public:
 	void onRender(glm::mat4 transform) override
 	{
 		(void)transform;
+		std::cout << "TRANSFORM: " << transform[0][0] << "\n";
 	}
 	void doThings() { std::cout << "YEE YEE\n"; }
 };
@@ -38,19 +39,9 @@ int main(int argc, char *argv[])
 	// scene stuff
 	engine::ecs::SceneRoot mainScene("My Scene");
 
-	mainScene.createChild("car").lock()->createComponent<MyComponent>();
-
+	mainScene.createChild("car");
+	mainScene.getChild("car").lock()->createComponent<MyComponent>();
 	mainScene.getChild("car").lock()->createComponent<engine::ecs::components::Renderer>();
-
-	mainScene.getChild("car").lock()
-		->getComponent<engine::ecs::components::Transform>().lock()
-		->m_transformMatrix = glm::mat4{4.0f};
-
-	mainScene.getChild("car").lock()
-		->createChild("engine").lock()->createComponent<MyComponent>();
-	mainScene.getChild("car").lock()->getChild("engine").lock()
-		->getComponent<engine::ecs::components::Transform>().lock()
-		->m_transformMatrix = glm::mat4{4.0f};
 
 	mainScene.printTree();
 

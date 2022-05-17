@@ -50,12 +50,12 @@ private:
 
 	// private methods
 
-	float getDeviceAxis(enum InputDevice device, int axis);
-	bool getDeviceButton(enum InputDevice device, int button);
-	bool getDeviceButtonDown(enum InputDevice device, int button);
-	bool getDeviceButtonUp(enum InputDevice device, int button);
+	float getDeviceAxis(enum InputDevice device, int axis) const;
+	bool getDeviceButton(enum InputDevice device, int button) const;
+	bool getDeviceButtonDown(enum InputDevice device, int button) const;
+	bool getDeviceButtonUp(enum InputDevice device, int button) const;
 
-	float getButtonAxis(enum InputDevice device, int high, int low);
+	float getButtonAxis(enum InputDevice device, int high, int low) const;
 
 	void addInputButton(std::string name, InputDevice device, int button);
 	void addInputAxis(std::string name, InputDevice device, int axis);
@@ -79,12 +79,12 @@ public:
 	void delInputAxis(int index);
 
 	void setDeviceActive(enum InputDevice device, bool active);
-	bool getDeviceActive(enum InputDevice device);
+	bool getDeviceActive(enum InputDevice device) const;
 
-	float getAxis(std::string axisName);
-	bool getButton(std::string buttonName);
-	bool getButtonPress(std::string buttonName);
-	bool getButtonRelease(std::string buttonName);
+	float getAxis(std::string axisName) const;
+	bool getButton(std::string buttonName) const;
+	bool getButtonPress(std::string buttonName) const;
+	bool getButtonRelease(std::string buttonName) const;
 	
 };
 
