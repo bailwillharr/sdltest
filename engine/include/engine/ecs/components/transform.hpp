@@ -21,12 +21,15 @@ private:
 public:
 	Transform(ecs::Object*);
 	~Transform() override;
-	
+
 	glm::mat4 m_transformMatrix{1.0f};
 
 	glm::vec3 getPosition();
 	glm::vec3 getScale();
 	glm::quat getRotation();
+
+	void translate(glm::vec3 t);
+
 
 };
 

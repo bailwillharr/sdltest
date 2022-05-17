@@ -84,6 +84,9 @@ int main(int argc, char *argv[])
 			std::cerr << mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()->getID() << "\n";
 		}
 
+		mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()
+			->translate( {2.0f, 7.4f, 8.8f} );
+
 		glClear(GL_COLOR_BUFFER_BIT);
 		// draw
 		mainScene.renderScene();

@@ -16,4 +16,10 @@ Transform::~Transform()
 {
 }
 
+
+void Transform::translate(glm::vec3 t)
+{
+	glm::translate(m_transformMatrix, t);
+}
+
 }}}

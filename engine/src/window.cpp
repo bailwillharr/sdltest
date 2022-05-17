@@ -308,6 +308,11 @@ void Window::setFullscreen(bool fullscreen)
 		throw std::runtime_error("Unable to set window to fullscreen/windowed");
 	}
 	m_fullscreen = fullscreen;
+	if (fullscreen) {
+		int width, height;
+		SDL_GetWindowSize(m_handle, &width, &height);
+		onResize(width, height);
+	}
 }
 
 void Window::toggleFullscreen()
