@@ -6,7 +6,7 @@ in vec2 UV;
 
 out vec4 FragColor;
 
-uniform sampler2D u_Tex;
+uniform sampler2D tex;
 
 void main() {
 
@@ -15,6 +15,6 @@ void main() {
 
     vec3 lighting = max(dot( normalize(Norm), normalize(dir)), 0.0) * vec3(1.0, 1.0, 1.0);
 
-    FragColor = vec4(lighting, 1.0) * texture(u_Tex, UV);
+    FragColor = vec4(lighting, 1.0) * texture(tex, UV);
 
 }

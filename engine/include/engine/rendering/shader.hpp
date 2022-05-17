@@ -23,6 +23,7 @@ struct Uniform {
 class Shader {
 private:
 
+	// Only valid if glUseProgram is never called elsewhere
 	static GLuint s_activeProgram;
 
 	// fields

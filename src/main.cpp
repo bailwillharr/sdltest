@@ -14,11 +14,13 @@
 class MyComponent : public engine::ecs::Component {
 public:
 	MyComponent(engine::ecs::Object* parent) : Component(parent, "MyComponent") {}
-	void onUpdate(glm::mat4 transform) override {
-		std::cout << "UPDATING!!! transform[0][0]: " << transform[0][0] << "\n";
+	void onUpdate(glm::mat4 transform) override
+	{
+		(void)transform;
 	}
-	void onRender(glm::mat4 transform) override {
-		std::cout << "RENDERING!!! transform[0][0]: " << transform[0][0] << "\n";
+	void onRender(glm::mat4 transform) override
+	{
+		(void)transform;
 	}
 	void doThings() { std::cout << "YEE YEE\n"; }
 };

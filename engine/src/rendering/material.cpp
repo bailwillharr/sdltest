@@ -7,7 +7,6 @@ namespace rendering {
 
 Material::Material() : Shader("texture")
 {
-	std::cout << "Hello world!\n";
 }
 
 Material::~Material()

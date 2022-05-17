@@ -6,12 +6,6 @@
 
 #include <iostream>
 
-namespace engine{
-namespace rendering {
-
-// I've got to do this because of GL's stupid state machine
-GLuint Shader::s_activeProgram = 0;
-
 static GLuint compile(const char *path, GLenum type)
 {
     FILE *fp = fopen(path, "r");
@@ -52,6 +46,12 @@ static GLuint compile(const char *path, GLenum type)
 
     return handle;
 }
+
+namespace engine{
+namespace rendering {
+
+// I've got to do this because of GL's stupid state machine
+GLuint Shader::s_activeProgram = 0;
 
 Shader::Shader(std::string name)
 {
@@ -114,13 +114,12 @@ void Shader::makeActive()
 bool Shader::setUniform(const std::string& name, const glm::mat4& m)
 {
 	makeActive();
-	Uniform u;
 	try {
-		u = m_uniforms.at(name);
+		Uniform u = m_uniforms.at(name);
+		glUniformMatrix4fv(u.location, 1, GL_FALSE, &m[0][0]);
 	} catch (std::out_of_range &e) {
 		return false;
 	}
-	glUniformMatrix4fv(u.location, 1, GL_FALSE, &m[0][0]);
 	return true;
 }
 
