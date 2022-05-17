@@ -12,6 +12,7 @@ add_library(engine STATIC
 	src/ecs/components/renderer.cpp
 	src/rendering/material.cpp
 	src/rendering/shader.cpp
+	src/rendering/mesh.cpp
 )
 
 set_property(TARGET engine PROPERTY CXX_STANDARD 14)

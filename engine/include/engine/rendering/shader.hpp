@@ -5,7 +5,7 @@
 #include <glm/mat4x4.hpp>
 
 #include <string>
-#include <unordered_map>
+#include <map>
 
 namespace engine {
 namespace rendering {
@@ -15,6 +15,12 @@ enum class UniformType {
 };
 
 struct Uniform {
+		GLint size;
+		UniformType type;
+		GLuint location;
+};
+
+struct Attribute {
 		GLint size;
 		UniformType type;
 		GLuint location;
@@ -30,7 +36,8 @@ private:
 
 	GLuint m_program;
 
-	std::unordered_map<std::string, Uniform> m_uniforms{};
+	std::map<std::string, Uniform> m_uniforms{};
+	std::map<std::string, Attribute> m_attributes{};
 
 	void makeActive();
 
@@ -39,6 +46,7 @@ public:
 	~Shader();
 
 	bool setUniform(const std::string& name, const glm::mat4& m);
+	int getAttribLocation(const std::string& name) const;
 
 };
 

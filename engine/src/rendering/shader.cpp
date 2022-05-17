@@ -94,6 +94,18 @@ Shader::Shader(std::string name)
 		m_uniforms[nameBuf] = Uniform{size, static_cast<UniformType>(type), (GLuint)i};
 	}
 
+	// now get all attributes
+	glGetProgramiv(m_program, GL_ACTIVE_ATTRIBUTES, &count);
+	for (int i = 0; i < count; i++) {
+		char nameBuf[64] = {};
+		GLint size;
+		GLenum type;
+		glGetActiveAttrib(m_program, i, 63, NULL, &size, &type, nameBuf);
+		m_uniforms[nameBuf] = Uniform{size, static_cast<UniformType>(type), (GLuint)i};
+	}
+
+
+
     std::cout << "Created shader\n";
 
 }
@@ -121,6 +133,11 @@ bool Shader::setUniform(const std::string& name, const glm::mat4& m)
 		return false;
 	}
 	return true;
+}
+
+int Shader::getAttribLocation(const std::string& name) const
+{
+	return m_attributes.at(name);
 }
 
 }}
