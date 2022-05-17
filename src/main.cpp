@@ -21,7 +21,6 @@ public:
 	void onRender(glm::mat4 transform) override
 	{
 		(void)transform;
-		std::cout << "TRANSFORM: " << transform[0][0] << "\n";
 	}
 	void doThings() { std::cout << "YEE YEE\n"; }
 };
@@ -85,6 +84,7 @@ int main(int argc, char *argv[])
 			std::cerr << mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()->getID() << "\n";
 		}
 
+		glClear(GL_COLOR_BUFFER_BIT);
 		// draw
 		mainScene.renderScene();
 

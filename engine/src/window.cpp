@@ -2,7 +2,6 @@
 
 #include <glad/glad.h>
 
-
 #include <iostream>
 #include <stdexcept>
 
@@ -112,8 +111,9 @@ void Window::resetInputDeltas()
 
 void Window::onWindowEvent(SDL_WindowEvent &e)
 {
+
 	switch (e.event) {
-		case SDL_WINDOWEVENT_RESIZED:
+		case SDL_WINDOWEVENT_SIZE_CHANGED:
 			onResize(e.data1, e.data2);
 			m_justResized = true;
 			break;
