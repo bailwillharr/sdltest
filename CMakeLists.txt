@@ -27,12 +27,10 @@ target_include_directories(sdltest PRIVATE engine/include)
 
 # linking options:
 
-# If using MinGW and not in Debug mode, use '-mwindows'
-if (MINGW)
-	set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE TRUE)
-	if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-		set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE FALSE)
-	endif()
+# If not in Debug mode, use '-mwindows'
+set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE TRUE)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE FALSE)
 endif()
 
 # install:

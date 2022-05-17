@@ -22,6 +22,29 @@
           "type": "PATH"
         }
       ]
+    },
+    {
+      "name": "x64-Release",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "glm_DIR",
+          "value": "C:/Users/Bailey/source/libraries/glm/cmake/glm",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_DIR",
+          "value": "C:/Users/Bailey/source/libraries/SDL2-2.0.22",
+          "type": "PATH"
+        }
+      ]
     }
   ]
 }
