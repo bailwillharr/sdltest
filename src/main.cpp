@@ -60,13 +60,21 @@ int main(int argc, char *argv[])
 
 	input.addInputButton("jump", engine::inputs::Key::SPACE);
 
-	win.setVSync(true);
+	win.setVSync(false);
 	win.setRelativeMouseMode(false);
 
 	uint64_t lastTick = win.getNanos();
 
+	float dx = 0.0f;
+	float dy = 0.0f;
+
 	// single-threaded game loop
 	while (win.isRunning()) {
+
+		float x, y;
+		glm::mat4 t = mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()->m_transformMatrix;
+		x = t[3][0];
+		y = t[3][1];
 
 		float dt = (float)win.getLastFrameTime() / (float)engine::BILLION;
 
@@ -78,18 +86,33 @@ int main(int argc, char *argv[])
 		// logic
 		mainScene.updateScene();
 
-		if (input.getButtonPress("fullscreen"))
+		if (input.getButtonPress("fullscreen")) {
 			win.toggleFullscreen();
+			if (win.isFullscreen())
+				win.setRelativeMouseMode(true);
+			else
+				win.setRelativeMouseMode(false);
+		}
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
 		if(input.getButtonPress("jump")) {
 			win.setVSync(!win.getVSync());
 		}
 
+		std::cout << "dt: " << dt << "\n";
+
+		dx += 100.0f * dt * input.getAxis("movex") / 100.0f;
+		dx -= dx * 2.0f * dt;
+		dy += 100.0f * dt * input.getAxis("movey") / 100.0f;
+		dy -= dy * 2.0f * dt;
+
+		if (x <= -1.0f || x > 0.0f)
+			dx = -dx;
+		if (y <= -1.0f || y > 0.0f)
+			dy = -dy;
+
 		mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()
-			->translate({dt * input.getAxis("movex")/10.0f, dt * input.getAxis("movey")/10.0f, 0.0f });
-
-
+			->translate({dx * dt, dy * dt, 0.0f });
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		// draw
