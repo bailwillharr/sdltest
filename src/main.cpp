@@ -42,6 +42,10 @@ int main(int argc, char *argv[])
 	mainScene.getChild("car").lock()->createComponent<MyComponent>();
 	mainScene.getChild("car").lock()->createComponent<engine::ecs::components::Renderer>();
 
+	for (int i = 0; i < 10000; i++) {
+		mainScene.getChild("car").lock()->createChild("screw" + std::to_string(i));
+	}
+
 	mainScene.printTree();
 
 	// menu, settings controls
@@ -65,24 +69,14 @@ int main(int argc, char *argv[])
 
 	uint64_t lastTick = win.getNanos();
 
-	float dx = 0.0f;
-	float dy = 0.0f;
-
 	// single-threaded game loop
 	while (win.isRunning()) {
-
-		float x, y;
-		glm::mat4 t = mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()->m_transformMatrix;
-		x = t[3][0];
-		y = t[3][1];
-
-		float dt = (float)win.getLastFrameTime() / (float)engine::BILLION;
 
 		if (win.getNanos() >= lastTick + (engine::BILLION/20)) {
 			lastTick = win.getNanos();
 			win.setTitle(std::to_string(win.getFPS()) + " fps");
 		}
-
+		
 		// logic
 		mainScene.updateScene();
 
@@ -98,24 +92,9 @@ int main(int argc, char *argv[])
 		if(input.getButtonPress("jump")) {
 			win.setVSync(!win.getVSync());
 		}
-
-		std::cout << "dt: " << dt << "\n";
-
-		dx += 100.0f * dt * input.getAxis("movex") / 100.0f;
-		dx -= dx * 2.0f * dt;
-		dy += 100.0f * dt * input.getAxis("movey") / 100.0f;
-		dy -= dy * 2.0f * dt;
-
-		if (x <= -1.0f || x > 0.0f)
-			dx = -dx;
-		if (y <= -1.0f || y > 0.0f)
-			dy = -dy;
-
-		mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()
-			->translate({dx * dt, dy * dt, 0.0f });
-
-		glClear(GL_COLOR_BUFFER_BIT);
+		
 		// draw
+		glClear(GL_COLOR_BUFFER_BIT);
 		mainScene.renderScene();
 
 		// swap

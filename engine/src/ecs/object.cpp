@@ -76,7 +76,8 @@ void Object::printTree(int level)
 {
 	for (int i = 0; i < level; i++) {
 		if (i+1 == level) {
-			std::cerr << "└───────";
+			//std::cerr << "└4───────";
+			std::cerr << "\\_______";
 		} else {
 			std::cerr << "        ";
 		}
