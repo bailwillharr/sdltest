@@ -62,7 +62,7 @@ private:
 	struct {
 		std::array<bool, SDL_NUM_SCANCODES> keys;
 		std::array<enum ButtonDelta, SDL_NUM_SCANCODES> deltas;
-	} m_keyboard;
+	} m_keyboard{ };
 
 	struct {
 		std::array<bool, static_cast<int>(inputs::MouseButton::M_SIZE)> buttons;
@@ -73,7 +73,7 @@ private:
 		Sint32 yrel;
 		float xscroll;
 		float yscroll;
-	} m_mouse;
+	} m_mouse{ };
 
 	// private methods
 

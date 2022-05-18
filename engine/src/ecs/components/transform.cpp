@@ -19,7 +19,7 @@ Transform::~Transform()
 
 void Transform::translate(glm::vec3 t)
 {
-	glm::translate(m_transformMatrix, t);
+	m_transformMatrix = glm::translate(m_transformMatrix, t);
 }
 
 }}}

@@ -68,6 +68,8 @@ int main(int argc, char *argv[])
 	// single-threaded game loop
 	while (win.isRunning()) {
 
+		float dt = (float)win.getLastFrameTime() / (float)engine::BILLION;
+
 		if (win.getNanos() >= lastTick + (engine::BILLION/20)) {
 			lastTick = win.getNanos();
 			win.setTitle(std::to_string(win.getFPS()) + " fps");
@@ -80,12 +82,14 @@ int main(int argc, char *argv[])
 			win.toggleFullscreen();
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
-		if (input.getButtonPress("jump")) {
-			std::cerr << mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()->getID() << "\n";
+		if(input.getButtonPress("jump")) {
+			win.setVSync(!win.getVSync());
 		}
 
 		mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()
-			->translate( {2.0f, 7.4f, 8.8f} );
+			->translate({dt * input.getAxis("movex")/10.0f, dt * input.getAxis("movey")/10.0f, 0.0f });
+
+
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		// draw

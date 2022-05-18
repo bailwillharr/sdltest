@@ -42,9 +42,7 @@ static GLuint compile(const char *path, GLenum type)
         }
         glGetShaderInfoLog(handle, log_len, NULL, log_msg);
         throw std::runtime_error("Shader compilation error in " + std::string(path) + " log:\n" + std::string(log_msg));
-    }
-
-    return handle;
+    } return handle;
 }
 
 namespace engine{
@@ -123,12 +121,16 @@ void Shader::makeActive()
 bool Shader::setUniform(const std::string& name, const glm::mat4& m)
 {
 	makeActive();
-	try {
-		Uniform u = m_uniforms.at(name);
-		glUniformMatrix4fv(u.location, 1, GL_FALSE, &m[0][0]);
-	} catch (std::out_of_range &e) {
-		return false;
-	}
+	Uniform u = m_uniforms.at(name);
+	glUniformMatrix4fv(u.location, 1, GL_FALSE, &m[0][0]);
+	return true;
+}
+
+bool Shader::setUniform(const std::string& name, const glm::vec3& v)
+{
+	makeActive();
+	Uniform u = m_uniforms.at(name);
+	glUniform3f(u.location, v.x, v.y, v.z);
 	return true;
 }
 

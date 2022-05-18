@@ -11,7 +11,8 @@ namespace engine {
 namespace rendering {
 
 enum class UniformType {
-		FLOAT_MAT4 = GL_FLOAT_MAT4
+		FLOAT_MAT4 = GL_FLOAT_MAT4,
+		FLOAT_VEC3 = GL_FLOAT_VEC3
 };
 
 struct Uniform {
@@ -34,8 +35,6 @@ private:
 
 	// fields
 
-	GLuint m_program;
-
 	std::map<std::string, Uniform> m_uniforms{};
 	std::map<std::string, Attribute> m_attributes{};
 
@@ -45,7 +44,11 @@ public:
 	Shader(std::string name);
 	~Shader();
 
+	GLuint m_program;
+
 	bool setUniform(const std::string& name, const glm::mat4& m);
+	bool setUniform(const std::string& name, const glm::vec3& v);
+
 	int getAttribLocation(const std::string& name) const;
 
 };

@@ -42,10 +42,19 @@ void Renderer::onUpdate(glm::mat4 transform)
 
 void Renderer::onRender(glm::mat4 transform)
 {
-	glBindVertexArray(m_vao);
-	if (m_material->setUniform("model", transform) != true) {
-		throw std::runtime_error("Unable to find 'model' uniform in shader");
+
+	std::cout << "\n\nTRANSFORM:\n";
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			std::cout << "\t" << transform[i][j];
+		}
+		std::cout << "\n";
 	}
+
+	m_material->setUniform("color", { 0.2f, 0.4f, 0.0f });
+	m_material->setUniform("modelMat", transform );
+
+	glBindVertexArray(m_vao);
 	glDrawElements(GL_TRIANGLES, m_mesh->getNumVertices(), GL_UNSIGNED_INT, 0);
 }
 
