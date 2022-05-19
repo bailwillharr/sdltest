@@ -3,16 +3,30 @@ cmake_minimum_required(VERSION 3.10)
 project(engine LANGUAGES CXX VERSION 1.0)
 
 add_library(engine STATIC
-	src/window.cpp
-	src/input.cpp
-	src/ecs/object.cpp
-	src/ecs/sceneroot.cpp
-	src/ecs/component.cpp
-	src/ecs/components/transform.cpp
-	src/ecs/components/renderer.cpp
-	src/rendering/material.cpp
-	src/rendering/shader.cpp
-	src/rendering/mesh.cpp
+	"src/window.cpp"
+	"src/input.cpp"
+	"src/ecs/object.cpp"
+	"src/ecs/sceneroot.cpp"
+	"src/ecs/component.cpp"
+	"src/ecs/components/transform.cpp"
+	"src/ecs/components/renderer.cpp"
+	"src/rendering/material.cpp"
+	"src/rendering/shader.cpp"
+	"src/rendering/mesh.cpp"
+	"src/ecs/components/camera.cpp"
+	"include/engine/window.hpp"
+	"include/engine/input.hpp"
+	"include/engine/ecs/component.hpp"
+	"include/engine/ecs/object.hpp"
+	"include/engine/ecs/sceneroot.hpp"
+	"include/engine/ecs/components/camera.hpp"
+	"include/engine/ecs/components/renderer.hpp"
+	"include/engine/ecs/components/transform.hpp"
+	"include/engine/inputs/keyboard.hpp"
+	"include/engine/inputs/mouse.hpp"
+	"include/engine/rendering/material.hpp"
+	"include/engine/rendering/mesh.hpp"
+	"include/engine/rendering/shader.hpp"
 )
 
 set_property(TARGET engine PROPERTY CXX_STANDARD 14)

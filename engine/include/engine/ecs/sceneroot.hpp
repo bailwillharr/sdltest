@@ -2,8 +2,6 @@
 
 #include "engine/ecs/object.hpp"
 
-#include "engine/util/noncopyable.hpp"
-
 #include <utility>
 #include <vector>
 #include <string>

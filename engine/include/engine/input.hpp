@@ -1,7 +1,5 @@
 #pragma once
 
-#include "engine/util/noncopyable.hpp"
-
 #include "engine/window.hpp"
 
 #include "engine/inputs/keyboard.hpp"
@@ -22,7 +20,7 @@ enum class InputDevice : int {
 };
 
 // This class should be used to get platform/input-device independent input
-class Input : non_copyable {
+class Input {
 
 private:
 
@@ -65,6 +63,8 @@ public:
 
 	// requires a window reference to get input from
 	Input(const Window &win);
+	Input(const Input&) = delete;
+	Input& operator=(const Input&) = delete;
 	~Input();
 
 	// Add a mouse input

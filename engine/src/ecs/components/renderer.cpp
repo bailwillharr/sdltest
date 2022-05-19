@@ -43,6 +43,14 @@ void Renderer::onUpdate(glm::mat4 transform)
 void Renderer::onRender(glm::mat4 transform)
 {
 
+	std::cout << "\nTRANSFORM FOR " << getID() << "\n";
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			std::cout << "\t" << transform[i][j];
+		}
+		std::cout << "\n";
+	}
+
 	m_material->setUniform("color", { 0.2f, 0.4f, 0.0f });
 	m_material->setUniform("modelMat", transform );
 

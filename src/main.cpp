@@ -6,6 +6,7 @@
 #include "engine/ecs/component.hpp"
 #include "engine/ecs/components/transform.hpp"
 #include "engine/ecs/components/renderer.hpp"
+#include "engine/ecs/components/camera.hpp"
 
 #include <iostream>
 #include <memory>
@@ -41,10 +42,12 @@ int main(int argc, char *argv[])
 	mainScene.createChild("car");
 	mainScene.getChild("car").lock()->createComponent<MyComponent>();
 	mainScene.getChild("car").lock()->createComponent<engine::ecs::components::Renderer>();
+	mainScene.getChild("car").lock()->createChild("door").lock()->createComponent<engine::ecs::components::Renderer>();
+	mainScene.getChild("car").lock()->getChild("door").lock()->getComponent<engine::ecs::components::Transform>().lock()->translate(glm::vec3{-1.0f, 0.0f, 0.0f});
+	glm::mat4& t2 = mainScene.getChild("car").lock()->getChild("door").lock()->getComponent<engine::ecs::components::Transform>().lock()->m_transformMatrix;
+	t2 = glm::scale(t2, glm::vec3{ 0.5f, 0.5f, 1.0f });
 
-	for (int i = 0; i < 10000; i++) {
-		mainScene.getChild("car").lock()->createChild("screw" + std::to_string(i));
-	}
+	mainScene.createChild("cam").lock()->createComponent<engine::ecs::components::Camera>();
 
 	mainScene.printTree();
 

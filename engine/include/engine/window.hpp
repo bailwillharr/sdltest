@@ -1,7 +1,5 @@
 #pragma once
 
-#include "engine/util/noncopyable.hpp"
-
 #include "engine/inputs/keyboard.hpp"
 #include "engine/inputs/mouse.hpp"
 
@@ -20,7 +18,7 @@ namespace engine {
 
 extern const uint64_t BILLION;
 
-class Window : non_copyable {
+class Window {
 
 private:
 	SDL_Window *m_handle;
@@ -90,6 +88,8 @@ private:
 
 public:
 	Window(std::string title);
+	Window(const Window&) = delete;
+	Window& operator=(const Window&) = delete;
 	~Window();
 
 	// Return the title name
