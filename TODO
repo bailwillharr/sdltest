@@ -1,2 +1,2 @@
-REFACTOR THIS COMPLETE UNCOMPILABLE MESS OF SHARED_PTRS AND UNIQUE_PTRS!!!
-DONE? I think?
+Add an assets system for managing shaders, textures, materials etc.
+Assets can be added to components and also as parameters to other assets
