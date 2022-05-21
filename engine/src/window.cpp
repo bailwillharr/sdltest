@@ -9,7 +9,7 @@ namespace engine {
 
 const uint64_t BILLION = 1000000000;
 
-Window::Window(std::string title) : m_title(title)
+Window::Window(const std::string& title) : m_title(title)
 {
 
 	// init SDL

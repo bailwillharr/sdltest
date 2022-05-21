@@ -55,9 +55,9 @@ private:
 
 	float getButtonAxis(enum InputDevice device, int high, int low) const;
 
-	void addInputButton(std::string name, InputDevice device, int button);
-	void addInputAxis(std::string name, InputDevice device, int axis);
-	void addInputButtonAsAxis(std::string name, InputDevice device, int high, int low);
+	void addInputButton(const std::string& name, InputDevice device, int button);
+	void addInputAxis(const std::string& name, InputDevice device, int axis);
+	void addInputButtonAsAxis(const std::string& name, InputDevice device, int high, int low);
 
 public:
 
@@ -68,12 +68,12 @@ public:
 	~Input();
 
 	// Add a mouse input
-	void addInputButton(std::string name, inputs::MouseButton button);
-	void addInputAxis(std::string name, inputs::MouseAxis axis);
-	void addInputButtonAsAxis(std::string name, inputs::MouseButton high, inputs::MouseButton low);
+	void addInputButton(const std::string& name, inputs::MouseButton button);
+	void addInputAxis(const std::string& name, inputs::MouseAxis axis);
+	void addInputButtonAsAxis(const std::string& name, inputs::MouseButton high, inputs::MouseButton low);
 	// Add a keyboard input
-	void addInputButton(std::string name, inputs::Key button);
-	void addInputButtonAsAxis(std::string name, inputs::Key high, inputs::Key low);
+	void addInputButton(const std::string& name, inputs::Key button);
+	void addInputButtonAsAxis(const std::string& name, inputs::Key high, inputs::Key low);
 
 	void delInputButton(int index);
 	void delInputAxis(int index);
@@ -81,10 +81,10 @@ public:
 	void setDeviceActive(enum InputDevice device, bool active);
 	bool getDeviceActive(enum InputDevice device) const;
 
-	float getAxis(std::string axisName) const;
-	bool getButton(std::string buttonName) const;
-	bool getButtonPress(std::string buttonName) const;
-	bool getButtonRelease(std::string buttonName) const;
+	float getAxis(const std::string& axisName) const;
+	bool getButton(const std::string& buttonName) const;
+	bool getButtonPress(const std::string& buttonName) const;
+	bool getButtonRelease(const std::string& buttonName) const;
 	
 };
 

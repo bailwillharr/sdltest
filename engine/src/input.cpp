@@ -98,17 +98,17 @@ float Input::getButtonAxis(enum InputDevice device, int high, int low) const
 
 // public methods
 
-void Input::addInputButton(std::string name, InputDevice device, int button)
+void Input::addInputButton(const std::string& name, InputDevice device, int button)
 {
 	m_buttonEntries.push_back( { name, device, button } );
 }
 
-void Input::addInputAxis(std::string name, InputDevice device, int axis)
+void Input::addInputAxis(const std::string& name, InputDevice device, int axis)
 {
 	m_axisEntries.push_back( { name, device, axis, false, 0, 0 } );
 }
 
-void Input::addInputButtonAsAxis(std::string name, InputDevice device, int high, int low)
+void Input::addInputButtonAsAxis(const std::string& name, InputDevice device, int high, int low)
 {
 	m_axisEntries.push_back( { name, device, 0, true, high, low } );
 }
@@ -116,28 +116,28 @@ void Input::addInputButtonAsAxis(std::string name, InputDevice device, int high,
 // OVERLOADS:
 
 // Add a mouse input
-void Input::addInputButton(std::string name, inputs::MouseButton button)
+void Input::addInputButton(const std::string& name, inputs::MouseButton button)
 {
 	addInputButton(name, InputDevice::MOUSE, static_cast<int>(button));
 }
 
-void Input::addInputAxis(std::string name, inputs::MouseAxis axis)
+void Input::addInputAxis(const std::string& name, inputs::MouseAxis axis)
 {
 	addInputAxis(name, InputDevice::MOUSE, static_cast<int>(axis));
 }
 
-void Input::addInputButtonAsAxis(std::string name, inputs::MouseButton high, inputs::MouseButton low)
+void Input::addInputButtonAsAxis(const std::string& name, inputs::MouseButton high, inputs::MouseButton low)
 {
 	addInputButtonAsAxis(name, InputDevice::MOUSE, static_cast<int>(high), static_cast<int>(low));
 }
 
 // Add a keyboard input (TODO: add KeyboardButton enum class)
-void Input::addInputButton(std::string name, inputs::Key button)
+void Input::addInputButton(const std::string& name, inputs::Key button)
 {
 	addInputButton(name, InputDevice::KEYBOARD, static_cast<int>(button));
 }
 
-void Input::addInputButtonAsAxis(std::string name, inputs::Key high, inputs::Key low)
+void Input::addInputButtonAsAxis(const std::string& name, inputs::Key high, inputs::Key low)
 {
 	addInputButtonAsAxis(name, InputDevice::KEYBOARD, static_cast<int>(high), static_cast<int>(low));
 }
@@ -166,7 +166,7 @@ bool Input::getDeviceActive(enum InputDevice device) const
 	return m_enabledDevices[static_cast<int>(device)];
 }
 
-float Input::getAxis(std::string axisName) const
+float Input::getAxis(const std::string& axisName) const
 {
 	for (const AxisEntry& e : m_axisEntries) {
 		if (e.name == axisName) {
@@ -183,7 +183,7 @@ float Input::getAxis(std::string axisName) const
 //	throw std::runtime_error("Unable to find mapping in input table");
 }
 
-bool Input::getButton(std::string buttonName) const
+bool Input::getButton(const std::string& buttonName) const
 {
 	bool isDown = false;
 
@@ -200,7 +200,7 @@ bool Input::getButton(std::string buttonName) const
 	return isDown;
 }
 
-bool Input::getButtonPress(std::string buttonName) const
+bool Input::getButtonPress(const std::string& buttonName) const
 {
 	bool isPressed = false;
 
@@ -217,7 +217,7 @@ bool Input::getButtonPress(std::string buttonName) const
 	return isPressed;
 }
 
-bool Input::getButtonRelease(std::string buttonName) const
+bool Input::getButtonRelease(const std::string& buttonName) const
 {
 	bool isReleased = false;
 

@@ -87,7 +87,7 @@ private:
 	void onMouseWheelEvent(SDL_MouseWheelEvent &e);
 
 public:
-	Window(std::string title);
+	Window(const std::string& title);
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 	~Window();
