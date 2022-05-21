@@ -18,6 +18,8 @@ class Renderer : public Component {
 private:
 	std::shared_ptr<engine::rendering::Material> m_material = std::make_shared<engine::rendering::Material>();
 	std::shared_ptr<engine::rendering::Mesh> m_mesh = std::make_shared<engine::rendering::Mesh>();
+//	std::shared_ptr<engine::rendering::Material> m_material;
+//	std::shared_ptr<engine::rendering::Mesh> m_mesh;
 
 	GLuint m_vao;
 	GLuint m_vbo;
