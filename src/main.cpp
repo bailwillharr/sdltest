@@ -43,9 +43,13 @@ int main(int argc, char *argv[])
 	mainScene.getChild("car").lock()->createComponent<MyComponent>();
 	mainScene.getChild("car").lock()->createComponent<engine::ecs::components::Renderer>();
 	mainScene.getChild("car").lock()->createChild("door").lock()->createComponent<engine::ecs::components::Renderer>();
-	mainScene.getChild("car").lock()->getChild("door").lock()->getComponent<engine::ecs::components::Transform>().lock()->translate(glm::vec3{-1.0f, 0.0f, 0.0f});
+
+	glm::mat4& t = mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()->m_transformMatrix;
 	glm::mat4& t2 = mainScene.getChild("car").lock()->getChild("door").lock()->getComponent<engine::ecs::components::Transform>().lock()->m_transformMatrix;
-	t2 = glm::scale(t2, glm::vec3{ 0.5f, 0.5f, 1.0f });
+
+	t = glm::scale(t, glm::vec3{0.5f, 0.5f, 1.0f});
+	t2 = glm::translate(t2, glm::vec3{-1.0f, 0.0f, 0.0f});
+	t2 = glm::scale(t2, glm::vec3{ 0.25f, 0.25f, 1.0f });
 
 	mainScene.createChild("cam").lock()->createComponent<engine::ecs::components::Camera>();
 
@@ -69,6 +73,7 @@ int main(int argc, char *argv[])
 
 	win.setVSync(false);
 	win.setRelativeMouseMode(false);
+		t = glm::rotate(t, (float)win.getLastFrameTime() / engine::BILLION, glm::vec3{0.0f, 0.0f, 1.0f});
 
 	uint64_t lastTick = win.getNanos();
 
@@ -95,6 +100,9 @@ int main(int argc, char *argv[])
 		if(input.getButtonPress("jump")) {
 			win.setVSync(!win.getVSync());
 		}
+
+		t = glm::rotate(t, (float)win.getLastFrameTime() / engine::BILLION, glm::vec3{0.0f, 0.0f, 1.0f});
+		t2 = glm::rotate(t2, 2.0f * (float)win.getLastFrameTime() / engine::BILLION, glm::vec3{0.0f, 0.0f, 1.0f});
 		
 		// draw
 		glClear(GL_COLOR_BUFFER_BIT);

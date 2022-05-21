@@ -29,6 +29,7 @@ public:
 	glm::quat getRotation();
 
 	void translate(glm::vec3 t);
+	void rotate(float radians, glm::vec3 t);
 
 
 };
