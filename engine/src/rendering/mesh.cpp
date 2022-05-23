@@ -5,9 +5,10 @@ namespace rendering {
 
 Mesh::Mesh()
 {
-	m_vertices.push_back({ {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f} });
-	m_vertices.push_back({ {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f} });
-	m_vertices.push_back({ {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f} });
+	/*						position				normal					uv				*/
+	m_vertices.push_back({	{0.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{0.0f, 1.0f} });
+	m_vertices.push_back({	{1.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{1.0f, 1.0f} });
+	m_vertices.push_back({	{0.0f, 1.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{0.0f, 0.0f} });
 }
 
 Mesh::~Mesh()
