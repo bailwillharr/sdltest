@@ -8,6 +8,8 @@
 #include "engine/ecs/components/renderer.hpp"
 #include "engine/ecs/components/camera.hpp"
 
+#include "engine/debug/timer.hpp"
+
 #include <iostream>
 #include <memory>
 #include <thread>
@@ -52,7 +54,7 @@ int main(int argc, char *argv[])
 	t2 = glm::scale(t2, glm::vec3{ 0.25f, 0.25f, 1.0f });
 
 	mainScene.createChild("cam").lock()->createComponent<engine::ecs::components::Camera>();
-
+		
 	mainScene.printTree();
 
 	// menu, settings controls
@@ -73,7 +75,6 @@ int main(int argc, char *argv[])
 
 	win.setVSync(false);
 	win.setRelativeMouseMode(false);
-		t = glm::rotate(t, (float)win.getLastFrameTime() / engine::BILLION, glm::vec3{0.0f, 0.0f, 1.0f});
 
 	uint64_t lastTick = win.getNanos();
 

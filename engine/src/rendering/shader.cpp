@@ -100,7 +100,7 @@ Shader::Shader(std::string name)
 		GLenum type;
 		glGetActiveAttrib(m_program, i, 63, NULL, &size, &type, nameBuf);
 		m_attributes[nameBuf] = Attribute{size, static_cast<UniformType>(type), (GLuint)i};
-        std::cout << "Attrib " << nameBuf << " index: " << i << "\n";
+        std::cerr << "Attrib " << nameBuf << " index: " << i << "\n";
 	}
 
 }
@@ -108,7 +108,7 @@ Shader::Shader(std::string name)
 Shader::~Shader()
 {
 	glDeleteProgram(m_program);
-    std::cout << "Destroyed shader\n";
+    std::cerr << "Destroyed shader\n";
 }
 
 void Shader::makeActive()
