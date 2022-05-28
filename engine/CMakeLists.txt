@@ -34,13 +34,11 @@ add_library(engine STATIC
 set_property(TARGET engine PROPERTY CXX_STANDARD 17)
 set_property(TARGET engine PROPERTY CXX_STANDARD_REQUIRED ON)
 
-#target_compile_options(engine PRIVATE -Wall -Wextra -pedantic)
-
 target_include_directories(engine PRIVATE include)
 
 # defines:
 
-target_compile_definitions(engine PRIVATE ENGINE_NOSWAP)
+#target_compile_definitions(engine PRIVATE ENGINE_NOSWAP)
 
 # libraries
 

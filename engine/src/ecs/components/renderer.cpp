@@ -6,11 +6,21 @@ namespace engine {
 namespace ecs {
 namespace components {
 
+GLuint Renderer::s_active_vao = 0;
+
+void Renderer::bindVAO()
+{
+	if (s_active_vao != m_vao) {
+		glBindVertexArray(m_vao);
+		s_active_vao = m_vao;
+	}
+}
+
 Renderer::Renderer(ecs::Object* parent) : Component(parent, "renderer")
 {
 
 	glGenVertexArrays(1, &m_vao);
-	glBindVertexArray(m_vao);
+	bindVAO();
 	glGenBuffers(1, &m_vbo);
 	glGenBuffers(1, &m_ebo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -27,7 +37,6 @@ Renderer::Renderer(ecs::Object* parent) : Component(parent, "renderer")
 	//glVertexAttribPointer(m_material->getAttribLocation("v_Normal"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)3);
 	//glEnableVertexAttribArray(m_material->getAttribLocation("v_UV"));
 	//glVertexAttribPointer(m_material->getAttribLocation("v_UV"), 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)6);
-	glBindVertexArray(0);
 }
 
 Renderer::~Renderer()
@@ -46,7 +55,7 @@ void Renderer::onRender(glm::mat4 transform)
 	m_material->setUniform("color", { 0.2f, 0.4f, 0.0f });
 	m_material->setUniform("modelMat", transform );
 
-	glBindVertexArray(m_vao);
+	bindVAO();
 	glDrawElements(GL_TRIANGLES, m_mesh->getNumVertices(), GL_UNSIGNED_INT, 0);
 }
 
