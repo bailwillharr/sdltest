@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12)
 
 project(SDLTest LANGUAGES CXX VERSION 1.0)
 
@@ -10,8 +10,6 @@ add_executable(sdltest
 
 set_property(TARGET sdltest PROPERTY CXX_STANDARD 17)
 set_property(TARGET sdltest PROPERTY CXX_STANDARD_REQUIRED ON)
-
-#target_compile_options(sdltest PRIVATE -Wall -Wextra -pedantic)
 
 target_include_directories(sdltest PRIVATE include)
 

@@ -15,10 +15,11 @@ class Component {
 
 private:
 	static int s_component_count;
-
+	
 	int m_id = s_component_count;
 	std::string m_typeName;
 
+protected:
 	Object* m_parent;
 
 public:

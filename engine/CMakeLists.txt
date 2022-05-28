@@ -38,6 +38,10 @@ set_property(TARGET engine PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_include_directories(engine PRIVATE include)
 
+# defines:
+
+target_compile_definitions(engine PRIVATE ENGINE_NOSWAP)
+
 # libraries
 
 # MinGW library if using it

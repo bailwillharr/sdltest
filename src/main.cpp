@@ -19,13 +19,13 @@ public:
 	MyComponent(engine::ecs::Object* parent) : Component(parent, "MyComponent") {}
 	void onUpdate(glm::mat4 transform) override
 	{
-		m_transformMatrix = glm::rotate(t2, (float)win.getLastFrameTime() / engine::BILLION, glm::vec3{0.0f, 0.0f, 1.0f});
+		glm::mat4& t = m_parent->getComponent<engine::ecs::components::Transform>().lock()->m_transformMatrix;
+		t = glm::rotate(t, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	}
 	void onRender(glm::mat4 transform) override
 	{
 		(void)transform;
 	}
-	void doThings() { std::cout << "YEE YEE\n"; }
 };
 
 int main(int argc, char *argv[])
@@ -42,9 +42,10 @@ int main(int argc, char *argv[])
 	engine::ecs::SceneRoot mainScene("My Scene");
 
 	mainScene.createChild("car");
-	mainScene.getChild("car").lock()->createComponent<MyComponent>();
 	mainScene.getChild("car").lock()->createComponent<engine::ecs::components::Renderer>();
+
 	mainScene.getChild("car").lock()->createChild("door").lock()->createComponent<engine::ecs::components::Renderer>();
+	mainScene.getChild("car").lock()->getChild("door").lock()->createComponent<MyComponent>();
 
 	glm::mat4& t = mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()->m_transformMatrix;
 	glm::mat4& t2 = mainScene.getChild("car").lock()->getChild("door").lock()->getComponent<engine::ecs::components::Transform>().lock()->m_transformMatrix;

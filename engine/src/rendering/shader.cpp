@@ -115,6 +115,7 @@ void Shader::makeActive()
 {
 	if (s_activeProgram != m_program) {
 		glUseProgram(m_program);
+        s_activeProgram = m_program;
 	}
 }
 

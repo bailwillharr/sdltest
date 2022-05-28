@@ -201,7 +201,9 @@ void Window::makeContextCurrent() { if (SDL_GL_MakeCurrent(m_handle, m_glContext
 
 void Window::swapBuffers()
 {
+#ifndef ENGINE_NOSWAP
 	SDL_GL_SwapWindow(m_handle);
+#endif
 	m_frames++;
 	uint64_t currentFrameStamp = getNanos();
 	m_lastFrameTime = currentFrameStamp - m_lastFrameStamp;
