@@ -19,7 +19,7 @@ public:
 	MyComponent(engine::ecs::Object* parent) : Component(parent, "MyComponent") {}
 	void onUpdate(glm::mat4 transform) override
 	{
-		(void)transform;
+		m_transformMatrix = glm::rotate(t2, (float)win.getLastFrameTime() / engine::BILLION, glm::vec3{0.0f, 0.0f, 1.0f});
 	}
 	void onRender(glm::mat4 transform) override
 	{
@@ -101,10 +101,7 @@ int main(int argc, char *argv[])
 		if(input.getButtonPress("jump")) {
 			win.setVSync(!win.getVSync());
 		}
-
-		t = glm::rotate(t, (float)win.getLastFrameTime() / engine::BILLION, glm::vec3{0.0f, 0.0f, 1.0f});
-		t2 = glm::rotate(t2, 2.0f * (float)win.getLastFrameTime() / engine::BILLION, glm::vec3{0.0f, 0.0f, 1.0f});
-		
+	
 		// draw
 		glClear(GL_COLOR_BUFFER_BIT);
 		mainScene.renderScene();
