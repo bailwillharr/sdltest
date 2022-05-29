@@ -28,6 +28,7 @@ private:
 	GLuint m_ebo;
 
 	void bindVAO();
+	void drawMesh();
 
 public:
 	Renderer(ecs::Object*);

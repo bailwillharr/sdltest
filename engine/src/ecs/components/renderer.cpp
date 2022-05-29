@@ -16,6 +16,13 @@ void Renderer::bindVAO()
 	}
 }
 
+void Renderer::drawMesh()
+{
+	bindVAO();
+	m_material->makeActive();
+	glDrawElements(GL_TRIANGLES, m_mesh->getNumVertices(), GL_UNSIGNED_INT, 0);
+}
+
 Renderer::Renderer(ecs::Object* parent) : Component(parent, "renderer")
 {
 
@@ -55,8 +62,8 @@ void Renderer::onRender(glm::mat4 transform)
 	m_material->setUniform("color", { 0.2f, 0.4f, 0.0f });
 	m_material->setUniform("modelMat", transform );
 
-	bindVAO();
-	glDrawElements(GL_TRIANGLES, m_mesh->getNumVertices(), GL_UNSIGNED_INT, 0);
+	drawMesh();
+
 }
 
 }}}

@@ -35,16 +35,16 @@ private:
 
 	// fields
 
+	GLuint m_program;
+
 	std::map<std::string, Uniform> m_uniforms{};
 	std::map<std::string, Attribute> m_attributes{};
-
-	void makeActive();
 
 public:
 	Shader(std::string name);
 	~Shader();
-
-	GLuint m_program;
+	
+	void makeActive();
 
 	bool setUniform(const std::string& name, const glm::mat4& m);
 	bool setUniform(const std::string& name, const glm::vec3& v);
