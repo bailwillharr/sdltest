@@ -53,8 +53,11 @@ GLuint Shader::s_activeProgram = 0;
 
 Shader::Shader(std::string name)
 {
-	std::string vertexShaderPath = "res/shaders/" + name + ".vert";
+	std::string vertexShaderPath = "/usr/local/share/sdltest/shaders/" + name + ".vert";
+	std::string fragmentShaderPath = "/usr/local/share/sdltest/shaders/" + name + ".frag";
+	/*std::string vertexShaderPath = "res/shaders/" + name + ".vert";
 	std::string fragmentShaderPath = "res/shaders/" + name + ".frag";
+	*/
 	GLuint vs = compile(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
 	GLuint fs = compile(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
 	m_program = glCreateProgram();

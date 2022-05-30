@@ -33,6 +33,8 @@ int main(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 
+	try{
+
 	engine::Window win("sdltest");
 
 	// input class requires a reference to the window class
@@ -103,9 +105,7 @@ int main(int argc, char *argv[])
 			win.setVSync(!win.getVSync());
 
 		if(input.getButtonPress("fire")) {
-			if (mainScene.getChild("car")) {
-				mainScene.deleteChild("car");
-			}
+			mainScene.deleteChild("car");
 		}
 	
 		// draw
@@ -118,6 +118,11 @@ int main(int argc, char *argv[])
 		// events
 		win.getInputAndEvents();
 	
+	}
+
+	} catch (const std::runtime_error &e)
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Runtime Error", e.what(), NULL);
 	}
 
 	return 0;
