@@ -102,8 +102,11 @@ int main(int argc, char *argv[])
 		if(input.getButtonPress("jump"))
 			win.setVSync(!win.getVSync());
 
-		if(input.getButtonPress("fire"))
-			mainScene.deleteChild("car");
+		if(input.getButtonPress("fire")) {
+			if (mainScene.getChild("car")) {
+				mainScene.deleteChild("car");
+			}
+		}
 	
 		// draw
 		glClear(GL_COLOR_BUFFER_BIT);
