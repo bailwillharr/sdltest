@@ -4,7 +4,9 @@
 #include "engine/inputs/mouse.hpp"
 
 #ifdef _MSC_VER
+#pragma warning(push, 0)
 #include <SDL.h>
+#pragma warning(pop)
 #else
 #include <SDL2/SDL.h>
 #endif
@@ -33,9 +35,9 @@ private:
 	bool m_keyboardFocus = true;
 
 	// size in screen coordinates
-	glm::vec2 m_winSize = glm::vec2(640, 480);
+	glm::ivec2 m_winSize = glm::vec2(640, 480);
 	// actual framebuffer size
-	glm::vec2 m_fbSize;
+	glm::ivec2 m_fbSize;
 
 	// performance counter frequency
 	uint64_t m_counterFreq;

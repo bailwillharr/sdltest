@@ -34,8 +34,8 @@ Window::Window(const std::string& title) : m_title(title)
 	m_handle = SDL_CreateWindow(
 			m_title.c_str(),
 			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			m_winSize.x,
-			m_winSize.y,
+			static_cast<int>(m_winSize.x),
+			static_cast<int>(m_winSize.y),
 			SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 	if (m_handle == NULL) {
 		SDL_Quit();
@@ -45,8 +45,8 @@ Window::Window(const std::string& title) : m_title(title)
 	// get window size
 	int winWidth, winHeight;
 	SDL_GetWindowSize(m_handle, &winWidth, &winHeight);
-	m_winSize.x = static_cast<float>(winWidth);
-	m_winSize.y = static_cast<float>(winHeight);
+	m_winSize.x = winWidth;
+	m_winSize.y = winHeight;
 
 	const int WINDOWED_MIN_WIDTH = 640;
 	const int WINDOWED_MIN_HEIGHT = 480;
@@ -84,14 +84,14 @@ Window::~Window()
 void Window::onResize(Sint32 width, Sint32 height)
 {
 	// get window size
-	m_winSize.x = static_cast<GLsizei>(width);
-	m_winSize.y = static_cast<GLsizei>(height);
+	m_winSize.x = static_cast<int>(width);
+	m_winSize.y = static_cast<int>(height);
 
 	// get framebuffer size
 	int fbWidth, fbHeight;
 	SDL_GL_GetDrawableSize(m_handle, &fbWidth, &fbHeight);
-	m_fbSize.x = static_cast<float>(fbWidth);
-	m_fbSize.y = static_cast<float>(fbHeight);
+	m_fbSize.x = static_cast<int>(fbWidth);
+	m_fbSize.y = static_cast<int>(fbHeight);
 	glViewport(0, 0, fbWidth, fbHeight);
 }
 

@@ -20,7 +20,7 @@ void Renderer::drawMesh()
 {
 	bindVAO();
 	m_material->makeActive();
-	glDrawElements(GL_TRIANGLES, m_mesh->getNumVertices(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_mesh->getNumVertices()), GL_UNSIGNED_INT, 0);
 }
 
 Renderer::Renderer(ecs::Object* parent, float red) : Component(parent, "renderer")
