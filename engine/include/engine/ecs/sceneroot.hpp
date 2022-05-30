@@ -22,6 +22,8 @@ private:
 public:
 	// create a new empty scene
 	SceneRoot(std::string name);
+	SceneRoot(const SceneRoot&) = delete;
+	SceneRoot& operator=(const SceneRoot&) = delete;
 	~SceneRoot();
 
 	void updateScene();

@@ -31,7 +31,7 @@ private:
 	void drawMesh();
 
 public:
-	Renderer(ecs::Object*);
+	Renderer(ecs::Object*, float red = 0.1f);
 	~Renderer() override;
 
 	void onUpdate(glm::mat4 transform) override;

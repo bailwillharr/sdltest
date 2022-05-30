@@ -14,9 +14,9 @@ class Object;
 class Component {
 
 private:
-	static int s_component_count;
+	static int s_next_component_id;
 	
-	int m_id = s_component_count;
+	int m_id = s_next_component_id;
 	std::string m_typeName;
 
 protected:
@@ -24,6 +24,8 @@ protected:
 
 public:
 	Component(Object* parent, std::string typeName);
+	Component(const Component&) = delete;
+	Component& operator=(const Component&) = delete;
 	virtual ~Component() = 0;
 	
 	int getID();

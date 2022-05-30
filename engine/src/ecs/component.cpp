@@ -5,11 +5,11 @@
 namespace engine {
 namespace ecs {
 
-int Component::s_component_count = 0;
+int Component::s_next_component_id = 0;
 
 Component::Component(Object* parent, std::string typeName) : m_typeName(typeName), m_parent(parent)
 {
-	s_component_count++;
+	s_next_component_id++;
 	std::cerr << "Component " << m_id << " of type " << m_typeName << " has been constructed\n";
 }
 

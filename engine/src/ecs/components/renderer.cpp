@@ -23,8 +23,12 @@ void Renderer::drawMesh()
 	glDrawElements(GL_TRIANGLES, m_mesh->getNumVertices(), GL_UNSIGNED_INT, 0);
 }
 
-Renderer::Renderer(ecs::Object* parent) : Component(parent, "renderer")
+Renderer::Renderer(ecs::Object* parent, float red) : Component(parent, "renderer")
 {
+
+	m_mesh->m_vertices.push_back({	{red, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{0.0f, 1.0f} });
+	m_mesh->m_vertices.push_back({	{1.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{1.0f, 1.0f} });
+	m_mesh->m_vertices.push_back({	{0.0f, 1.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{0.0f, 0.0f} });
 
 	glGenVertexArrays(1, &m_vao);
 	bindVAO();

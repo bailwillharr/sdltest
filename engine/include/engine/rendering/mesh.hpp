@@ -15,14 +15,9 @@ struct Vertex {
 	glm::vec2 uv;
 };
 
-class Mesh {
-private:
+struct Mesh {
 
 	std::vector<Vertex> m_vertices;
-
-public:
-	Mesh();
-	~Mesh();
 
 	size_t getNumVertices() const;
 	const void * getVerticesPtr() const;

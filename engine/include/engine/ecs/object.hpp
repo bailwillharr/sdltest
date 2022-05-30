@@ -1,7 +1,6 @@
 #pragma once
 
 #include "engine/ecs/component.hpp"
-
 #include "engine/ecs/components/transform.hpp"
 
 #include <list>
@@ -26,6 +25,8 @@ private:
 
 public:
 	Object(std::string name);
+	Object(const Object&) = delete;
+	Object& operator=(const Object&) = delete;
 	~Object();
 
 	std::string getName();
@@ -92,7 +93,7 @@ template<class T> void Object::deleteComponent()
 		throw std::runtime_error("deleteComponent() error: attempt to remove the 'Transform' component");
 	}
 	for (auto itr = m_components.begin(); itr != m_components.end(); ++itr) {
-		if (dynamic_cast<T*>(*itr) != nullptr) {
+		if (dynamic_cast<T*>((*itr).get()) != nullptr) {
 			m_components.erase(itr);
 			return;
 		}

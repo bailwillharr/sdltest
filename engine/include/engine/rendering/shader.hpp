@@ -42,6 +42,8 @@ private:
 
 public:
 	Shader(std::string name);
+	Shader(const Shader&) = delete;
+	Shader& operator=(const Shader&) = delete;
 	~Shader();
 	
 	void makeActive();
