@@ -19,7 +19,7 @@ public:
 	MyComponent(engine::ecs::Object* parent) : Component(parent, "MyComponent") {}
 	void onUpdate(glm::mat4 transform) override
 	{
-		glm::mat4& t = m_parent->getComponent<engine::ecs::components::Transform>().lock()->m_transformMatrix;
+		glm::mat4& t = m_parent->getComponent<engine::ecs::components::Transform>()->m_transformMatrix;
 		t = glm::rotate(t, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	}
 	void onRender(glm::mat4 transform) override
@@ -42,19 +42,19 @@ int main(int argc, char *argv[])
 	engine::ecs::SceneRoot mainScene("My Scene");
 
 	mainScene.createChild("car");
-	mainScene.getChild("car").lock()->createComponent<engine::ecs::components::Renderer>();
+	mainScene.getChild("car")->createComponent<engine::ecs::components::Renderer>();
 
-	mainScene.getChild("car").lock()->createChild("door").lock()->createComponent<engine::ecs::components::Renderer>();
-	mainScene.getChild("car").lock()->getChild("door").lock()->createComponent<MyComponent>();
+	mainScene.getChild("car")->createChild("door")->createComponent<engine::ecs::components::Renderer>();
+	mainScene.getChild("car")->getChild("door")->createComponent<MyComponent>();
 
-	glm::mat4& t = mainScene.getChild("car").lock()->getComponent<engine::ecs::components::Transform>().lock()->m_transformMatrix;
-	glm::mat4& t2 = mainScene.getChild("car").lock()->getChild("door").lock()->getComponent<engine::ecs::components::Transform>().lock()->m_transformMatrix;
+	glm::mat4& t = mainScene.getChild("car")->getComponent<engine::ecs::components::Transform>()->m_transformMatrix;
+	glm::mat4& t2 = mainScene.getChild("car")->getChild("door")->getComponent<engine::ecs::components::Transform>()->m_transformMatrix;
 
 	t = glm::scale(t, glm::vec3{0.5f, 0.5f, 1.0f});
 	t2 = glm::translate(t2, glm::vec3{-1.0f, 0.0f, 0.0f});
 	t2 = glm::scale(t2, glm::vec3{ 0.25f, 0.25f, 1.0f });
 
-	mainScene.createChild("cam").lock()->createComponent<engine::ecs::components::Camera>();
+	mainScene.createChild("cam")->createComponent<engine::ecs::components::Camera>();
 		
 	mainScene.printTree();
 
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 
 	input.addInputButton("jump", engine::inputs::Key::SPACE);
 
-	win.setVSync(false);
+	win.setVSync(true);
 	win.setRelativeMouseMode(false);
 
 	uint64_t lastTick = win.getNanos();
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 
 		if (win.getNanos() >= lastTick + (engine::BILLION/20)) {
 			lastTick = win.getNanos();
-			win.setTitle(std::to_string(win.getFPS()) + " fps");
+			win.setTitle(std::to_string(win.getFPS()) + " fps, avg: " + std::to_string(win.getAvgFPS()) + " fps");
 		}
 		
 		// logic

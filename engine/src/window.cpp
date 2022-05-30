@@ -24,6 +24,7 @@ Window::Window(const std::string& title) : m_title(title)
 	m_counterFreq = SDL_GetPerformanceFrequency();
 	m_startTime = getNanos();
 	m_lastFrameTime = m_startTime;
+	m_avgFpsStart = m_startTime;
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
@@ -437,7 +438,22 @@ uint64_t Window::getLastFrameTime() const
 
 uint64_t Window::getFPS() const
 {
+	if (m_lastFrameTime == 0) return 0;
 	return BILLION / m_lastFrameTime;
 }
 
+uint64_t Window::getAvgFPS() const
+{
+	uint64_t delta_t = getNanos() - m_avgFpsStart;
+	if (delta_t == 0) return 0;
+	return BILLION * m_frames / delta_t;
 }
+
+void Window::resetAvgFPS()
+{
+	m_avgFpsStart = getNanos();
+}
+
+
+
+}	

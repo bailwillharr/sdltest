@@ -48,6 +48,8 @@ private:
 	uint64_t m_lastFrameStamp;
 	// in nanoseconds; elapsed time between frames
 	uint64_t m_lastFrameTime;
+	// in nanoseconds
+	uint64_t m_avgFpsStart;
 
 	// input stuff
 
@@ -184,6 +186,9 @@ public:
 	uint64_t getStartTime() const;
 	uint64_t getLastFrameTime() const;
 	uint64_t getFPS() const;
+	uint64_t getAvgFPS() const;
+
+	void resetAvgFPS();
 
 };
 

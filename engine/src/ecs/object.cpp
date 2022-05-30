@@ -31,38 +31,37 @@ std::string Object::getName()
 	return m_name;
 }
 
-std::weak_ptr<Object> Object::getChild(std::string name)
+Object* Object::getChild(std::string name)
 {
-	for (std::shared_ptr<Object>& child : m_children) {
+	for (const auto& child : m_children) {
 		if (name == child->getName()) {
-			return child; // copy the shared_ptr, increasing ref-count by 1
+			return child.get();
 		}
 	}
-	return std::weak_ptr<Object>();
+	return nullptr;
 }
 
-std::vector<std::weak_ptr<Object>> Object::getChildren()
+std::vector<Object*> Object::getChildren()
 {
-	std::vector<std::weak_ptr<Object>> weakVector{};
-	for (std::shared_ptr<Object>& child : m_children) {
-		weakVector.emplace_back(child);
+	std::vector<Object*> newVector{};
+	for (const auto& child : m_children) {
+		newVector.push_back(child.get());
 	}
-	return weakVector;
+	return newVector;
 }
 
-std::weak_ptr<Object> Object::createChild(std::string name)
+Object* Object::createChild(std::string name)
 {
-	if (getChild(name).expired() == false) {
+	if (getChild(name) != nullptr) {
 		throw std::runtime_error("Attempt to create child object with existing name");
 	}
-	m_children.emplace_back(std::make_shared<Object>(name));
-	return m_children.back();
+	m_children.emplace_back(std::make_unique<Object>(name));
+	return m_children.back().get();
 }
 
 void Object::deleteChild(std::string name)
 {
-	for (std::list<std::shared_ptr<Object>>::iterator itr = m_children.begin();
-		 itr != m_children.end(); ++itr) {
+	for (auto itr = m_children.begin(); itr != m_children.end(); ++itr) {
 		if ((*itr)->getName() == name) {
 			m_children.erase(itr);
 			return;
@@ -83,74 +82,48 @@ void Object::printTree(int level)
 		}
 	}
 	std::cerr << m_name << "\n";
-	for (std::weak_ptr<Object> childWP : this->getChildren()) {
-		if (auto child = childWP.lock()) {
-			child->printTree(level+1);
-		} else {
-			throw std::runtime_error("Unable to get lock on object pointer.");
-		}
+	for (const auto& child : this->getChildren()) {
+		child->printTree(level+1);
 	}
 }
 
 void Object::updateComponents(glm::mat4 transform)
 {
-	for (std::weak_ptr<Component> weakComp : m_components) {
-		if (auto comp = weakComp.lock()) {
-			comp->onUpdate(transform);
-		} else {
-			throw std::runtime_error("Unable to get lock on component under " + m_name);
-		}
+	for (const auto& comp : m_components) {
+		comp->onUpdate(transform);
 	}
 }
 
 void Object::renderComponents(glm::mat4 transform)
 {
-	for (std::weak_ptr<Component> weakComp : m_components) {
-		if (auto comp = weakComp.lock()) {
-			comp->onRender(transform);
-		} else {
-			throw std::runtime_error("Unable to get lock on component under " + m_name);
-		}
+	for (const auto& comp : m_components) {
+		comp->onRender(transform);
 	}
 }
 
 void Object::updateObjectAndChildren(glm::mat4 parentTransform)
 {
 	glm::mat4 newTransform;
-	if (auto transform = getComponent<components::Transform>().lock()) {
-		newTransform = parentTransform * transform->m_transformMatrix;
-	} else {
-		throw std::runtime_error("Unable to get lock on Transform component under " + m_name);
-	}
+	const auto transform = getComponent<components::Transform>();
+	newTransform = parentTransform * transform->m_transformMatrix;
 
 	updateComponents(newTransform);
 
-	for (std::weak_ptr<Object> weakObj : m_children) {
-		if (auto obj = weakObj.lock()) {
-			obj->updateObjectAndChildren(newTransform);
-		} else {
-			throw std::runtime_error("Unable to get lock on object under " + m_name);
-		}	
+	for (const auto& obj : m_children) {
+		obj->updateObjectAndChildren(newTransform);
 	}
 }
 
 void Object::renderObjectAndChildren(glm::mat4 parentTransform)
 {
 	glm::mat4 newTransform;
-	if (auto transform = getComponent<components::Transform>().lock()) {
-		newTransform = parentTransform * transform->m_transformMatrix;
-	} else {
-		throw std::runtime_error("Unable to get lock on Transform component under " + m_name);
-	}
+	const auto transform = getComponent<components::Transform>();
+	newTransform = parentTransform * transform->m_transformMatrix;
 
 	renderComponents(newTransform);
 
-	for (std::weak_ptr<Object> weakObj : m_children) {
-		if (auto obj = weakObj.lock()) {
-			obj->renderObjectAndChildren(newTransform);
-		} else {
-			throw std::runtime_error("Unable to get lock on object under " + m_name);
-		}	
+	for (const auto& obj : m_children) {
+		obj->renderObjectAndChildren(newTransform);
 	}
 
 }
