@@ -2,7 +2,7 @@
 
 #include "engine/ecs/component.hpp"
 
-#include "engine/resource/material.hpp"
+#include "engine/resource/shader.hpp"
 #include "engine/rendering/mesh.hpp"
 
 #include <vector>
@@ -18,10 +18,8 @@ class Renderer : public Component {
 private:
 	static GLuint s_active_vao;
 
-	std::shared_ptr<engine::resource::Material> m_material = std::make_shared<engine::resource::Material>();
+	std::shared_ptr<engine::resource::Shader> m_shader;
 	std::shared_ptr<engine::rendering::Mesh> m_mesh = std::make_shared<engine::rendering::Mesh>();
-//	std::shared_ptr<engine::rendering::Material> m_material;
-//	std::shared_ptr<engine::rendering::Mesh> m_mesh;
 
 	GLuint m_vao;
 	GLuint m_vbo;
@@ -31,7 +29,7 @@ private:
 	void drawMesh();
 
 public:
-	Renderer(ecs::Object*, float red = 0.1f);
+	Renderer(ecs::Object*);
 	~Renderer() override;
 
 	void onUpdate(glm::mat4 transform) override;

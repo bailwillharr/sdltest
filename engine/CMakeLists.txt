@@ -11,10 +11,10 @@ add_library(engine STATIC
 	"src/ecs/components/transform.cpp"
 	"src/ecs/components/renderer.cpp"
 	"src/ecs/components/camera.cpp"
-	"src/rendering/shader.cpp"
 	"src/rendering/mesh.cpp"
+	"src/resource/shader.cpp"
 	"src/resource/resource_manager.cpp"
-	"src/resource/material.cpp"
+	"src/resource/resource.cpp"
 	"include/engine/window.hpp"
 	"include/engine/input.hpp"
 	"include/engine/ecs/component.hpp"
@@ -26,10 +26,10 @@ add_library(engine STATIC
 	"include/engine/inputs/keyboard.hpp"
 	"include/engine/inputs/mouse.hpp"
 	"include/engine/rendering/mesh.hpp"
-	"include/engine/rendering/shader.hpp"
 	"include/engine/resource/resource_manager.hpp"
+	"include/engine/resource/shader.hpp"
 	"include/engine/resource/resource.hpp"
-	"include/engine/resource/material.hpp")
+)
 
 set_property(TARGET engine PROPERTY CXX_STANDARD 17)
 set_property(TARGET engine PROPERTY CXX_STANDARD_REQUIRED ON)

@@ -1,4 +1,4 @@
-#include "engine/rendering/shader.hpp"
+#include "engine/resource/shader.hpp"
 
 #include <glad/glad.h>
 
@@ -45,19 +45,19 @@ static GLuint compile(const char *path, GLenum type)
     } return handle;
 }
 
-namespace engine{
-namespace rendering {
+namespace engine {
+namespace resource {
 
 // I've got to do this because of GL's stupid state machine
 GLuint Shader::s_activeProgram = 0;
 
-Shader::Shader(std::string name)
+Shader::Shader(const std::filesystem::path& resPath) : Resource(resPath)
 {
-	std::string vertexShaderPath = "/usr/local/share/sdltest/shaders/" + name + ".vert";
-	std::string fragmentShaderPath = "/usr/local/share/sdltest/shaders/" + name + ".frag";
-	/*std::string vertexShaderPath = "res/shaders/" + name + ".vert";
-	std::string fragmentShaderPath = "res/shaders/" + name + ".frag";
-	*/
+
+	std::cerr << "SHADER CONSTRUCTOR CALLED: " << resPath.string() << "\n";
+
+	const std::string vertexShaderPath = resPath.parent_path()/std::filesystem::path(resPath.stem().string() + ".vert");
+	const std::string fragmentShaderPath = resPath.parent_path()/std::filesystem::path(resPath.stem().string() + ".frag");
 	GLuint vs = compile(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
 	GLuint fs = compile(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
 	m_program = glCreateProgram();

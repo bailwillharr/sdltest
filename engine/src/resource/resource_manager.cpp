@@ -4,14 +4,19 @@
 
 namespace engine::resource {
 
-ResourceManager::ResourceManager(const std::string& argv0)
+ResourceManager::ResourceManager(const char* argv0)
 {
 	std::filesystem::path binDir = std::filesystem::path(argv0).parent_path();
-	if (std::filesystem::is_directory(binDir.append("res"))) {
+	if (std::filesystem::is_directory(binDir / "res")) {
 		m_resourcesPath = std::filesystem::absolute("res");
 	} else {
-		m_resourcesPath = binDir.parent_path().append("share").append("sdltest");
+		m_resourcesPath = binDir.parent_path() / "share" / "sdltest";
 	}
+}
+
+std::filesystem::path ResourceManager::getFilePath(const std::string& name)
+{
+	return m_resourcesPath / name;
 }
 
 }

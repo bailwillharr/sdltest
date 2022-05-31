@@ -8,6 +8,8 @@
 #include "engine/ecs/components/renderer.hpp"
 #include "engine/ecs/components/camera.hpp"
 
+#include "engine/resource/resource_manager.hpp"
+
 #include "engine/debug/timer.hpp"
 
 #include <iostream>
@@ -33,16 +35,19 @@ int main(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 
-	try{
-
 	engine::Window win("sdltest");
-
-	// input class requires a reference to the window class
 	engine::Input input(win);
-
-	// scene stuff
+	engine::resource::ResourceManager resMan(argv[0]);
 	engine::ecs::SceneRoot mainScene("My Scene");
 
+	{
+		auto mat1 = resMan.get<engine::resource::Shader>("basic.glsl");
+		auto mat2 = resMan.get<engine::resource::Shader>("basic.glsl");
+	}
+	auto mat3 = resMan.get<engine::resource::Shader>("basic.glsl");
+	auto mat4 = resMan.get<engine::resource::Shader>("basic.glsl");
+
+	/*
 	mainScene.createChild("car");
 	mainScene.getChild("car")->createComponent<engine::ecs::components::Renderer>();
 
@@ -57,8 +62,10 @@ int main(int argc, char *argv[])
 	t2 = glm::scale(t2, glm::vec3{ 0.25f, 0.25f, 1.0f });
 
 	mainScene.createChild("cam")->createComponent<engine::ecs::components::Camera>();
+
+	*/
 		
-	mainScene.printTree();
+//	mainScene.printTree();
 
 	// menu, settings controls
 	input.addInputButton("fullscreen", engine::inputs::Key::F11);
@@ -90,7 +97,6 @@ int main(int argc, char *argv[])
 		}
 		
 		// logic
-		mainScene.updateScene();
 
 		if (input.getButtonPress("fullscreen")) {
 			win.toggleFullscreen();
@@ -103,14 +109,11 @@ int main(int argc, char *argv[])
 			win.setCloseFlag();
 		if(input.getButtonPress("jump"))
 			win.setVSync(!win.getVSync());
-
-		if(input.getButtonPress("fire")) {
-			mainScene.deleteChild("car");
-		}
-
 		if (win.getNanos() > win.getStartTime() + (10 * engine::BILLION)) {
 			win.setCloseFlag();
 		}
+
+		mainScene.updateScene();
 	
 		// draw
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -122,11 +125,6 @@ int main(int argc, char *argv[])
 		// events
 		win.getInputAndEvents();
 	
-	}
-
-	} catch (const std::runtime_error &e)
-	{
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Runtime Error", e.what(), NULL);
 	}
 
 	return 0;

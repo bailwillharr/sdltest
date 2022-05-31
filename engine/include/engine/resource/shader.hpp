@@ -1,5 +1,7 @@
 #pragma once
 
+#include "engine/resource/resource.hpp"
+
 #include <glad/glad.h>
 
 #include <glm/mat4x4.hpp>
@@ -8,7 +10,7 @@
 #include <map>
 
 namespace engine {
-namespace rendering {
+namespace resource {
 
 enum class UniformType {
 		FLOAT_MAT4 = GL_FLOAT_MAT4,
@@ -27,7 +29,7 @@ struct Attribute {
 		GLuint location;
 };
 
-class Shader {
+class Shader : public Resource {
 private:
 
 	// Only valid if glUseProgram is never called elsewhere
@@ -41,9 +43,7 @@ private:
 	std::map<std::string, Attribute> m_attributes{};
 
 public:
-	Shader(std::string name);
-	Shader(const Shader&) = delete;
-	Shader& operator=(const Shader&) = delete;
+	Shader(const std::filesystem::path& resPath);
 	~Shader();
 	
 	void makeActive();

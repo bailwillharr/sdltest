@@ -1,17 +1,20 @@
+#pragma once
+
 #include <string>
+#include <filesystem>
 
 namespace engine::resource {
 
 class Resource {
 
 public:
-	Resource(const std::string& name) {}
+	Resource(const std::filesystem::path& resPath);
 	Resource(const Resource&) = delete;
 	Resource& operator=(const Resource&) = delete;
-	~Resource() = default;
+	virtual ~Resource() = 0;
 
-private:
-
+protected:
+	std::filesystem::path m_resourcePath;
 
 };
 
