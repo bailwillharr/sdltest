@@ -1,2 +1,0 @@
-Add an assets system for managing shaders, textures, materials etc.
-Assets can be added to components and also as parameters to other assets
