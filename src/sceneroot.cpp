@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-SceneRoot::SceneRoot(std::string name) : Object("root"), m_sceneName(name)
+SceneRoot::SceneRoot(std::string name, struct GameIO things) : Object("root", things), m_sceneName(name)
 {
 	std::cerr << "SceneRoot '" << m_sceneName << "' has been constructed\n";
 }

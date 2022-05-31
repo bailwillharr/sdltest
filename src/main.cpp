@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	Window win("sdltest");
 	Input input(win);
 	ResourceManager resMan;
-	SceneRoot mainScene("My Scene");
+	SceneRoot mainScene("My Scene", win, input, resMan);
 
 	{
 		auto mat1 = resMan.get<resources::Shader>("basic.glsl");
@@ -113,7 +113,9 @@ int main(int argc, char *argv[])
 		mainScene.updateScene();
 	
 		// draw
+#ifndef SDLTEST_NOGFX
 		glClear(GL_COLOR_BUFFER_BIT);
+#endif
 		mainScene.renderScene();
 
 		// swap

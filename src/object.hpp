@@ -3,11 +3,21 @@
 #include "component.hpp"
 #include "components/transform.hpp"
 
+#include "window.hpp"
+#include "input.hpp"
+#include "resource_manager.hpp"
+
 #include <list>
 #include <vector>
 #include <string>
 #include <memory>
 #include <stdexcept>
+
+struct GameIO {
+	Window * const win;
+	Input * const input;
+	ResourceManager * const resMan;
+};
 
 // This object lives until it is deleted by its parent(s) or finally when the "Scene" is destroyed.
 // Therefore it is safe to return raw pointers
@@ -20,11 +30,17 @@ private:
 	std::list<std::unique_ptr<Object>> m_children{};
 	std::list<std::unique_ptr<Component>> m_components{};
 
+	struct GameIO m_gameIO;
+
 public:
-	Object(std::string name);
+	Object(std::string name, struct GameIO things);
 	Object(const Object&) = delete;
 	Object& operator=(const Object&) = delete;
 	~Object();
+
+	Window* window();
+	Input* input();
+	ResourceManager* resMan();
 
 	std::string getName();
 

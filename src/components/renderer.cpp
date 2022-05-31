@@ -18,7 +18,9 @@ void Renderer::drawMesh()
 {
 	bindVAO();
 	m_shader->makeActive();
+#ifndef SDLTEST_NOGFX
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_mesh->getNumVertices()), GL_UNSIGNED_INT, 0);
+#endif
 }
 
 Renderer::Renderer(Object* parent) : Component(parent, "renderer")

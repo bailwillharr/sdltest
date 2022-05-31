@@ -39,7 +39,10 @@ set_property(TARGET sdltest PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_include_directories(sdltest PUBLIC src)
 
-option(NOGRAPHICS "Disable all openGL calls to test the performance of purely logic" OFF)
+option(SDLTEST_NOGFX "Disable all openGL calls to test the performance of purely logic" OFF)
+if (SDLTEST_NOGFX)
+	target_compile_definitions(sdltest PUBLIC SDLTEST_NOGFX)
+endif()
 
 # libraries:
 
