@@ -1,9 +1,8 @@
+build/
+runme
+compile_commands.json
 .ccls-cache/
 .vscode/
-.vs/
-out/
-build/
-Debug/
+/.vs
 CMakeSettings.json
-compile_commands.json
-runme
+out/
