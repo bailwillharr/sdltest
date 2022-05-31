@@ -1,5 +1,7 @@
 #include "components/renderer.hpp"
 
+#include "object.hpp"
+
 #include <iostream>
 
 namespace components {
@@ -25,6 +27,7 @@ void Renderer::drawMesh()
 
 Renderer::Renderer(Object* parent) : Component(parent, "renderer")
 {
+	m_shader = parent->resMan()->get<resources::Shader>("basic.glsl");
 
 	m_mesh->m_vertices.push_back({	{0.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{0.0f, 1.0f} });
 	m_mesh->m_vertices.push_back({	{1.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{1.0f, 1.0f} });

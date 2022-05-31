@@ -22,7 +22,9 @@ public:
 	void onUpdate(glm::mat4 transform) override
 	{
 		glm::mat4& t = m_parent->getComponent<components::Transform>()->m_transformMatrix;
-		t = glm::rotate(t, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		float dt = (float)m_parent->window()->getLastFrameTime() / BILLION;
+
+		t = glm::rotate(t, dt, glm::vec3(0.0f, 0.0f, 1.0f));
 	}
 	void onRender(glm::mat4 transform) override
 	{
@@ -38,34 +40,14 @@ int main(int argc, char *argv[])
 	Window win("sdltest");
 	Input input(win);
 	ResourceManager resMan;
-	SceneRoot mainScene("My Scene", win, input, resMan);
+	SceneRoot mainScene("My Scene", { &win, &input, &resMan });
 
-	{
-		auto mat1 = resMan.get<resources::Shader>("basic.glsl");
-		auto mat2 = resMan.get<resources::Shader>("basic.glsl");
-	}
-	auto mat3 = resMan.get<resources::Shader>("basic.glsl");
-	auto mat4 = resMan.get<resources::Shader>("basic.glsl");
+	mainScene.createChild("car")->createComponent<components::Renderer>();
+	mainScene.getChild("car")->createComponent<MyComponent>();
+	mainScene.createChild("player")->createComponent<components::Renderer>();
+	mainScene.getChild("player")->getComponent<components::Transform>()->translate({-1.0f, 0.0f, 0.0f});
 
-	/*
-	mainScene.createChild("car");
-	mainScene.getChild("car")->createComponent<ecs::components::Renderer>();
-
-	mainScene.getChild("car")->createChild("door")->createComponent<ecs::components::Renderer>();
-	mainScene.getChild("car")->getChild("door")->createComponent<MyComponent>();
-
-	glm::mat4& t = mainScene.getChild("car")->getComponent<ecs::components::Transform>()->m_transformMatrix;
-	glm::mat4& t2 = mainScene.getChild("car")->getChild("door")->getComponent<ecs::components::Transform>()->m_transformMatrix;
-
-	t = glm::scale(t, glm::vec3{0.5f, 0.5f, 1.0f});
-	t2 = glm::translate(t2, glm::vec3{-1.0f, 0.0f, 0.0f});
-	t2 = glm::scale(t2, glm::vec3{ 0.25f, 0.25f, 1.0f });
-
-	mainScene.createChild("cam")->createComponent<ecs::components::Camera>();
-
-	*/
-		
-//	mainScene.printTree();
+	mainScene.printTree();
 
 	// menu, settings controls
 	input.addInputButton("fullscreen", inputs::Key::F11);

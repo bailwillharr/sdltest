@@ -1,0 +1,8 @@
+IMMEDIATE:
+- Load meshes from files as resources
+- Camera component (with 2D or 3D option)
+- Textures as resources
+LATER:
+- Sound
+- File writing/saving
+- UI
