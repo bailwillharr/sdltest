@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 
 	engine::Window win("sdltest");
 	engine::Input input(win);
-	engine::resource::ResourceManager resMan(argv[0]);
+	engine::resource::ResourceManager resMan{};
 	engine::ecs::SceneRoot mainScene("My Scene");
 
 	{

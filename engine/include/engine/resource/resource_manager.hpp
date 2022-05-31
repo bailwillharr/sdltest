@@ -14,7 +14,7 @@ namespace engine::resource {
 class ResourceManager {
 
 public:
-	ResourceManager(const char* argv0);
+	ResourceManager();
 	ResourceManager(const ResourceManager&) = delete;
 	ResourceManager& operator=(const ResourceManager&) = delete;
 	~ResourceManager() = default;
