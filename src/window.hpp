@@ -42,6 +42,8 @@ private:
 
 	// number of frames swapped
 	uint64_t m_frames = 0;
+	// frame count offset for fpsAvg
+	uint64_t m_avgFpsStartCount = 0;
 	// in nanoseconds
 	uint64_t m_startTime;
 	// in nanoseconds
@@ -49,12 +51,12 @@ private:
 	// in nanoseconds; elapsed time between frames
 	uint64_t m_lastFrameTime;
 	// in nanoseconds
-	uint64_t m_avgFpsStart;
+	uint64_t m_avgFpsStart;	
 
 	// input stuff
 
 	enum class ButtonDelta {
-		SAME,
+		SAME = 0,
 		PRESSED,
 		RELEASED
 	};
@@ -180,6 +182,8 @@ public:
 
 	// returns the performance counter value in nanoseconds;
 	uint64_t getNanos() const;
+	// get the time recorded at the end of the last frame
+	uint64_t getLastFrameStamp() const;
 
 	// returns the number of frames elapsed since window creation
 	uint64_t getFrameCount() const;

@@ -200,7 +200,7 @@ void Window::makeContextCurrent() { if (SDL_GL_MakeCurrent(m_handle, m_glContext
 
 void Window::swapBuffers()
 {
-#ifndef ENGINE_NOSWAP
+#ifndef SDLTEST_NOGFX
 	SDL_GL_SwapWindow(m_handle);
 #endif
 	m_frames++;
@@ -419,6 +419,11 @@ uint64_t Window::getNanos() const
 	}
 }
 
+uint64_t Window::getLastFrameStamp() const
+{
+	return m_lastFrameStamp;
+}
+
 uint64_t Window::getFrameCount() const
 {
 	return m_frames;
@@ -444,10 +449,11 @@ uint64_t Window::getAvgFPS() const
 {
 	uint64_t delta_t = getNanos() - m_avgFpsStart;
 	if (delta_t == 0) return 0;
-	return BILLION * m_frames / delta_t;
+	return BILLION * (m_frames - m_avgFpsStartCount) / delta_t;
 }
 
 void Window::resetAvgFPS()
 {
 	m_avgFpsStart = getNanos();
+	m_avgFpsStartCount = getFrameCount();
 }

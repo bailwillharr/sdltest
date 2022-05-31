@@ -16,6 +16,7 @@ add_executable(sdltest
 	"src/resources/shader.cpp"
 	"src/resource_manager.cpp"
 	"src/resource.cpp"
+
 	"src/window.hpp"
 	"src/input.hpp"
 	"src/component.hpp"

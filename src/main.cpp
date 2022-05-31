@@ -42,8 +42,9 @@ int main(int argc, char *argv[])
 	ResourceManager resMan;
 	SceneRoot mainScene("My Scene", { &win, &input, &resMan });
 
-	mainScene.createChild("car")->createComponent<components::Renderer>();
-	mainScene.getChild("car")->createComponent<MyComponent>();
+	mainScene.createChild("car");
+	//mainScene.getChild("car")->createComponent<components::Renderer>();
+	//mainScene.getChild("car")->createComponent<MyComponent>();
 	mainScene.createChild("player")->createComponent<components::Renderer>();
 	mainScene.getChild("player")->getComponent<components::Transform>()->translate({-1.0f, 0.0f, 0.0f});
 
@@ -65,7 +66,7 @@ int main(int argc, char *argv[])
 
 	input.addInputButton("jump", inputs::Key::SPACE);
 
-	win.setVSync(true);
+	win.setVSync(false);
 	win.setRelativeMouseMode(false);
 
 	uint64_t lastTick = win.getNanos();
@@ -73,8 +74,8 @@ int main(int argc, char *argv[])
 	// single-threaded game loop
 	while (win.isRunning()) {
 
-		if (win.getNanos() >= lastTick + (BILLION/20)) {
-			lastTick = win.getNanos();
+		if (win.getLastFrameStamp() >= lastTick + (BILLION/20)) {
+			lastTick = win.getLastFrameStamp();
 			win.setTitle(std::to_string(win.getFPS()) + " fps, avg: " + std::to_string(win.getAvgFPS()) + " fps");
 		}
 		
@@ -91,6 +92,8 @@ int main(int argc, char *argv[])
 			win.setCloseFlag();
 		if(input.getButtonPress("jump"))
 			win.setVSync(!win.getVSync());
+		if (input.getButtonPress("fire"))
+			win.resetAvgFPS();
 
 		mainScene.updateScene();
 	
