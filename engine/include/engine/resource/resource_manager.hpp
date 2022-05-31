@@ -7,7 +7,7 @@
 #include <iostream>
 #include <filesystem>
 
-// Owns resources
+// Doesn't own resources, only holds weak_ptrs
 
 namespace engine::resource {
 
