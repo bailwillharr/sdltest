@@ -1,9 +1,35 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(SDLTest LANGUAGES CXX VERSION 1.0)
+project(sdltest LANGUAGES CXX VERSION 1.0)
 
 add_executable(sdltest 
-	src/main.cpp
+	"src/main.cpp"
+	"src/window.cpp"
+	"src/input.cpp"
+	"src/ecs/object.cpp"
+	"src/ecs/sceneroot.cpp"
+	"src/ecs/component.cpp"
+	"src/ecs/components/transform.cpp"
+	"src/ecs/components/renderer.cpp"
+	"src/ecs/components/camera.cpp"
+	"src/rendering/mesh.cpp"
+	"src/resources/shader.cpp"
+	"src/resource_manager.cpp"
+	"src/resource.cpp"
+	"src/window.hpp"
+	"src/input.hpp"
+	"src/ecs/component.hpp"
+	"src/ecs/object.hpp"
+	"src/ecs/sceneroot.hpp"
+	"src/ecs/components/camera.hpp"
+	"src/ecs/components/renderer.hpp"
+	"src/ecs/components/transform.hpp"
+	"src/inputs/keyboard.hpp"
+	"src/inputs/mouse.hpp"
+	"src/rendering/mesh.hpp"
+	"src/resource_manager.hpp"
+	"src/resource.hpp"
+	"src/resources/shader.hpp"
 )
 
 # compiling options:
@@ -11,17 +37,28 @@ add_executable(sdltest
 set_property(TARGET sdltest PROPERTY CXX_STANDARD 17)
 set_property(TARGET sdltest PROPERTY CXX_STANDARD_REQUIRED ON)
 
-target_include_directories(sdltest PRIVATE include)
+target_include_directories(sdltest PUBLIC src)
 
-# project libraries:
+# libraries:
 
-add_subdirectory(engine)
-target_link_libraries(sdltest PRIVATE engine)
-target_include_directories(sdltest PRIVATE engine/include)
+# MinGW library if using it
+if (MINGW)
+	target_link_libraries(sdltest PUBLIC mingw32)
+endif()
 
-# external libraries:
+# SDL2
+find_package(SDL2 REQUIRED)
+target_link_libraries(sdltest PUBLIC ${SDL2_LIBRARIES})
+target_include_directories(sdltest PUBLIC ${SDL2_INCLUDE_DIRS})
 
+# GLM
+find_package(glm REQUIRED)
+target_include_directories(sdltest PUBLIC ${GLM_INCLUDE_DIRS})
 
+# GLAD
+add_subdirectory(vendor/glad)
+target_link_libraries(sdltest PUBLIC glad)
+target_include_directories(sdltest PUBLIC vendor/glad/include)
 
 # linking options:
 

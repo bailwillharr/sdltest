@@ -1,16 +1,16 @@
-#include "engine/window.hpp"
-#include "engine/input.hpp"
+#include "window.hpp"
+#include "input.hpp"
 
-#include "engine/ecs/sceneroot.hpp"
+#include "ecs/sceneroot.hpp"
 
-#include "engine/ecs/component.hpp"
-#include "engine/ecs/components/transform.hpp"
-#include "engine/ecs/components/renderer.hpp"
-#include "engine/ecs/components/camera.hpp"
+#include "ecs/component.hpp"
+#include "ecs/components/transform.hpp"
+#include "ecs/components/renderer.hpp"
+#include "ecs/components/camera.hpp"
 
-#include "engine/resource/resource_manager.hpp"
+#include "resource_manager.hpp"
 
-#include "engine/debug/timer.hpp"
+#include "debug/timer.hpp"
 
 #include <iostream>
 #include <memory>
@@ -35,17 +35,19 @@ int main(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 
+	std::cout << std::endl;
+
 	engine::Window win("sdltest");
 	engine::Input input(win);
-	engine::resource::ResourceManager resMan{};
+	engine::ResourceManager resMan;
 	engine::ecs::SceneRoot mainScene("My Scene");
 
 	{
-		auto mat1 = resMan.get<engine::resource::Shader>("basic.glsl");
-		auto mat2 = resMan.get<engine::resource::Shader>("basic.glsl");
+		auto mat1 = resMan.get<engine::resources::Shader>("basic.glsl");
+		auto mat2 = resMan.get<engine::resources::Shader>("basic.glsl");
 	}
-	auto mat3 = resMan.get<engine::resource::Shader>("basic.glsl");
-	auto mat4 = resMan.get<engine::resource::Shader>("basic.glsl");
+	auto mat3 = resMan.get<engine::resources::Shader>("basic.glsl");
+	auto mat4 = resMan.get<engine::resources::Shader>("basic.glsl");
 
 	/*
 	mainScene.createChild("car");
@@ -109,9 +111,6 @@ int main(int argc, char *argv[])
 			win.setCloseFlag();
 		if(input.getButtonPress("jump"))
 			win.setVSync(!win.getVSync());
-		if (win.getNanos() > win.getStartTime() + (10 * engine::BILLION)) {
-			win.setCloseFlag();
-		}
 
 		mainScene.updateScene();
 	
@@ -125,7 +124,7 @@ int main(int argc, char *argv[])
 		// events
 		win.getInputAndEvents();
 	
-	}
+	}	
 
 	return 0;
 
