@@ -107,6 +107,10 @@ int main(int argc, char *argv[])
 		if(input.getButtonPress("fire")) {
 			mainScene.deleteChild("car");
 		}
+
+		if (win.getNanos() > win.getStartTime() + (10 * engine::BILLION)) {
+			win.setCloseFlag();
+		}
 	
 		// draw
 		glClear(GL_COLOR_BUFFER_BIT);
