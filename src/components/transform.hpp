@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ecs/component.hpp"
+#include "component.hpp"
 
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
@@ -10,16 +10,14 @@
 #include <string>
 #include <memory>
 
-namespace engine {
-namespace ecs {
 namespace components {
 
-class Transform : public ecs::Component {
+class Transform : public Component {
 
 private:
 
 public:
-	Transform(ecs::Object*);
+	Transform(Object*);
 	~Transform() override;
 
 	glm::mat4 m_transformMatrix{1.0f};
@@ -34,4 +32,4 @@ public:
 
 };
 
-}}}
+}

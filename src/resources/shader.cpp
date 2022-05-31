@@ -45,7 +45,6 @@ static GLuint compile(const char *path, GLenum type)
     } return handle;
 }
 
-namespace engine {
 namespace resources {
 
 // I've got to do this because of GL's stupid state machine
@@ -143,4 +142,4 @@ int Shader::getAttribLocation(const std::string& name) const
 	return m_attributes.at(name).location;
 }
 
-}}
+}

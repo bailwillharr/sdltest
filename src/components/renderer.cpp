@@ -1,9 +1,7 @@
-#include "ecs/components/renderer.hpp"
+#include "components/renderer.hpp"
 
 #include <iostream>
 
-namespace engine {
-namespace ecs {
 namespace components {
 
 GLuint Renderer::s_active_vao = 0;
@@ -23,7 +21,7 @@ void Renderer::drawMesh()
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_mesh->getNumVertices()), GL_UNSIGNED_INT, 0);
 }
 
-Renderer::Renderer(ecs::Object* parent) : Component(parent, "renderer")
+Renderer::Renderer(Object* parent) : Component(parent, "renderer")
 {
 
 	m_mesh->m_vertices.push_back({	{0.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{0.0f, 1.0f} });
@@ -70,4 +68,4 @@ void Renderer::onRender(glm::mat4 transform)
 
 }
 
-}}}
+}

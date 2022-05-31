@@ -10,8 +10,6 @@
 #include <string>
 #include <memory>
 
-namespace engine {
-
 enum class InputDevice : int {
 	MOUSE,
 	KEYBOARD,
@@ -87,5 +85,3 @@ public:
 	bool getButtonRelease(const std::string& buttonName) const;
 	
 };
-
-}

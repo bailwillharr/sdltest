@@ -6,9 +6,6 @@
 #include <memory>
 #include <list>
 
-namespace engine {
-namespace ecs {
-
 class Object;
 
 class Component {
@@ -35,5 +32,3 @@ public:
 	virtual void onRender(glm::mat4 transform);
 
 };
-
-}}

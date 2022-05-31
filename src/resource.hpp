@@ -3,8 +3,6 @@
 #include <string>
 #include <filesystem>
 
-namespace engine {
-
 class Resource {
 
 public:
@@ -17,5 +15,3 @@ protected:
 	std::filesystem::path m_resourcePath;
 
 };
-
-}

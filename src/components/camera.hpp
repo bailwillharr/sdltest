@@ -1,12 +1,10 @@
 #pragma once
 
-#include "ecs/component.hpp"
+#include "component.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-namespace engine {
-namespace ecs {
 namespace components {
 
 class Camera : public Component {
@@ -16,11 +14,9 @@ private:
 	glm::mat4 projMatrix{ 1.0f };
 
 public:
-	Camera(engine::ecs::Object* parent);
+	Camera(Object* parent);
 	void onUpdate(glm::mat4 transform) override;
 	void onRender(glm::mat4 transform) override;
 };
 
-}
-}
 }

@@ -9,7 +9,6 @@
 #include <string>
 #include <map>
 
-namespace engine {
 namespace resources {
 
 enum class UniformType {
@@ -55,4 +54,4 @@ public:
 
 };
 
-}}
+}

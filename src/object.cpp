@@ -1,15 +1,12 @@
-#include "ecs/object.hpp"
+#include "object.hpp"
 
-#include "ecs/components/transform.hpp"
+#include "components/transform.hpp"
 
 #include <vector>
 #include <memory>
 #include <type_traits>
 #include <stdexcept>
 #include <iostream>
-
-namespace engine {
-namespace ecs {
 
 int Object::s_object_count = 0;
 
@@ -127,5 +124,3 @@ void Object::renderObjectAndChildren(glm::mat4 parentTransform)
 	}
 
 }
-
-}}

@@ -2,7 +2,6 @@
 
 // Keyboard scancodes, taken from SDL_scancode.h
 
-namespace engine {
 namespace inputs {
 
 enum class Key : int {
@@ -372,4 +371,4 @@ enum class Key : int {
                                  for array bounds */
 };
 
-}}
+}

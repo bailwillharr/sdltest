@@ -1,9 +1,6 @@
-#include "ecs/sceneroot.hpp"
+#include "sceneroot.hpp"
 
 #include <iostream>
-
-namespace engine {
-namespace ecs {
 
 SceneRoot::SceneRoot(std::string name) : Object("root"), m_sceneName(name)
 {
@@ -28,5 +25,3 @@ void SceneRoot::renderScene()
 {
 	renderObjectAndChildren(glm::mat4{1.0f});
 }
-
-}}

@@ -9,8 +9,6 @@
 
 // Doesn't own resources, only holds weak_ptrs
 
-namespace engine {
-
 class ResourceManager {
 
 public:
@@ -75,6 +73,4 @@ std::shared_ptr<T> ResourceManager::get(const std::string& name)
 	} else {
 		return create<T>(name);
 	}
-}
-
 }

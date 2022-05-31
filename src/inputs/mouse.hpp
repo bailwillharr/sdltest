@@ -1,6 +1,5 @@
 #pragma once
 
-namespace engine {
 namespace inputs {
 
 enum class MouseButton : int {
@@ -20,4 +19,4 @@ enum class MouseAxis : int {
 	Y_SCR
 };
 
-}}
+}

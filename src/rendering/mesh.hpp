@@ -6,7 +6,6 @@
 #include <vector>
 #include <memory>
 
-namespace engine {
 namespace rendering {
 
 struct Vertex {
@@ -24,4 +23,4 @@ struct Mesh {
 
 };
 
-}}
+}

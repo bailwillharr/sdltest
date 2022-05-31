@@ -16,8 +16,6 @@
 #include <array>
 #include <string>
 
-namespace engine {
-
 extern const uint64_t BILLION;
 
 class Window {
@@ -193,5 +191,3 @@ public:
 	void resetAvgFPS();
 
 };
-
-}

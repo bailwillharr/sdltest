@@ -1,14 +1,11 @@
 #pragma once
 
-#include "ecs/object.hpp"
+#include "object.hpp"
 
 #include <utility>
 #include <vector>
 #include <string>
 #include <memory>
-
-namespace engine {
-namespace ecs {
 
 // Holds everything you would expect to find in a game scene
 class SceneRoot : public Object {
@@ -30,5 +27,3 @@ public:
 	void renderScene();
 
 };
-
-}}

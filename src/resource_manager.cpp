@@ -7,8 +7,6 @@
 #define MAX_PATH 260
 #endif
 
-namespace engine {
-
 ResourceManager::ResourceManager()
 {
 #ifdef _MSC_VER
@@ -34,6 +32,4 @@ ResourceManager::ResourceManager()
 std::filesystem::path ResourceManager::getFilePath(const std::string& name)
 {
 	return m_resourcesPath / name;
-}
-
 }

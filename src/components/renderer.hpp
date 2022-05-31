@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ecs/component.hpp"
+#include "component.hpp"
 
 #include "resources/shader.hpp"
 #include "rendering/mesh.hpp"
@@ -9,8 +9,6 @@
 #include <string>
 #include <memory>
 
-namespace engine {
-namespace ecs {
 namespace components {
 
 class Renderer : public Component {
@@ -18,8 +16,8 @@ class Renderer : public Component {
 private:
 	static GLuint s_active_vao;
 
-	std::shared_ptr<engine::resources::Shader> m_shader;
-	std::shared_ptr<engine::rendering::Mesh> m_mesh = std::make_shared<engine::rendering::Mesh>();
+	std::shared_ptr<resources::Shader> m_shader;
+	std::shared_ptr<rendering::Mesh> m_mesh = std::make_shared<rendering::Mesh>();
 
 	GLuint m_vao;
 	GLuint m_vbo;
@@ -29,7 +27,7 @@ private:
 	void drawMesh();
 
 public:
-	Renderer(ecs::Object*);
+	Renderer(Object*);
 	~Renderer() override;
 
 	void onUpdate(glm::mat4 transform) override;
@@ -37,4 +35,4 @@ public:
 	
 };
 
-}}}
+}

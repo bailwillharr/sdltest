@@ -6,8 +6,6 @@
 #include <stdexcept>
 #include <iostream>
 
-namespace engine {
-
 Input::Input(const Window &win) : m_win(win)
 {
 	std::cerr << "Input handler for '" << m_win.getTitle() << "' has been constructed\n";
@@ -232,6 +230,4 @@ bool Input::getButtonRelease(const std::string& buttonName) const
 		}
 	}
 	return isReleased;
-}
-
 }

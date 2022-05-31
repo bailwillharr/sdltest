@@ -1,16 +1,13 @@
 #pragma once
 
-#include "ecs/component.hpp"
-#include "ecs/components/transform.hpp"
+#include "component.hpp"
+#include "components/transform.hpp"
 
 #include <list>
 #include <vector>
 #include <string>
 #include <memory>
 #include <stdexcept>
-
-namespace engine {
-namespace ecs {
 
 // This object lives until it is deleted by its parent(s) or finally when the "Scene" is destroyed.
 // Therefore it is safe to return raw pointers
@@ -100,5 +97,3 @@ template<class T> void Object::deleteComponent()
 	}
 	throw std::runtime_error("deleteComponent() error: attempt to delete component that is not present.");
 }
-
-}}

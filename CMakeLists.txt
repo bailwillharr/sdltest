@@ -6,24 +6,24 @@ add_executable(sdltest
 	"src/main.cpp"
 	"src/window.cpp"
 	"src/input.cpp"
-	"src/ecs/object.cpp"
-	"src/ecs/sceneroot.cpp"
-	"src/ecs/component.cpp"
-	"src/ecs/components/transform.cpp"
-	"src/ecs/components/renderer.cpp"
-	"src/ecs/components/camera.cpp"
+	"src/object.cpp"
+	"src/sceneroot.cpp"
+	"src/component.cpp"
+	"src/components/transform.cpp"
+	"src/components/renderer.cpp"
+	"src/components/camera.cpp"
 	"src/rendering/mesh.cpp"
 	"src/resources/shader.cpp"
 	"src/resource_manager.cpp"
 	"src/resource.cpp"
 	"src/window.hpp"
 	"src/input.hpp"
-	"src/ecs/component.hpp"
-	"src/ecs/object.hpp"
-	"src/ecs/sceneroot.hpp"
-	"src/ecs/components/camera.hpp"
-	"src/ecs/components/renderer.hpp"
-	"src/ecs/components/transform.hpp"
+	"src/component.hpp"
+	"src/object.hpp"
+	"src/sceneroot.hpp"
+	"src/components/camera.hpp"
+	"src/components/renderer.hpp"
+	"src/components/transform.hpp"
 	"src/inputs/keyboard.hpp"
 	"src/inputs/mouse.hpp"
 	"src/rendering/mesh.hpp"
@@ -38,6 +38,8 @@ set_property(TARGET sdltest PROPERTY CXX_STANDARD 17)
 set_property(TARGET sdltest PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_include_directories(sdltest PUBLIC src)
+
+option(NOGRAPHICS "Disable all openGL calls to test the performance of purely logic" OFF)
 
 # libraries:
 

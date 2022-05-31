@@ -1,9 +1,6 @@
-#include "ecs/component.hpp"
+#include "component.hpp"
 
 #include <iostream>
-
-namespace engine {
-namespace ecs {
 
 int Component::s_next_component_id = 0;
 
@@ -26,5 +23,3 @@ int Component::getID()
 void Component::onUpdate(glm::mat4 transform) { }
 
 void Component::onRender(glm::mat4 transform) { }
-
-}}
