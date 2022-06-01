@@ -29,6 +29,17 @@ ResourceManager::ResourceManager()
 	}
 }
 
+void ResourceManager::printResources()
+{
+	std::cerr << "\nRESOURCES:\n";
+	for (const auto& [name, ptr] : m_resources) {
+		std::cerr << name << "\t\t" << ptr.use_count() << "\n";
+	}
+	std::cerr << std::endl;
+}
+
+// private
+
 std::filesystem::path ResourceManager::getFilePath(const std::string& name)
 {
 	return m_resourcesPath / name;

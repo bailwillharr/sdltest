@@ -10,7 +10,8 @@
 
 int Object::s_object_count = 0;
 
-Object::Object(std::string name, struct GameIO things) : m_name(name), m_gameIO(things)
+Object::Object(std::string name, Object* parent, struct GameIO things)
+	: m_name(name), m_gameIO(things), m_parent(parent)
 {
 	s_object_count++;
 	// all objects come with at least a transform component
@@ -44,6 +45,11 @@ std::string Object::getName()
 	return m_name;
 }
 
+Object* Object::getParent()
+{
+	return m_parent;
+}
+
 Object* Object::getChild(std::string name)
 {
 	for (const auto& child : m_children) {
@@ -68,7 +74,7 @@ Object* Object::createChild(std::string name)
 	if (getChild(name) != nullptr) {
 		throw std::runtime_error("Attempt to create child object with existing name");
 	}
-	m_children.emplace_back(std::make_unique<Object>(name, m_gameIO));
+	m_children.emplace_back(std::make_unique<Object>(name, this, m_gameIO));
 	return m_children.back().get();
 }
 

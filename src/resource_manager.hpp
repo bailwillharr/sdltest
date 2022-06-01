@@ -24,6 +24,8 @@ public:
 	template <class T>
 	std::shared_ptr<T> get(const std::string& name);
 
+	void printResources();
+
 private:
 	std::filesystem::path m_resourcesPath;
 	std::map<std::string, std::weak_ptr<Resource>> m_resources;

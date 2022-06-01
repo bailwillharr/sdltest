@@ -30,10 +30,12 @@ private:
 	std::list<std::unique_ptr<Object>> m_children{};
 	std::list<std::unique_ptr<Component>> m_components{};
 
+	// If nullptr, this is the root object
+	Object* const m_parent;
 	struct GameIO m_gameIO;
 
 public:
-	Object(std::string name, struct GameIO things);
+	Object(std::string name, Object* parent, struct GameIO things);
 	Object(const Object&) = delete;
 	Object& operator=(const Object&) = delete;
 	~Object();
@@ -43,6 +45,8 @@ public:
 	ResourceManager* resMan();
 
 	std::string getName();
+
+	Object* getParent();
 
 	Object* getChild(std::string name);
 	std::vector<Object*> getChildren();

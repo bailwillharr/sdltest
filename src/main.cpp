@@ -18,13 +18,33 @@
 
 class MyComponent : public Component {
 public:
-	MyComponent(Object* parent) : Component(parent, "MyComponent") {}
+
+	int spawnCount = 0;
+
+	MyComponent(Object* parent) : Component(parent, "MyComponent")
+	{
+		auto t = m_parent->getComponent<components::Transform>();
+		t->translate({ -0.5f, -0.5f, 0.0f });
+		t->scale({ 0.25f, 0.25f, 0.0f });
+	}
 	void onUpdate(glm::mat4 transform) override
 	{
-		glm::mat4& t = m_parent->getComponent<components::Transform>()->m_transformMatrix;
-		float dt = (float)m_parent->window()->getLastFrameTime() / BILLION;
 
-		t = glm::rotate(t, dt, glm::vec3(0.0f, 0.0f, 1.0f));
+		using namespace components;
+
+		if (m_parent->input()->getButtonPress("sneak")) {
+			m_parent->resMan()->printResources();
+		}
+
+		if (m_parent->input()->getButtonPress("fire")) {
+			if (spawnCount > 0) {
+				spawnCount--;
+				m_parent->getParent()->deleteChild("new" + std::to_string(spawnCount));
+			}
+		} else if (m_parent->input()->getButtonPress("aim")) {
+			m_parent->getParent()->createChild("new" + std::to_string(spawnCount))->createComponent<Renderer>();
+			spawnCount++;
+		}
 	}
 	void onRender(glm::mat4 transform) override
 	{
@@ -43,10 +63,8 @@ int main(int argc, char *argv[])
 	SceneRoot mainScene("My Scene", { &win, &input, &resMan });
 
 	mainScene.createChild("car");
-	//mainScene.getChild("car")->createComponent<components::Renderer>();
-	//mainScene.getChild("car")->createComponent<MyComponent>();
-	mainScene.createChild("player")->createComponent<components::Renderer>();
-	mainScene.getChild("player")->getComponent<components::Transform>()->translate({-1.0f, 0.0f, 0.0f});
+	mainScene.getChild("car")->createComponent<components::Renderer>();
+	mainScene.getChild("car")->createComponent<MyComponent>();
 
 	mainScene.printTree();
 
@@ -57,14 +75,14 @@ int main(int argc, char *argv[])
 	// game buttons
 	input.addInputButton("fire", inputs::MouseButton::M_LEFT);
 	input.addInputButton("aim", inputs::MouseButton::M_RIGHT);
+	input.addInputButton("jump", inputs::Key::SPACE);
+	input.addInputButton("sneak", inputs::Key::LSHIFT);
 	// game movement
 	input.addInputButtonAsAxis("movex", inputs::Key::D, inputs::Key::A);
 	input.addInputButtonAsAxis("movey", inputs::Key::W, inputs::Key::S);
 	// looking around
 	input.addInputAxis("lookx", inputs::MouseAxis::X);
 	input.addInputAxis("looky", inputs::MouseAxis::Y);
-
-	input.addInputButton("jump", inputs::Key::SPACE);
 
 	win.setVSync(false);
 	win.setRelativeMouseMode(false);
@@ -92,8 +110,6 @@ int main(int argc, char *argv[])
 			win.setCloseFlag();
 		if(input.getButtonPress("jump"))
 			win.setVSync(!win.getVSync());
-		if (input.getButtonPress("fire"))
-			win.resetAvgFPS();
 
 		mainScene.updateScene();
 	
