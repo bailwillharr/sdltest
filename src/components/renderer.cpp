@@ -28,6 +28,7 @@ void Renderer::drawMesh()
 Renderer::Renderer(Object* parent) : Component(parent, "renderer")
 {
 	m_shader = parent->resMan()->get<resources::Shader>("basic.glsl");
+	m_mesh = parent->resMan()->get<resources::Mesh>("triangle.mesh");
 
 	m_mesh->m_vertices.push_back({	{0.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{0.0f, 1.0f} });
 	m_mesh->m_vertices.push_back({	{1.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{1.0f, 1.0f} });
@@ -38,13 +39,13 @@ Renderer::Renderer(Object* parent) : Component(parent, "renderer")
 	glGenBuffers(1, &m_vbo);
 	glGenBuffers(1, &m_ebo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, m_mesh->getNumVertices()*sizeof(rendering::Vertex), m_mesh->getVerticesPtr(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_mesh->getNumVertices()*sizeof(resources::Vertex), m_mesh->getVerticesPtr(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 	std::vector<unsigned int> tmpIndices{};
 	for (int i = 0; i < (int)m_mesh->getNumVertices(); i++) {
 		tmpIndices.push_back(i);
 	}
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_mesh->getNumVertices()*sizeof(rendering::Vertex), &(tmpIndices[0]), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_mesh->getNumVertices()*sizeof(resources::Vertex), &(tmpIndices[0]), GL_STATIC_DRAW);
 	glEnableVertexAttribArray(m_shader->getAttribLocation("v_Position"));
 	glVertexAttribPointer(m_shader->getAttribLocation("v_Position"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	//glEnableVertexAttribArray(m_shader->getAttribLocation("v_Normal"));

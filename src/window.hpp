@@ -49,7 +49,7 @@ private:
 	// in nanoseconds
 	uint64_t m_lastFrameStamp;
 	// in nanoseconds; elapsed time between frames
-	uint64_t m_lastFrameTime;
+	uint64_t m_lastFrameTime = 1; // not 0 to avoid division by zero
 	// in nanoseconds
 	uint64_t m_avgFpsStart;	
 

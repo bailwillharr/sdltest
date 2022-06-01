@@ -21,7 +21,7 @@ Window::Window(const std::string& title) : m_title(title)
 
 	m_counterFreq = SDL_GetPerformanceFrequency();
 	m_startTime = getNanos();
-	m_lastFrameTime = m_startTime;
+	m_lastFrameStamp = m_startTime - 1;
 	m_avgFpsStart = m_startTime;
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);

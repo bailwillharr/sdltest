@@ -3,7 +3,7 @@
 #include "component.hpp"
 
 #include "resources/shader.hpp"
-#include "rendering/mesh.hpp"
+#include "resources/mesh.hpp"
 
 #include <vector>
 #include <string>
@@ -17,7 +17,7 @@ private:
 	static GLuint s_active_vao;
 
 	std::shared_ptr<resources::Shader> m_shader;
-	std::shared_ptr<rendering::Mesh> m_mesh = std::make_shared<rendering::Mesh>();
+	std::shared_ptr<resources::Mesh> m_mesh;
 
 	GLuint m_vao;
 	GLuint m_vbo;

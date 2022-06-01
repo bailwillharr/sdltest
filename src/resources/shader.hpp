@@ -11,25 +11,26 @@
 
 namespace resources {
 
-enum class UniformType {
-		FLOAT_MAT4 = GL_FLOAT_MAT4,
-		FLOAT_VEC3 = GL_FLOAT_VEC3
-};
-
-struct Uniform {
-		GLint size;
-		UniformType type;
-		GLuint location;
-};
-
-struct Attribute {
-		GLint size;
-		UniformType type;
-		GLuint location;
-};
-
 class Shader : public Resource {
 private:
+	
+	enum class UniformType {
+		FLOAT_MAT4 = GL_FLOAT_MAT4,
+		FLOAT_VEC3 = GL_FLOAT_VEC3
+	};
+
+	struct Uniform {
+		GLint size;
+		UniformType type;
+		GLuint location;
+	};
+
+	struct Attribute {
+		GLint size;
+		UniformType type;
+		GLuint location;
+	};
+
 
 	// Only valid if glUseProgram is never called elsewhere
 	static GLuint s_activeProgram;

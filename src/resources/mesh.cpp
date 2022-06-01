@@ -1,6 +1,11 @@
-#include "rendering/mesh.hpp"
+#include "resources/mesh.hpp"
 
-namespace rendering {
+namespace resources {
+
+Mesh::Mesh(const std::filesystem::path& resPath) : Resource(resPath)
+{
+
+}
 
 size_t Mesh::getNumVertices() const
 {

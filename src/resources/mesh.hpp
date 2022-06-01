@@ -1,12 +1,14 @@
 #pragma once
 
+#include "resource.hpp"
+
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 
 #include <vector>
 #include <memory>
 
-namespace rendering {
+namespace resources {
 
 struct Vertex {
 	glm::vec3 pos;
@@ -14,7 +16,11 @@ struct Vertex {
 	glm::vec2 uv;
 };
 
-struct Mesh {
+class Mesh : public Resource {
+
+public:
+	Mesh(const std::filesystem::path& resPath);
+	~Mesh() = default;
 
 	std::vector<Vertex> m_vertices;
 
