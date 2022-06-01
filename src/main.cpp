@@ -20,35 +20,24 @@ class MyComponent : public Component {
 public:
 
 	int spawnCount = 0;
+	components::Transform* t;
 
 	MyComponent(Object* parent) : Component(parent, "MyComponent")
 	{
-		auto t = m_parent->getComponent<components::Transform>();
+		t = m_parent->getComponent<components::Transform>();
 		t->translate({ -0.5f, -0.5f, 0.0f });
 		t->scale({ 0.25f, 0.25f, 1.0f });
 	}
 	void onUpdate(glm::mat4 transform) override
 	{
 
-		using namespace components;
+		float& x = t->m_transformMatrix[3][0];
+		float& y = t->m_transformMatrix[3][1];
+		float& z = t->m_transformMatrix[3][2];
 
-		if (m_parent->input()->getButtonPress("sneak")) {
-			auto str = m_parent->resMan()->getResourcesListString();
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "RESOURCES", str->c_str(), m_parent->window()->m_handle);
-		}
+		x = m_parent->window()->getMouseNormX();
+		y = m_parent->window()->getMouseNormY() - 1.3f;
 
-		if (m_parent->input()->getButtonPress("fire")) {
-			if (spawnCount > 0) {
-				spawnCount--;
-				m_parent->getParent()->deleteChild("new" + std::to_string(spawnCount));
-			}
-		} else if (m_parent->input()->getButtonPress("aim")) {
-			m_parent->getParent()->createChild("new" + std::to_string(spawnCount))->createComponent<Renderer>();
-			m_parent->getParent()->getChild("new" + std::to_string(spawnCount))->getComponent<Transform>()
-				->translate({ m_parent->window()->getMouseNormX(), m_parent->window()->getMouseNormY(), 0.0f });
-			m_parent->getParent()->getChild("new" + std::to_string(spawnCount))->getComponent<Transform>()->scale({ 0.25f, 0.25f, 1.0f });
-			spawnCount++;
-		}
 	}
 	void onRender(glm::mat4 transform) override
 	{
@@ -67,7 +56,7 @@ int main(int argc, char *argv[])
 	SceneRoot mainScene("My Scene", { &win, &input, &resMan });
 
 	mainScene.createChild("car");
-	//mainScene.getChild("car")->createComponent<components::Renderer>();
+	mainScene.getChild("car")->createComponent<components::Renderer>();
 	mainScene.getChild("car")->createComponent<MyComponent>();
 
 	mainScene.printTree();
@@ -89,7 +78,7 @@ int main(int argc, char *argv[])
 	input.addInputAxis("looky", inputs::MouseAxis::Y);
 
 	win.setVSync(false);
-	win.setRelativeMouseMode(false);
+	win.setRelativeMouseMode(true);
 
 	uint64_t lastTick = win.getNanos();
 
@@ -103,17 +92,14 @@ int main(int argc, char *argv[])
 		
 		// logic
 
-		if (input.getButtonPress("fullscreen")) {
+		if (input.getButtonPress("fullscreen"))
 			win.toggleFullscreen();
-			if (win.isFullscreen())
-				win.setRelativeMouseMode(true);
-			else
-				win.setRelativeMouseMode(false);
-		}
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
 		if(input.getButtonPress("jump"))
 			win.setVSync(!win.getVSync());
+		if (input.getButtonPress("sneak"))
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "RESOURCES", resMan.getResourcesListString()->c_str(), win.m_handle);
 
 		mainScene.updateScene();
 	

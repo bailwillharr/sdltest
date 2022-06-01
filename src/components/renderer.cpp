@@ -9,7 +9,7 @@ namespace components {
 Renderer::Renderer(Object* parent) : Component(parent, "renderer")
 {
 	m_shader = parent->resMan()->get<resources::Shader>("basic.glsl");
-	m_mesh = parent->resMan()->get<resources::Mesh>("triangle.mesh");
+	m_mesh = parent->resMan()->get<resources::Mesh>("gun.mesh");
 }
 
 Renderer::~Renderer()

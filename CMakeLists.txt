@@ -66,6 +66,12 @@ add_subdirectory(vendor/glad)
 target_link_libraries(sdltest PUBLIC glad)
 target_include_directories(sdltest PUBLIC vendor/glad/include)
 
+# assimp
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
+add_subdirectory(vendor/assimp)
+target_link_libraries(sdltest PUBLIC assimp)
+target_include_directories(sdltest PUBLIC vendor/assimp/include)
+
 # linking options:
 
 # If not in Debug mode, use '-mwindows'

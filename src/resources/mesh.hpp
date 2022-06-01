@@ -6,6 +6,10 @@
 
 #include <glad/glad.h>
 
+#include <assimp/cimport.h>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 
@@ -24,16 +28,15 @@ class Mesh : public Resource {
 
 private:
 	std::vector<Vertex> m_vertices;
+	std::vector<unsigned int> m_indices;
 
-	static GLuint s_active_vao;
+	static int s_active_vao;
 
 	GLuint m_vao;
 	GLuint m_vbo;
 	GLuint m_ebo;
 
 	void bindVAO() const;
-	size_t getNumVertices() const;
-	const void * getVerticesPtr() const;
 
 public:
 	Mesh(const std::filesystem::path& resPath);
