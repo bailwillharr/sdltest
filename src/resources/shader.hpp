@@ -44,7 +44,7 @@ private:
 
 public:
 	Shader(const std::filesystem::path& resPath);
-	~Shader();
+	~Shader() override;
 	
 	void makeActive() const;
 

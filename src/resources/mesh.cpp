@@ -50,7 +50,7 @@ void Mesh::drawMesh(const Shader& shader)
 #endif
 }
 
-Mesh::Mesh(const std::filesystem::path& resPath) : Resource(resPath)
+Mesh::Mesh(const std::filesystem::path& resPath) : Resource(resPath, "mesh")
 {
 	
 	loadMeshFromFile(resPath, &m_vertices, &m_indices);
@@ -63,11 +63,6 @@ Mesh::Mesh(const std::filesystem::path& resPath) : Resource(resPath)
 	m_indices.push_back(1);
 	m_indices.push_back(2);
 	*/
-
-	std::cerr << "Vertex count: " << m_vertices.size() << "\n";
-	std::cerr << "Index count: " << m_indices.size() << "\n";
-
-	std::cerr << "First pos: " << m_vertices[0].pos.x << " " << m_vertices[0].pos.y << "\n";
 
 	glGenVertexArrays(1, &m_vao);
 	bindVAO();

@@ -50,7 +50,7 @@ namespace resources {
 // I've got to do this because of GL's stupid state machine
 GLuint Shader::s_activeProgram = 0;
 
-Shader::Shader(const std::filesystem::path& resPath) : Resource(resPath)
+Shader::Shader(const std::filesystem::path& resPath) : Resource(resPath, "shader")
 {
 
 	const std::string vertexShaderPath = (resPath.parent_path()/std::filesystem::path(resPath.stem().string() + ".vert")).string();
