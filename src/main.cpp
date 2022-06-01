@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 	SceneRoot mainScene("My Scene", { &win, &input, &resMan });
 
 	mainScene.createChild("car");
-	mainScene.getChild("car")->createComponent<components::Renderer>();
+	//mainScene.getChild("car")->createComponent<components::Renderer>();
 	mainScene.getChild("car")->createComponent<MyComponent>();
 
 	mainScene.printTree();

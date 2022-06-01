@@ -53,8 +53,6 @@ GLuint Shader::s_activeProgram = 0;
 Shader::Shader(const std::filesystem::path& resPath) : Resource(resPath)
 {
 
-	std::cerr << "SHADER CONSTRUCTOR CALLED: " << resPath.string() << "\n";
-
 	const std::string vertexShaderPath = (resPath.parent_path()/std::filesystem::path(resPath.stem().string() + ".vert")).string();
 	const std::string fragmentShaderPath = (resPath.parent_path()/std::filesystem::path(resPath.stem().string() + ".frag")).string();
 	GLuint vs = compile(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
@@ -102,7 +100,9 @@ Shader::Shader(const std::filesystem::path& resPath) : Resource(resPath)
 		GLenum type;
 		glGetActiveAttrib(m_program, i, 63, NULL, &size, &type, nameBuf);
 		m_attributes[nameBuf] = Attribute{size, static_cast<UniformType>(type), (GLuint)i};
+#ifdef SDLTEST_DEBUG
         std::cerr << "Attrib " << nameBuf << " index: " << i << "\n";
+#endif
 	}
 
 }
@@ -110,13 +110,14 @@ Shader::Shader(const std::filesystem::path& resPath) : Resource(resPath)
 Shader::~Shader()
 {
 	glDeleteProgram(m_program);
-    std::cerr << "Destroyed shader\n";
 }
 
 void Shader::makeActive() const
 {
 	if (s_activeProgram != m_program) {
+#ifdef SDLTEST_DEBUG
         std::cerr << "Shader used\n";
+#endif
 		glUseProgram(m_program);
         s_activeProgram = m_program;
 	}

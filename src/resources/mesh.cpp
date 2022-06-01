@@ -24,6 +24,9 @@ void Mesh::drawMesh(const Shader& shader)
 
 Mesh::Mesh(const std::filesystem::path& resPath) : Resource(resPath)
 {
+
+	// call model loading functions here
+
 	m_vertices.push_back({ {0.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{0.0f, 1.0f} });
 	m_vertices.push_back({ {1.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{1.0f, 1.0f} });
 	m_vertices.push_back({ {0.0f, 1.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{0.0f, 0.0f} });
@@ -46,7 +49,7 @@ Mesh::Mesh(const std::filesystem::path& resPath) : Resource(resPath)
 
 Mesh::~Mesh()
 {
-	glDeleteBuffers(1, &m_vao);
+	glDeleteVertexArrays(1, &m_vao);
 	glDeleteBuffers(1, &m_vbo);
 	glDeleteBuffers(1, &m_ebo);
 }
