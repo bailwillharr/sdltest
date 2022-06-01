@@ -29,13 +29,15 @@ ResourceManager::ResourceManager()
 	}
 }
 
-void ResourceManager::printResources()
+std::unique_ptr<std::string> ResourceManager::getResourcesListString()
 {
-	std::cerr << "\nRESOURCES:\n";
+	auto bufPtr = std::make_unique<std::string>();
+	std::string& buf = *bufPtr;
+	buf += "\nRESOURCES:\n";
 	for (const auto& [name, ptr] : m_resources) {
-		std::cerr << name << "\t\t" << ptr.use_count() << "\n";
+		buf += name + "\t\t" + std::to_string(ptr.use_count()) + "\n";
 	}
-	std::cerr << std::endl;
+	return bufPtr;
 }
 
 // private

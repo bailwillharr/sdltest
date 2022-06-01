@@ -24,7 +24,7 @@ public:
 	template <class T>
 	std::shared_ptr<T> get(const std::string& name);
 
-	void printResources();
+	std::unique_ptr<std::string> getResourcesListString();
 
 private:
 	std::filesystem::path m_resourcesPath;

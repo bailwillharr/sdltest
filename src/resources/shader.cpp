@@ -113,7 +113,7 @@ Shader::~Shader()
     std::cerr << "Destroyed shader\n";
 }
 
-void Shader::makeActive()
+void Shader::makeActive() const
 {
 	if (s_activeProgram != m_program) {
         std::cerr << "Shader used\n";
@@ -122,7 +122,7 @@ void Shader::makeActive()
 	}
 }
 
-bool Shader::setUniform(const std::string& name, const glm::mat4& m)
+bool Shader::setUniform(const std::string& name, const glm::mat4& m) const
 {
 	makeActive();
 	Uniform u = m_uniforms.at(name);
@@ -130,7 +130,7 @@ bool Shader::setUniform(const std::string& name, const glm::mat4& m)
 	return true;
 }
 
-bool Shader::setUniform(const std::string& name, const glm::vec3& v)
+bool Shader::setUniform(const std::string& name, const glm::vec3& v) const
 {
 	makeActive();
 	Uniform u = m_uniforms.at(name);

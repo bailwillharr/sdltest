@@ -46,10 +46,10 @@ public:
 	Shader(const std::filesystem::path& resPath);
 	~Shader();
 	
-	void makeActive();
+	void makeActive() const;
 
-	bool setUniform(const std::string& name, const glm::mat4& m);
-	bool setUniform(const std::string& name, const glm::vec3& v);
+	bool setUniform(const std::string& name, const glm::mat4& m) const;
+	bool setUniform(const std::string& name, const glm::vec3& v) const;
 
 	int getAttribLocation(const std::string& name) const;
 
