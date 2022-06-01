@@ -20,8 +20,10 @@ extern const uint64_t BILLION;
 
 class Window {
 
-private:
+public:
 	SDL_Window *m_handle;
+
+private:
 	SDL_GLContext m_glContext;
 
 	bool m_shouldClose = false;
@@ -167,6 +169,10 @@ public:
 	int getMouseX() const;
 	// retrieves y coordinate of the mouse
 	int getMouseY() const;
+	// retrieves mouse x coordinate normalised for OpenGL
+	float getMouseNormX() const;
+	// retrieves mouse y coordinate normalised for OpenGL
+	float getMouseNormY() const;
 	// retrieves dx of the mouse since the last frame
 	int getMouseXRel() const;
 	// retrieves dy of the mouse since the last frame

@@ -384,6 +384,16 @@ int Window::getMouseY() const
 	return static_cast<int>(m_mouse.y);
 }
 
+float Window::getMouseNormX() const
+{
+	return ((float)m_mouse.x * 2.0f / (float)m_winSize.x) - 1.0f;
+}
+
+float Window::getMouseNormY() const
+{
+	return ((float)m_mouse.y * -2.0f / (float)m_winSize.y) + 1.0f;
+}
+
 int Window::getMouseXRel() const
 {
 	return static_cast<int>(m_mouse.xrel);

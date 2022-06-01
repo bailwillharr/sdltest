@@ -25,6 +25,10 @@ ResourceManager::ResourceManager()
 	}
 
 	if (std::filesystem::is_directory(m_resourcesPath) == false) {
+		m_resourcesPath = cwd.root_path() / "usr" / "local" / "share" / "sdltest";
+	}
+
+	if (std::filesystem::is_directory(m_resourcesPath) == false) {
 		throw std::runtime_error("Unable to determine resources location");
 	}
 }
@@ -33,9 +37,17 @@ std::unique_ptr<std::string> ResourceManager::getResourcesListString()
 {
 	auto bufPtr = std::make_unique<std::string>();
 	std::string& buf = *bufPtr;
-	buf += "\nRESOURCES:\n";
+	int maxLength = 0;
 	for (const auto& [name, ptr] : m_resources) {
-		buf += name + "\t\t" + std::to_string(ptr.use_count()) + "\n";
+		if (name.length() > maxLength)
+			maxLength = name.length();
+	}
+	for (const auto& [name, ptr] : m_resources) {
+		buf += name;
+		for (int i = 0; i < (maxLength - name.length() + 4); i++) {
+			buf += " ";
+		}
+		buf += std::to_string(ptr.use_count()) + "\n";
 	}
 	return bufPtr;
 }

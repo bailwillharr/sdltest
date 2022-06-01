@@ -34,7 +34,7 @@ public:
 
 		if (m_parent->input()->getButtonPress("sneak")) {
 			auto str = m_parent->resMan()->getResourcesListString();
-			std::cout << *str;
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "RESOURCES", str->c_str(), m_parent->window()->m_handle);
 		}
 
 		if (m_parent->input()->getButtonPress("fire")) {
@@ -44,7 +44,8 @@ public:
 			}
 		} else if (m_parent->input()->getButtonPress("aim")) {
 			m_parent->getParent()->createChild("new" + std::to_string(spawnCount))->createComponent<Renderer>();
-			m_parent->getParent()->getChild("new" + std::to_string(spawnCount))->getComponent<Transform>()->translate({ (float)m_parent->window()->getMouseX() / 320.0f - 1.0f, (480.0f - (float)m_parent->window()->getMouseY()) / 240.0f - 1.0f, 0.0f });
+			m_parent->getParent()->getChild("new" + std::to_string(spawnCount))->getComponent<Transform>()
+				->translate({ m_parent->window()->getMouseNormX(), m_parent->window()->getMouseNormY(), 0.0f });
 			m_parent->getParent()->getChild("new" + std::to_string(spawnCount))->getComponent<Transform>()->scale({ 0.25f, 0.25f, 1.0f });
 			spawnCount++;
 		}
