@@ -56,6 +56,8 @@ int main(int argc, char *argv[])
 	mainScene.getChild("car")->createComponent<components::Renderer>();
 	mainScene.getChild("car")->createComponent<MyComponent>();
 
+	mainScene.createChild("cam")->createComponent<components::Camera>();
+
 #ifdef SDLTEST_DEBUG
 	mainScene.printTree();
 #endif

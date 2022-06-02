@@ -139,6 +139,17 @@ bool Shader::setUniform(const std::string& name, const glm::vec3& v) const
 	return true;
 }
 
+
+Shader::UniformType Shader::getUniformType(const std::string& name) const
+{
+	try {
+		Uniform u = m_uniforms.at(name);
+		return u.type;
+	} catch (const std::out_of_range& e) {
+		return UniformType::NOTFOUND;
+	}
+}
+
 int Shader::getAttribLocation(const std::string& name) const
 {
 	return m_attributes.at(name).location;

@@ -51,6 +51,20 @@ std::unique_ptr<std::string> ResourceManager::getResourcesListString()
 	return bufPtr;
 }
 
+
+std::vector<std::weak_ptr<Resource>> ResourceManager::getAllResourcesOfType(const std::string& type)
+{
+	std::vector<std::weak_ptr<Resource>> resources;
+	for (const auto& [name, ptr] : m_resources) {
+		if (ptr.expired() == false) {
+			if (ptr.lock()->getType() == type) {
+				resources.push_back(ptr);
+			}
+		}
+	}
+	return resources;
+}
+
 // private
 
 std::filesystem::path ResourceManager::getFilePath(const std::string& name)

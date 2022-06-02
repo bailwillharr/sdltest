@@ -2,7 +2,8 @@
 
 #include "resource.hpp"
 
-#include <map>
+#include <unordered_map>
+#include <vector>
 #include <string>
 #include <iostream>
 #include <filesystem>
@@ -26,9 +27,11 @@ public:
 
 	std::unique_ptr<std::string> getResourcesListString();
 
+	std::vector<std::weak_ptr<Resource>> getAllResourcesOfType(const std::string& type);
+
 private:
 	std::filesystem::path m_resourcesPath;
-	std::map<std::string, std::weak_ptr<Resource>> m_resources;
+	std::unordered_map<std::string, std::weak_ptr<Resource>> m_resources;
 
 	std::filesystem::path getFilePath(const std::string& name);
 
