@@ -10,11 +10,8 @@
 
 #include "resource_manager.hpp"
 
-#include "debug/timer.hpp"
-
 #include <iostream>
 #include <memory>
-#include <thread>
 
 class MyComponent : public Component {
 public:
@@ -59,7 +56,9 @@ int main(int argc, char *argv[])
 	mainScene.getChild("car")->createComponent<components::Renderer>();
 	mainScene.getChild("car")->createComponent<MyComponent>();
 
+#ifdef SDLTEST_DEBUG
 	mainScene.printTree();
+#endif
 
 	// menu, settings controls
 	input.addInputButton("fullscreen", inputs::Key::F11);

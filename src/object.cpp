@@ -16,12 +16,16 @@ Object::Object(std::string name, Object* parent, struct GameIO things)
 	s_object_count++;
 	// all objects come with at least a transform component
 	createComponent<components::Transform>();
+#ifdef SDLTEST_DEBUG
 	std::cerr << "Object " << m_id << " '" << m_name << "' has been constructed\n";
+#endif
 }
 
 Object::~Object()
 {
+#ifdef SDLTEST_DEBUG
 	std::cerr << "Object " << m_id << " '" << m_name << "' has been destroyed\n";
+#endif
 }
 
 
@@ -89,12 +93,10 @@ void Object::deleteChild(std::string name)
 	throw std::runtime_error("Unable to delete child '" + name + "' as it does not exist");
 }
 
-// TODO: improve this
 void Object::printTree(int level)
 {
 	for (int i = 0; i < level; i++) {
 		if (i+1 == level) {
-			//std::cerr << "└4───────";
 			std::cerr << "\\_______";
 		} else {
 			std::cerr << "        ";

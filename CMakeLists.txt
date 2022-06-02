@@ -40,6 +40,10 @@ set_property(TARGET sdltest PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_include_directories(sdltest PUBLIC src)
 
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	target_compile_definitions(sdltest PUBLIC SDLTEST_DEBUG)
+endif()
+
 option(SDLTEST_NOGFX "Disable all openGL calls to test the performance of purely logic" OFF)
 if (SDLTEST_NOGFX)
 	target_compile_definitions(sdltest PUBLIC SDLTEST_NOGFX)

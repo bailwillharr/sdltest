@@ -13,7 +13,6 @@ ResourceManager::ResourceManager()
 	CHAR exeDirBuf[MAX_PATH + 1];
 	GetModuleFileNameA(NULL, exeDirBuf, MAX_PATH + 1);
 	std::filesystem::path cwd = std::filesystem::path(exeDirBuf).parent_path();
-	std::cerr << "CWD: " << cwd << "\n";
 #else
 	std::filesystem::path cwd = std::filesystem::current_path();
 #endif
