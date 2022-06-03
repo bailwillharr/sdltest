@@ -2,6 +2,9 @@
 
 #include "object.hpp"
 
+#include "components/camera.hpp"
+#include "components/renderer.hpp"
+
 #include <utility>
 #include <vector>
 #include <string>
@@ -13,9 +16,6 @@ class SceneRoot : public Object {
 private:
 	std::string m_sceneName;
 
-	// a list of the types of components present in the scene
-	std::vector<std::string> m_componentTypeList{};
-
 public:
 	// create a new empty scene
 	SceneRoot(std::string name, struct GameIO things);
@@ -23,7 +23,6 @@ public:
 	SceneRoot& operator=(const SceneRoot&) = delete;
 	~SceneRoot();
 
-	void updateScene();
-	void renderScene();
+	void updateStuff();
 
 };

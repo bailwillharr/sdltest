@@ -22,8 +22,7 @@ public:
 	Renderer(Object*);
 	~Renderer() override;
 
-	void onUpdate(glm::mat4 transform) override;
-	void onRender(glm::mat4 transform) override;
+	void onUpdate(glm::mat4 transform);
 	
 };
 

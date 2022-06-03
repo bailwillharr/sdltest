@@ -108,6 +108,7 @@ void Object::printTree(int level)
 	}
 }
 
+/*
 void Object::updateComponents(glm::mat4 transform)
 {
 	for (const auto& comp : m_components) {
@@ -148,3 +149,5 @@ void Object::renderObjectAndChildren(glm::mat4 parentTransform)
 	}
 
 }
+
+*/

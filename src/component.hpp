@@ -27,8 +27,4 @@ public:
 	
 	int getID();
 
-	// events
-	virtual void onUpdate(glm::mat4 transform);
-	virtual void onRender(glm::mat4 transform);
-
 };

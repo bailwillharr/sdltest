@@ -17,10 +17,14 @@ private:
 	glm::mat4 m_viewMatrix{ 1.0f };
 	glm::mat4 m_projMatrix{ 1.0f };
 
+	static int s_activeCamera;
+
 public:
 	Camera(Object* parent);
-	void onUpdate(glm::mat4 transform) override;
-	void onRender(glm::mat4 transform) override;
+	void updateCam(glm::mat4 transform);
+
+	void makeActive();
+
 };
 
 }

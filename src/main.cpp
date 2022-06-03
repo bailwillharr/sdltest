@@ -8,39 +8,42 @@
 #include "components/renderer.hpp"
 #include "components/camera.hpp"
 
+#include "custom_component.hpp"
+
 #include "resource_manager.hpp"
 
 #include <iostream>
 #include <memory>
 
-class MyComponent : public Component {
+
+
+class MyComponent : public CustomComponent {
 public:
 
 	int spawnCount = 0;
 	components::Transform* t;
 
-	MyComponent(Object* parent) : Component(parent, "MyComponent")
+	void MyComponent::onInit() override;
+	void MyComponent::onUpdate() override;
+
+	MyComponent(Object* parent) : CustomComponent(parent)
 	{
 		t = m_parent->getComponent<components::Transform>();
 		t->translate({ -0.5f, -0.5f, 0.0f });
 		t->scale({ 0.25f, 0.25f, 1.0f });
 	}
-	void onUpdate(glm::mat4 transform) override
-	{
 
-		float& x = t->m_transformMatrix[3][0];
-		float& y = t->m_transformMatrix[3][1];
-		float& z = t->m_transformMatrix[3][2];
-
-		x = m_parent->window()->getMouseNormX();
-		y = m_parent->window()->getMouseNormY() - 1.3f;
-
-	}
-	void onRender(glm::mat4 transform) override
-	{
-		(void)transform;
-	}
 };
+
+void MyComponent::onInit()
+{
+
+}
+
+void MyComponent::onUpdate()
+{
+
+}
 
 int main(int argc, char *argv[])
 {
@@ -102,13 +105,7 @@ int main(int argc, char *argv[])
 		if (input.getButtonPress("sneak"))
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "RESOURCES", resMan.getResourcesListString()->c_str(), win.m_handle);
 
-		mainScene.updateScene();
-	
-		// draw
-#ifndef SDLTEST_NOGFX
-		glClear(GL_COLOR_BUFFER_BIT);
-#endif
-		mainScene.renderScene();
+		mainScene.updateStuff();
 
 		// swap
 		win.swapBuffers();

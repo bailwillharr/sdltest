@@ -20,10 +20,6 @@ Renderer::~Renderer()
 void Renderer::onUpdate(glm::mat4 transform)
 {
 	(void)transform;
-}
-
-void Renderer::onRender(glm::mat4 transform)
-{
 
 	m_shader->setUniform("color", { 0.2f, 0.4f, 0.0f });
 	m_shader->setUniform("modelMat", transform );
