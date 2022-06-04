@@ -5,7 +5,10 @@
 #include "components/camera.hpp"
 #include "components/renderer.hpp"
 
+#include <glm/mat4x4.hpp>
+
 #include <iostream>
+#include <tuple>
 
 SceneRoot::SceneRoot(std::string name, struct GameIO things) : Object("root", nullptr, things), m_sceneName(name)
 {
@@ -25,17 +28,6 @@ SceneRoot::~SceneRoot()
 
 // public methods
 
-/*
-void SceneRoot::updateScene()
-{
-	updateObjectAndChildren(glm::mat4{1.0f});
-}
-
-void SceneRoot::renderScene()
-{
-	renderObjectAndChildren(glm::mat4{1.0f});
-}*/
-
 void SceneRoot::updateStuff()
 {
 	// get lists of component types
@@ -44,10 +36,23 @@ void SceneRoot::updateStuff()
 	// custom component
 
 	using namespace components;
+	using namespace glm;
 
-	std::vector<Camera> cameras;
-	std::vector<Renderer> renderers;
-	std::vector<CustomComponent> customComponents;
+	ComponentLists lists{}; // initialised to empty vectors
+	
+	getComponentLists(lists, glm::mat4{1.0f});
+
+	for (const auto& [camera, t] : lists.cameras) {
+		camera->updateCam(t);
+	}
+
+	for (const auto& [comp, t] : lists.customComponents) {
+
+	}
+
+	for (const auto& [renderer, t] : lists.renderers) {
+		renderer->render(t);
+	}
 
 
 

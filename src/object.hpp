@@ -13,6 +13,12 @@
 #include <memory>
 #include <stdexcept>
 
+namespace components {
+class Camera;
+class Renderer;
+}
+class CustomComponent;
+
 struct GameIO {
 	Window * const win;
 	Input * const input;
@@ -65,11 +71,13 @@ public:
 
 	template<class T> void deleteComponent();
 
-	void updateComponents(glm::mat4 transform);
-	void renderComponents(glm::mat4 transform);
+	struct ComponentLists {
+		std::vector<std::pair<components::Camera*, glm::mat4>> cameras;
+		std::vector<std::pair<components::Renderer*, glm::mat4>> renderers;
+		std::vector<std::pair<CustomComponent*, glm::mat4>> customComponents;
+	};
 
-	void updateObjectAndChildren(glm::mat4 transform);
-	void renderObjectAndChildren(glm::mat4 transform);
+	void getComponentLists(ComponentLists& lists, const glm::mat4& t);
 
 };
 

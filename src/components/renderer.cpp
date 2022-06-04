@@ -17,15 +17,11 @@ Renderer::~Renderer()
 
 }
 
-void Renderer::onUpdate(glm::mat4 transform)
+void Renderer::render(glm::mat4 transform)
 {
-	(void)transform;
-
 	m_shader->setUniform("color", { 0.2f, 0.4f, 0.0f });
 	m_shader->setUniform("modelMat", transform );
-
 	m_mesh->drawMesh(*m_shader);
-
 }
 
 }

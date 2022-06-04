@@ -21,8 +21,8 @@ public:
 	int spawnCount = 0;
 	components::Transform* t;
 
-	void MyComponent::onInit() override;
-	void MyComponent::onUpdate() override;
+	void onInit() override;
+	void onUpdate() override;
 
 	MyComponent(Object* parent) : CustomComponent(parent)
 	{
