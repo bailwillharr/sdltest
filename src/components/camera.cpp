@@ -18,6 +18,8 @@ Camera::Camera(Object* parent) : Component(parent, "camera")
 void Camera::updateCam(glm::mat4 transform)
 {
 
+	(void)transform;
+
 	using namespace resources;
 
 	auto resPtrs = m_parent->resMan()->getAllResourcesOfType("shader");

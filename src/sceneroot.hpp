@@ -2,9 +2,6 @@
 
 #include "object.hpp"
 
-#include "components/camera.hpp"
-#include "components/renderer.hpp"
-
 #include <utility>
 #include <vector>
 #include <string>

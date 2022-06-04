@@ -4,9 +4,9 @@
 #include "inputs/mouse.hpp"
 
 #ifdef _MSC_VER
-#pragma warning(push, 0)
+#pragma warning (push, 0)
 #include <SDL.h>
-#pragma warning(pop)
+#pragma warning (pop)
 #else
 #include <SDL2/SDL.h>
 #endif

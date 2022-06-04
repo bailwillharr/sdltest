@@ -1,5 +1,10 @@
 #include "sceneroot.hpp"
 
+#include "custom_component.hpp"
+
+#include "components/camera.hpp"
+#include "components/renderer.hpp"
+
 #include <iostream>
 
 SceneRoot::SceneRoot(std::string name, struct GameIO things) : Object("root", nullptr, things), m_sceneName(name)
@@ -33,5 +38,17 @@ void SceneRoot::renderScene()
 
 void SceneRoot::updateStuff()
 {
-	// get lists of renderer components and custom components
+	// get lists of component types
+	// camera
+	// renderer
+	// custom component
+
+	using namespace components;
+
+	std::vector<Camera> cameras;
+	std::vector<Renderer> renderers;
+	std::vector<CustomComponent> customComponents;
+
+
+
 }

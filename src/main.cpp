@@ -15,8 +15,6 @@
 #include <iostream>
 #include <memory>
 
-
-
 class MyComponent : public CustomComponent {
 public:
 
