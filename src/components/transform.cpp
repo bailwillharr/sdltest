@@ -6,7 +6,7 @@
 
 namespace components {
 
-Transform::Transform(Object* parent) : Component(parent, "transform")
+Transform::Transform(Object* parent) : Component(parent, TypeEnum::TRANSFORM)
 {
 }
 

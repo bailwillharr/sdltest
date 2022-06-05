@@ -1,7 +1,6 @@
 #include "sceneroot.hpp"
 
-#include "custom_component.hpp"
-
+#include "components/custom.hpp"
 #include "components/camera.hpp"
 #include "components/renderer.hpp"
 
@@ -30,30 +29,48 @@ SceneRoot::~SceneRoot()
 
 void SceneRoot::updateStuff()
 {
-	// get lists of component types
-	// camera
-	// renderer
-	// custom component
+	// TODO
+	// Get list of all components with corresponding transform matrices
+	// Only then, do these updates
 
 	using namespace components;
 	using namespace glm;
 
-	ComponentLists lists{}; // initialised to empty vectors
+	struct CompList compList{};
+
+	getAllSubComponents(compList, glm::mat4{1.0f});
+
+/*
+	std::cerr << "Cameras:\n";
+	for (const auto& [c, t] : compList.cameras) {
+		std::cerr << "ID: " << c->getID() << "\t\t x: " << t[3][0] << " y: " << t[3][1] << " z: " << t[3][2] << "\n";
+	}
+	std::cerr << "Renderers:\n";
+	for (const auto& [c, t] : compList.renderers) {
+		std::cerr << "ID: " << c->getID() << "\t\t x: " << t[3][0] << " y: " << t[3][1] << " z: " << t[3][2] << "\n";
+	}
+	std::cerr << "Custom Components:\n";
+	for (const auto& [c, t] : compList.customs) {
+		std::cerr << "ID: " << c->getID() << "\t\t x: " << t[3][0] << " y: " << t[3][1] << " z: " << t[3][2] << "\n";
+	}
+*/
+
+	// update
 	
-	getComponentLists(lists, glm::mat4{1.0f});
-
-	for (const auto& [camera, t] : lists.cameras) {
-		camera->updateCam(t);
+	for (const auto [c, t] : compList.customs) {
+		c->onUpdate(t);
 	}
 
-	for (const auto& [comp, t] : lists.customComponents) {
+	// render
 
+	for (const auto [c, t] : compList.cameras) {
+		if (c->isActive()) {
+			c->updateCam(t);
+		}
 	}
 
-	for (const auto& [renderer, t] : lists.renderers) {
-		renderer->render(t);
+	for (const auto [c, t] : compList.renderers) {
+		c->render(t);
 	}
-
-
 
 }

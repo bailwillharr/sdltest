@@ -266,6 +266,11 @@ bool Window::getVSync() const
 	return SDL_GL_GetSwapInterval() == 0 ? false : true;
 }
 
+glm::ivec2 Window::getViewportSize()
+{
+	return m_fbSize;
+}
+
 void Window::setTitle(std::string title)
 {
 	SDL_SetWindowTitle(m_handle, title.c_str());

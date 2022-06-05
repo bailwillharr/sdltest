@@ -22,7 +22,10 @@ public:
 	Renderer(Object*);
 	~Renderer() override;
 
+	// called every frame, do not call manually
 	void render(glm::mat4 transform);
+
+	void setMesh(const std::string& name);
 	
 };
 

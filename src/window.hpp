@@ -118,6 +118,8 @@ public:
 	// Returns true if VSync is enabled.
 	bool getVSync() const;
 
+	glm::ivec2 getViewportSize();
+
 	void setTitle(std::string title);
 
 	// Hides the window (it will appear closed to the user).

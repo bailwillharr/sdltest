@@ -7,41 +7,51 @@
 #include "components/transform.hpp"
 #include "components/renderer.hpp"
 #include "components/camera.hpp"
-
-#include "custom_component.hpp"
+#include "components/custom.hpp"
 
 #include "resource_manager.hpp"
 
 #include <iostream>
 #include <memory>
 
-class MyComponent : public CustomComponent {
+class MyComponent : public components::CustomComponent {
 public:
 
 	int spawnCount = 0;
-	components::Transform* t;
-
-	void onInit() override;
-	void onUpdate() override;
+	components::Transform* tcomp;
 
 	MyComponent(Object* parent) : CustomComponent(parent)
 	{
-		t = m_parent->getComponent<components::Transform>();
-		t->translate({ -0.5f, -0.5f, 0.0f });
-		t->scale({ 0.25f, 0.25f, 1.0f });
+		tcomp = m_parent->getComponent<components::Transform>();
+		tcomp->translate({ 0.0f, 0.0f, -10.0f });
+		tcomp->scale({ 0.25f, 0.25f, 1.0f });
+		tcomp->rotate(3.14159f / 2.0f, { 0.0f, 1.0f, 0.0f });
+	}
+
+	void onUpdate(glm::mat4 t) override {
+		float& x = tcomp->m_transformMatrix[3][0];
+		float& y = tcomp->m_transformMatrix[3][1];
+		float& z = tcomp->m_transformMatrix[3][2];
+
+		x = m_parent->window()->getMouseNormX() * 3.0f;
+		y = (m_parent->window()->getMouseNormY() - 1.3f) * 3.0f;
 	}
 
 };
 
-void MyComponent::onInit()
-{
+class CameraController : public components::CustomComponent {
+public:
 
-}
+	CameraController(Object* parent) : CustomComponent(parent)
+	{
+		
+	}
 
-void MyComponent::onUpdate()
-{
+	void onUpdate(glm::mat4 t) override {
+		
+	}
 
-}
+};
 
 int main(int argc, char *argv[])
 {
@@ -53,11 +63,10 @@ int main(int argc, char *argv[])
 	ResourceManager resMan;
 	SceneRoot mainScene("My Scene", { &win, &input, &resMan });
 
-	mainScene.createChild("car");
+	mainScene.createChild("car")->createComponent<MyComponent>();
 	mainScene.getChild("car")->createComponent<components::Renderer>();
-	mainScene.getChild("car")->createComponent<MyComponent>();
 
-	mainScene.createChild("cam")->createComponent<components::Camera>();
+	mainScene.createChild("cam")->createComponent<components::Camera>()->usePerspective(70.0f);
 
 #ifdef SDLTEST_DEBUG
 	mainScene.printTree();
@@ -80,6 +89,7 @@ int main(int argc, char *argv[])
 	input.addInputAxis("looky", inputs::MouseAxis::Y);
 
 	win.setVSync(false);
+
 	win.setRelativeMouseMode(true);
 
 	uint64_t lastTick = win.getNanos();
