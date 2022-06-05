@@ -42,12 +42,22 @@ public:
 class CameraController : public components::CustomComponent {
 public:
 
+	components::Transform* tcomp;
+
 	CameraController(Object* parent) : CustomComponent(parent)
 	{
-		
+		tcomp = m_parent->getComponent<components::Transform>();
 	}
 
 	void onUpdate(glm::mat4 t) override {
+		float& x = tcomp->m_transformMatrix[3][0];
+		float& y = tcomp->m_transformMatrix[3][1];
+		float& z = tcomp->m_transformMatrix[3][2];
+		float dt = m_parent->window()->getLastFrameTime();
+		float dx = m_parent->input()->getAxis("movex");
+		float dz = m_parent->input()->getAxis("movey");
+
+		glm::vec3 dxRotated = { dx * dt, 0.0f, 0.0f };
 		
 	}
 
