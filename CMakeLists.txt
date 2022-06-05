@@ -9,6 +9,7 @@ add_executable(sdltest
 	"src/object.cpp"
 	"src/sceneroot.cpp"
 	"src/component.cpp"
+	"src/components/custom.cpp"
 	"src/components/transform.cpp"
 	"src/components/renderer.cpp"
 	"src/components/camera.cpp"
@@ -20,6 +21,7 @@ add_executable(sdltest
 	"src/window.hpp"
 	"src/input.hpp"
 	"src/component.hpp"
+	"src/components/custom.hpp"
 	"src/object.hpp"
 	"src/sceneroot.hpp"
 	"src/components/camera.hpp"
@@ -38,11 +40,14 @@ add_executable(sdltest
 set_property(TARGET sdltest PROPERTY CXX_STANDARD 17)
 set_property(TARGET sdltest PROPERTY CXX_STANDARD_REQUIRED ON)
 
+if (MSVC)
+	target_compile_options(sdltest PUBLIC /W3)
+endif()
+
 target_include_directories(sdltest PUBLIC src)
 
-option(SDLTEST_NOGFX "Disable all openGL calls to test the performance of purely logic" OFF)
-if (SDLTEST_NOGFX)
-	target_compile_definitions(sdltest PUBLIC SDLTEST_NOGFX)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	target_compile_definitions(sdltest PUBLIC SDLTEST_DEBUG)
 endif()
 
 # libraries:

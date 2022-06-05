@@ -13,7 +13,6 @@ ResourceManager::ResourceManager()
 	CHAR exeDirBuf[MAX_PATH + 1];
 	GetModuleFileNameA(NULL, exeDirBuf, MAX_PATH + 1);
 	std::filesystem::path cwd = std::filesystem::path(exeDirBuf).parent_path();
-	std::cerr << "CWD: " << cwd << "\n";
 #else
 	std::filesystem::path cwd = std::filesystem::current_path();
 #endif
@@ -50,6 +49,20 @@ std::unique_ptr<std::string> ResourceManager::getResourcesListString()
 		buf += std::to_string(ptr.use_count()) + "\n";
 	}
 	return bufPtr;
+}
+
+
+std::vector<std::weak_ptr<Resource>> ResourceManager::getAllResourcesOfType(const std::string& type)
+{
+	std::vector<std::weak_ptr<Resource>> resources;
+	for (const auto& [name, ptr] : m_resources) {
+		if (ptr.expired() == false) {
+			if (ptr.lock()->getType() == type) {
+				resources.push_back(ptr);
+			}
+		}
+	}
+	return resources;
 }
 
 // private

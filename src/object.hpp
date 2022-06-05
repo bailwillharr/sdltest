@@ -2,6 +2,9 @@
 
 #include "component.hpp"
 #include "components/transform.hpp"
+#include "components/camera.hpp"
+#include "components/renderer.hpp"
+#include "components/custom.hpp"
 
 #include "window.hpp"
 #include "input.hpp"
@@ -12,6 +15,12 @@
 #include <string>
 #include <memory>
 #include <stdexcept>
+
+namespace components {
+	class Camera;
+	class Renderer;
+	class CustomComponent;
+}
 
 struct GameIO {
 	Window * const win;
@@ -65,11 +74,15 @@ public:
 
 	template<class T> void deleteComponent();
 
-	void updateComponents(glm::mat4 transform);
-	void renderComponents(glm::mat4 transform);
-
-	void updateObjectAndChildren(glm::mat4 transform);
-	void renderObjectAndChildren(glm::mat4 transform);
+	struct CompList {
+		std::vector<std::pair<components::Camera*, glm::mat4>> cameras;
+		std::vector<std::pair<components::Renderer*, glm::mat4>> renderers;
+		std::vector<std::pair<components::CustomComponent*, glm::mat4>> customs;
+	};
+		
+	// Adds to the provided vector all components of this object and of its children recursively.
+	// Ignores 'Transform'
+	void getAllSubComponents(struct CompList& compList, glm::mat4 t);
 
 };
 

@@ -4,9 +4,9 @@
 #include "inputs/mouse.hpp"
 
 #ifdef _MSC_VER
-#pragma warning(push, 0)
+#pragma warning (push, 0)
 #include <SDL.h>
-#pragma warning(pop)
+#pragma warning (pop)
 #else
 #include <SDL2/SDL.h>
 #endif
@@ -117,6 +117,8 @@ public:
 	void setVSync(bool enable);
 	// Returns true if VSync is enabled.
 	bool getVSync() const;
+
+	glm::ivec2 getViewportSize();
 
 	void setTitle(std::string title);
 

@@ -16,12 +16,16 @@ Object::Object(std::string name, Object* parent, struct GameIO things)
 	s_object_count++;
 	// all objects come with at least a transform component
 	createComponent<components::Transform>();
+#ifdef SDLTEST_DEBUG
 	std::cerr << "Object " << m_id << " '" << m_name << "' has been constructed\n";
+#endif
 }
 
 Object::~Object()
 {
+#ifdef SDLTEST_DEBUG
 	std::cerr << "Object " << m_id << " '" << m_name << "' has been destroyed\n";
+#endif
 }
 
 
@@ -89,12 +93,10 @@ void Object::deleteChild(std::string name)
 	throw std::runtime_error("Unable to delete child '" + name + "' as it does not exist");
 }
 
-// TODO: improve this
 void Object::printTree(int level)
 {
 	for (int i = 0; i < level; i++) {
 		if (i+1 == level) {
-			//std::cerr << "└4───────";
 			std::cerr << "\\_______";
 		} else {
 			std::cerr << "        ";
@@ -106,6 +108,34 @@ void Object::printTree(int level)
 	}
 }
 
+void Object::getAllSubComponents(struct CompList& compList, glm::mat4 parentTransform)
+{
+	using namespace components;
+
+	const glm::mat4 newTransform = getComponent<Transform>()->m_transformMatrix * parentTransform;
+
+	for (const auto& compUnq : m_components) {
+		const auto comp = compUnq.get();
+		switch (comp->getType()) {
+		case Component::TypeEnum::CAMERA:
+			compList.cameras.emplace_back(dynamic_cast<Camera*>(comp), newTransform);
+			break;
+		case Component::TypeEnum::RENDERER:
+			compList.renderers.emplace_back(dynamic_cast<Renderer*>(comp), newTransform);
+			break;
+		case Component::TypeEnum::CUSTOM:
+			compList.customs.emplace_back(dynamic_cast<CustomComponent*>(comp), newTransform);
+			break;
+		default:
+			break;
+		}
+	}
+	for (const auto& child : m_children) {
+		child->getAllSubComponents(compList, newTransform);
+	}
+}
+
+/*
 void Object::updateComponents(glm::mat4 transform)
 {
 	for (const auto& comp : m_components) {
@@ -146,3 +176,5 @@ void Object::renderObjectAndChildren(glm::mat4 parentTransform)
 	}
 
 }
+
+*/

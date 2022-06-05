@@ -50,7 +50,7 @@ namespace resources {
 // I've got to do this because of GL's stupid state machine
 GLuint Shader::s_activeProgram = 0;
 
-Shader::Shader(const std::filesystem::path& resPath) : Resource(resPath)
+Shader::Shader(const std::filesystem::path& resPath) : Resource(resPath, "shader")
 {
 
 	const std::string vertexShaderPath = (resPath.parent_path()/std::filesystem::path(resPath.stem().string() + ".vert")).string();
@@ -137,6 +137,17 @@ bool Shader::setUniform(const std::string& name, const glm::vec3& v) const
 	Uniform u = m_uniforms.at(name);
 	glUniform3f(u.location, v.x, v.y, v.z);
 	return true;
+}
+
+
+Shader::UniformType Shader::getUniformType(const std::string& name) const
+{
+	try {
+		Uniform u = m_uniforms.at(name);
+		return u.type;
+	} catch (const std::out_of_range& e) {
+		return UniformType::NOTFOUND;
+	}
 }
 
 int Shader::getAttribLocation(const std::string& name) const

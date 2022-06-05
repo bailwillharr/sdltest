@@ -22,8 +22,10 @@ public:
 	Renderer(Object*);
 	~Renderer() override;
 
-	void onUpdate(glm::mat4 transform) override;
-	void onRender(glm::mat4 transform) override;
+	// called every frame, do not call manually
+	void render(glm::mat4 transform);
+
+	void setMesh(const std::string& name);
 	
 };
 

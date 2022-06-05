@@ -7,42 +7,50 @@
 #include "components/transform.hpp"
 #include "components/renderer.hpp"
 #include "components/camera.hpp"
+#include "components/custom.hpp"
 
 #include "resource_manager.hpp"
 
-#include "debug/timer.hpp"
-
 #include <iostream>
 #include <memory>
-#include <thread>
 
-class MyComponent : public Component {
+class MyComponent : public components::CustomComponent {
 public:
 
 	int spawnCount = 0;
-	components::Transform* t;
+	components::Transform* tcomp;
 
-	MyComponent(Object* parent) : Component(parent, "MyComponent")
+	MyComponent(Object* parent) : CustomComponent(parent)
 	{
-		t = m_parent->getComponent<components::Transform>();
-		t->translate({ -0.5f, -0.5f, 0.0f });
-		t->scale({ 0.25f, 0.25f, 1.0f });
+		tcomp = m_parent->getComponent<components::Transform>();
+		tcomp->translate({ 0.0f, 0.0f, -10.0f });
+		tcomp->scale({ 0.25f, 0.25f, 1.0f });
+		tcomp->rotate(3.14159f / 2.0f, { 0.0f, 1.0f, 0.0f });
 	}
-	void onUpdate(glm::mat4 transform) override
+
+	void onUpdate(glm::mat4 t) override {
+		float& x = tcomp->m_transformMatrix[3][0];
+		float& y = tcomp->m_transformMatrix[3][1];
+		float& z = tcomp->m_transformMatrix[3][2];
+
+		x = m_parent->window()->getMouseNormX() * 3.0f;
+		y = (m_parent->window()->getMouseNormY() - 1.3f) * 3.0f;
+	}
+
+};
+
+class CameraController : public components::CustomComponent {
+public:
+
+	CameraController(Object* parent) : CustomComponent(parent)
 	{
-
-		float& x = t->m_transformMatrix[3][0];
-		float& y = t->m_transformMatrix[3][1];
-		float& z = t->m_transformMatrix[3][2];
-
-		x = m_parent->window()->getMouseNormX();
-		y = m_parent->window()->getMouseNormY() - 1.3f;
-
+		
 	}
-	void onRender(glm::mat4 transform) override
-	{
-		(void)transform;
+
+	void onUpdate(glm::mat4 t) override {
+		
 	}
+
 };
 
 int main(int argc, char *argv[])
@@ -55,11 +63,14 @@ int main(int argc, char *argv[])
 	ResourceManager resMan;
 	SceneRoot mainScene("My Scene", { &win, &input, &resMan });
 
-	mainScene.createChild("car");
+	mainScene.createChild("car")->createComponent<MyComponent>();
 	mainScene.getChild("car")->createComponent<components::Renderer>();
-	mainScene.getChild("car")->createComponent<MyComponent>();
 
+	mainScene.createChild("cam")->createComponent<components::Camera>()->usePerspective(70.0f);
+
+#ifdef SDLTEST_DEBUG
 	mainScene.printTree();
+#endif
 
 	// menu, settings controls
 	input.addInputButton("fullscreen", inputs::Key::F11);
@@ -78,6 +89,7 @@ int main(int argc, char *argv[])
 	input.addInputAxis("looky", inputs::MouseAxis::Y);
 
 	win.setVSync(false);
+
 	win.setRelativeMouseMode(true);
 
 	uint64_t lastTick = win.getNanos();
@@ -101,13 +113,7 @@ int main(int argc, char *argv[])
 		if (input.getButtonPress("sneak"))
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "RESOURCES", resMan.getResourcesListString()->c_str(), win.m_handle);
 
-		mainScene.updateScene();
-	
-		// draw
-#ifndef SDLTEST_NOGFX
-		glClear(GL_COLOR_BUFFER_BIT);
-#endif
-		mainScene.renderScene();
+		mainScene.updateStuff();
 
 		// swap
 		win.swapBuffers();

@@ -65,7 +65,9 @@ Window::Window(const std::string& title) : m_title(title)
 
 	onResize(m_winSize.x, m_winSize.y);
 
+#ifdef SDLTEST_DEBUG
 	std::cerr << "Window '" << m_title << "' has been constructed\n";
+#endif
 
 }
 
@@ -74,7 +76,9 @@ Window::~Window()
 	SDL_GL_DeleteContext(m_glContext);
 	SDL_DestroyWindow(m_handle);
 	SDL_Quit();
+#ifdef SDLTEST_DEBUG
 	std::cerr << "Window destroyed: '" << m_title << "'\n";
+#endif
 }
 
 // private methods
@@ -260,6 +264,11 @@ void Window::setVSync(bool enable)
 bool Window::getVSync() const
 {
 	return SDL_GL_GetSwapInterval() == 0 ? false : true;
+}
+
+glm::ivec2 Window::getViewportSize()
+{
+	return m_fbSize;
 }
 
 void Window::setTitle(std::string title)

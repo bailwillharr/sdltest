@@ -8,12 +8,19 @@
 
 Input::Input(const Window &win) : m_win(win)
 {
+#ifdef SDLTEST_DEBUG
 	std::cerr << "Input handler for '" << m_win.getTitle() << "' has been constructed\n";
+#endif
 
 	m_enabledDevices.fill(true);
 }
 
-Input::~Input() { std::cerr << "Input handler destroyed\n"; }
+Input::~Input()
+{
+#ifdef SDLTES_DEBUG
+	std::cerr << "Input handler destroyed\n";
+#endif
+}
 
 // private methods
 
