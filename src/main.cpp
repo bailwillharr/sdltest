@@ -58,7 +58,7 @@ public:
 		float dz = m_parent->input()->getAxis("movey");
 
 		glm::vec3 dxRotated = { dx * dt, 0.0f, 0.0f };
-		
+
 	}
 
 };

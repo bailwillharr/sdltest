@@ -14,6 +14,16 @@ namespace components {
 class Camera : public Component {
 
 private:
+	enum class Modes {
+		PERSPECTIVE,
+		M_2D
+	};
+
+	Modes m_mode = Modes::M_2D;
+
+	// perspective mode settings
+	float m_fovDeg = 90.0f;
+
 	glm::mat4 m_projMatrix{ 1.0f };
 
 	static int s_activeCamera;

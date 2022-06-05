@@ -95,6 +95,8 @@ void Window::onResize(Sint32 width, Sint32 height)
 	m_fbSize.x = static_cast<int>(fbWidth);
 	m_fbSize.y = static_cast<int>(fbHeight);
 	glViewport(0, 0, fbWidth, fbHeight);
+
+	m_justResized = true;
 }
 
 void Window::resetInputDeltas()
@@ -118,7 +120,6 @@ void Window::onWindowEvent(SDL_WindowEvent &e)
 	switch (e.event) {
 		case SDL_WINDOWEVENT_SIZE_CHANGED:
 			onResize(e.data1, e.data2);
-			m_justResized = true;
 			break;
 		case SDL_WINDOWEVENT_FOCUS_GAINED:
 			m_keyboardFocus = true;

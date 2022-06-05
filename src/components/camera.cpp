@@ -19,6 +19,12 @@ Camera::Camera(Object* parent) : Component(parent, TypeEnum::CAMERA)
 void Camera::updateCam(glm::mat4 transform)
 {
 
+	if (m_mode == Modes::PERSPECTIVE) {
+		if (m_parent->window()->getWindowResized()) {
+			usePerspective(m_fovDeg);
+		}
+	}
+
 	glm::mat4 viewMatrix = glm::inverse(transform);
 
 	using namespace resources;
@@ -51,6 +57,8 @@ bool Camera::isActive()
 
 void Camera::usePerspective(float fovDeg)
 {
+	m_mode = Modes::PERSPECTIVE;
+	m_fovDeg = fovDeg;
 	glm::vec2 viewportDim = m_parent->window()->getViewportSize();
 	float fovRad = glm::radians(fovDeg);
 	m_projMatrix = glm::perspectiveFov(fovRad, viewportDim.x, viewportDim.y, 0.1f, 100.0f);
