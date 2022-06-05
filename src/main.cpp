@@ -28,15 +28,6 @@ public:
 		tcomp->rotate(3.14159f / 2.0f, { 0.0f, 1.0f, 0.0f });
 	}
 
-	void onUpdate(glm::mat4 t) override {
-		float& x = tcomp->m_transformMatrix[3][0];
-		float& y = tcomp->m_transformMatrix[3][1];
-		float& z = tcomp->m_transformMatrix[3][2];
-
-		x = m_parent->window()->getMouseNormX() * 3.0f;
-		y = (m_parent->window()->getMouseNormY() - 1.3f) * 3.0f;
-	}
-
 };
 
 class CameraController : public components::CustomComponent {
@@ -50,14 +41,22 @@ public:
 	}
 
 	void onUpdate(glm::mat4 t) override {
-		float& x = tcomp->m_transformMatrix[3][0];
-		float& y = tcomp->m_transformMatrix[3][1];
-		float& z = tcomp->m_transformMatrix[3][2];
-		float dt = m_parent->window()->getLastFrameTime();
+		const float& x = tcomp->m_transformMatrix[3][0];
+		const float& y = tcomp->m_transformMatrix[3][1];
+		const float& z = tcomp->m_transformMatrix[3][2];
+		float dt = (float)m_parent->window()->getLastFrameTime() / (float)BILLION;
 		float dx = m_parent->input()->getAxis("movex");
+		float dy = (m_parent->input()->getButton("jump") ? 10.0f : 0.0f) - (m_parent->input()->getButton("sneak") ? 10.0f : 0.0f);
 		float dz = m_parent->input()->getAxis("movey");
 
-		glm::vec3 dxRotated = { dx * dt, 0.0f, 0.0f };
+		float speed = 10.0f;
+
+		tcomp->translate({ dx * dt * speed, dy * speed * dt, -dz * dt * speed });
+
+		float rotDX = m_parent->input()->getAxis("looky") * -0.005f;
+		float rotDY = m_parent->input()->getAxis("lookx") * -0.005f;
+
+		tcomp->rotate(rotDY, glm::vec3{ 0.0f, 1.0f, 0.0f });
 
 	}
 
@@ -77,6 +76,7 @@ int main(int argc, char *argv[])
 	mainScene.getChild("car")->createComponent<components::Renderer>();
 
 	mainScene.createChild("cam")->createComponent<components::Camera>()->usePerspective(70.0f);
+	mainScene.getChild("cam")->createComponent<CameraController>();
 
 #ifdef SDLTEST_DEBUG
 	mainScene.printTree();
@@ -118,9 +118,7 @@ int main(int argc, char *argv[])
 			win.toggleFullscreen();
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
-		if(input.getButtonPress("jump"))
-			win.setVSync(!win.getVSync());
-		if (input.getButtonPress("sneak"))
+		if (win.getKeyPress(inputs::Key::TAB))
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "RESOURCES", resMan.getResourcesListString()->c_str(), win.m_handle);
 
 		mainScene.updateStuff();

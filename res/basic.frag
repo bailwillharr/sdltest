@@ -1,8 +1,10 @@
 #version 330
 
-out vec4 FragColor;
-
 uniform vec3 color;
+
+in vec3 f_Position;
+
+out vec4 FragColor;
 
 void main() {
 

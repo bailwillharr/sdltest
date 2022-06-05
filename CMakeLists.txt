@@ -76,7 +76,7 @@ target_include_directories(sdltest PUBLIC vendor/glad/include)
 # If not in Debug mode, use '-mwindows'
 set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE TRUE)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-	set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE FALSE)
+	#set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE FALSE)
 endif()
 
 add_custom_command(
