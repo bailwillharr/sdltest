@@ -5,6 +5,7 @@
 #include <string>
 
 #include <iostream>
+#include <fstream>
 
 static GLuint compile(const char *path, GLenum type)
 {

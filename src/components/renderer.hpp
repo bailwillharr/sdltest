@@ -24,8 +24,6 @@ public:
 	Renderer(Object*);
 	~Renderer() override;
 
-	glm::vec3 m_color{ 0.0f, 1.0f, 0.0f };
-
 	// called every frame, do not call manually
 	void render(glm::mat4 transform);
 

@@ -6,7 +6,7 @@ namespace resources {
 
 Texture::Texture(const std::filesystem::path& resPath) : Resource(resPath, "texture")
 {
-  	FILE *fp = fopen(resPath.c_str(), "rb");
+  	FILE *fp = fopen(resPath.string().c_str(), "rb");
 	if (!fp) {
 		std::runtime_error("Unable to open texture file");
 	}

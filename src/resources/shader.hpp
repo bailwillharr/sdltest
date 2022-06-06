@@ -20,6 +20,7 @@ public:
 	enum class UniformType {
 		FLOAT_MAT4 = GL_FLOAT_MAT4,
 		FLOAT_VEC3 = GL_FLOAT_VEC3,
+		SAMPLER_2D = GL_SAMPLER_2D,
 		NOTFOUND
 	};
 	

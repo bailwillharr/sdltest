@@ -27,8 +27,6 @@ public:
 		
 		tcomp->translate({ 0.0f, 0.0f, -10.0f });
 		tcomp->rotate(3.14159f / 2.0f, { 0.0f, 1.0f, 0.0f });
-
-		rcomp->m_color = { 0.0f, 0.0f, 0.0f };
 	}
 
 	void onUpdate(glm::mat4 t) override
@@ -85,7 +83,6 @@ int main(int argc, char *argv[])
 	mainScene.getChild("gun")->createComponent<MyComponent>();
 
 	const auto rcomp = mainScene.getChild("gun")->getComponent<components::Renderer>();
-	rcomp->m_color.r = 0.5f;
 
 	mainScene.createChild("donut")->createComponent<components::Renderer>()->setMesh("donut.mesh");
 	//mainScene.getChild("donut")->createComponent<MyComponent>();
