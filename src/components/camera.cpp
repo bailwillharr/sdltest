@@ -14,6 +14,8 @@ Camera::Camera(Object* parent) : Component(parent, TypeEnum::CAMERA)
 {
 	// if no other active camera, make this one active
 	if (s_activeCamera == -1) makeActive();
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Camera::updateCam(glm::mat4 transform)
@@ -41,7 +43,7 @@ void Camera::updateCam(glm::mat4 transform)
 		}
 	}
 
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 }
 
@@ -57,11 +59,14 @@ bool Camera::isActive()
 
 void Camera::usePerspective(float fovDeg)
 {
+	const float NEAR = 0.1f;
+	const float FAR = 1000.0f;
+
 	m_mode = Modes::PERSPECTIVE;
 	m_fovDeg = fovDeg;
 	glm::vec2 viewportDim = m_parent->window()->getViewportSize();
 	float fovRad = glm::radians(fovDeg);
-	m_projMatrix = glm::perspectiveFov(fovRad, viewportDim.x, viewportDim.y, 0.1f, 100.0f);
+	m_projMatrix = glm::perspectiveFov(fovRad, viewportDim.x, viewportDim.y, NEAR, FAR);
 }
 
 void Camera::use2D()

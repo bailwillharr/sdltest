@@ -17,15 +17,38 @@
 class MyComponent : public components::CustomComponent {
 public:
 
-	int spawnCount = 0;
 	components::Transform* tcomp;
+	components::Renderer* rcomp;
+
+	int spawnCount = 0;
+
+	const float SPEED = 2.0f;
+	float dr = SPEED;
 
 	MyComponent(Object* parent) : CustomComponent(parent)
 	{
 		tcomp = m_parent->getComponent<components::Transform>();
+		rcomp = m_parent->getComponent<components::Renderer>();
+		
 		tcomp->translate({ 0.0f, 0.0f, -10.0f });
-		tcomp->scale({ 0.25f, 0.25f, 1.0f });
 		tcomp->rotate(3.14159f / 2.0f, { 0.0f, 1.0f, 0.0f });
+
+		rcomp->m_color = { 0.0f, 0.0f, 0.0f };
+	}
+
+	void onUpdate(glm::mat4 t) override
+	{
+		float dt = (float)m_parent->window()->getLastFrameTime() / (float)BILLION;
+		tcomp->rotate(dt * 2.0f, { 0.0f, 1.0f, 0.0f });
+
+		if (rcomp->m_color.r >= 1.0f) {
+			dr = -SPEED;
+		}
+		else if (rcomp->m_color.r <= 0.0f) {
+			dr = SPEED;
+		}
+
+		rcomp->m_color.r += dr * dt;
 	}
 
 };
@@ -49,7 +72,7 @@ public:
 		float dy = (m_parent->input()->getButton("jump") ? 10.0f : 0.0f) - (m_parent->input()->getButton("sneak") ? 10.0f : 0.0f);
 		float dz = m_parent->input()->getAxis("movey");
 
-		float speed = 10.0f;
+		float speed = 3.0f;
 
 		tcomp->translate({ dx * dt * speed, dy * speed * dt, -dz * dt * speed });
 
@@ -72,8 +95,14 @@ int main(int argc, char *argv[])
 	ResourceManager resMan;
 	SceneRoot mainScene("My Scene", { &win, &input, &resMan });
 
-	mainScene.createChild("car")->createComponent<MyComponent>();
-	mainScene.getChild("car")->createComponent<components::Renderer>();
+	mainScene.createChild("gun")->createComponent<components::Renderer>();
+	mainScene.getChild("gun")->createComponent<MyComponent>();
+
+	const auto rcomp = mainScene.getChild("gun")->getComponent<components::Renderer>();
+	rcomp->m_color.r = 0.5f;
+
+	mainScene.createChild("donut")->createComponent<components::Renderer>()->setMesh("donut.mesh");
+	//mainScene.getChild("donut")->createComponent<MyComponent>();
 
 	mainScene.createChild("cam")->createComponent<components::Camera>()->usePerspective(70.0f);
 	mainScene.getChild("cam")->createComponent<CameraController>();
@@ -99,7 +128,6 @@ int main(int argc, char *argv[])
 	input.addInputAxis("looky", inputs::MouseAxis::Y);
 
 	win.setVSync(false);
-
 	win.setRelativeMouseMode(true);
 
 	uint64_t lastTick = win.getNanos();

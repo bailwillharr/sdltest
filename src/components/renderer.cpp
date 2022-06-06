@@ -19,7 +19,8 @@ Renderer::~Renderer()
 
 void Renderer::render(glm::mat4 transform)
 {
-	m_shader->setUniform("color", { 0.2f, 0.4f, 0.0f });
+	m_shader->setUniform("color", m_color);
+	m_shader->setUniform("lightPos", { 3.0f, 20.0f, 0.0f });
 	m_shader->setUniform("modelMat", transform );
 	m_mesh->drawMesh(*m_shader);
 }
