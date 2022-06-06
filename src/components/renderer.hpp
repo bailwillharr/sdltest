@@ -4,6 +4,7 @@
 
 #include "resources/shader.hpp"
 #include "resources/mesh.hpp"
+#include "resources/texture.hpp"
 
 #include <vector>
 #include <string>
@@ -17,6 +18,7 @@ private:
 
 	std::shared_ptr<resources::Shader> m_shader;
 	std::shared_ptr<resources::Mesh> m_mesh;
+	std::shared_ptr<resources::Texture> m_texture;
 
 public:
 	Renderer(Object*);

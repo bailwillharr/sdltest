@@ -14,9 +14,8 @@ void main() {
 	vec3 norm = normalize(f_Norm);
 	vec3 lightDir = normalize(lightPos - f_Pos);
 	float diff = max(dot(norm, lightDir), 0.0);
-
 	float ambient = 0.2;
 
-	FragColor = vec4((diff + ambient) * color, 1.0);
+	FragColor = vec4((diff + ambient) * vec3(1.0, 1.0, 1.0), 1.0);
 
 }

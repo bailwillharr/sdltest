@@ -20,11 +20,6 @@ public:
 	components::Transform* tcomp;
 	components::Renderer* rcomp;
 
-	int spawnCount = 0;
-
-	const float SPEED = 2.0f;
-	float dr = SPEED;
-
 	MyComponent(Object* parent) : CustomComponent(parent)
 	{
 		tcomp = m_parent->getComponent<components::Transform>();
@@ -40,15 +35,6 @@ public:
 	{
 		float dt = (float)m_parent->window()->getLastFrameTime() / (float)BILLION;
 		tcomp->rotate(dt * 2.0f, { 0.0f, 1.0f, 0.0f });
-
-		if (rcomp->m_color.r >= 1.0f) {
-			dr = -SPEED;
-		}
-		else if (rcomp->m_color.r <= 0.0f) {
-			dr = SPEED;
-		}
-
-		rcomp->m_color.r += dr * dt;
 	}
 
 };

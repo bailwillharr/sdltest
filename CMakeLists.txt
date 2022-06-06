@@ -15,6 +15,7 @@ add_executable(sdltest
 	"src/components/camera.cpp"
 	"src/resources/mesh.cpp"
 	"src/resources/shader.cpp"
+	"src/resources/texture.cpp"
 	"src/resource_manager.cpp"
 	"src/resource.cpp"
 
@@ -33,6 +34,7 @@ add_executable(sdltest
 	"src/resource_manager.hpp"
 	"src/resource.hpp"
 	"src/resources/shader.hpp"
+	"src/resources/texture.hpp"
 )
 
 # compiling options:
