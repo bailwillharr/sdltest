@@ -9,11 +9,12 @@
 
 static GLuint compile(const char *path, GLenum type)
 {
-    FILE *fp = fopen(path, "r");
-    if (fp == NULL) {
+	std::ifstream fp(path, std::ios::binary | std::ios::ate);
+    if (fp.is_open() == false) {
         throw std::runtime_error("Error opening shader file: " + std::string(path));
     }
 
+	fp.siz
     // copy file into buffer
     fseek(fp, 0, SEEK_END);
     GLint len = (GLint)ftell(fp);
