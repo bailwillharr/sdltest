@@ -20,10 +20,8 @@ extern const uint64_t BILLION;
 
 class Window {
 
-public:
-	SDL_Window *m_handle;
-
 private:
+	SDL_Window *m_handle;
 	SDL_GLContext m_glContext;
 
 	bool m_shouldClose = false;
@@ -195,11 +193,14 @@ public:
 
 	// returns the number of frames elapsed since window creation
 	uint64_t getFrameCount() const;
-	uint64_t getStartTime() const;
-	uint64_t getLastFrameTime() const;
+	uint64_t getStartTime() const;;
+	uint64_t dt() const;
 	uint64_t getFPS() const;
 	uint64_t getAvgFPS() const;
 
 	void resetAvgFPS();
+
+	/* STATIC METHODS */
+	static void errorBox(const std::string& message);
 
 };

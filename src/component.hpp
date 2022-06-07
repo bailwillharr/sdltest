@@ -1,5 +1,9 @@
 #pragma once
 
+#include "window.hpp"
+#include "input.hpp"
+#include "resource_manager.hpp"
+
 #include <glm/mat4x4.hpp>
 
 #include <string>
@@ -28,7 +32,10 @@ public:
 	TypeEnum getType();
 
 protected:
-	Object* m_parent;
+	Object& parent;
+	Window& win;
+	Input& inp;
+	ResourceManager& res;
 
 private:
 	static int s_next_component_id;

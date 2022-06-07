@@ -4,6 +4,7 @@ project(sdltest LANGUAGES CXX VERSION 1.0)
 
 add_executable(sdltest 
 	"src/main.cpp"
+	"src/game.cpp"
 	"src/window.cpp"
 	"src/input.cpp"
 	"src/object.cpp"
@@ -19,6 +20,7 @@ add_executable(sdltest
 	"src/resource_manager.cpp"
 	"src/resource.cpp"
 
+	"src/game.hpp"
 	"src/window.hpp"
 	"src/input.hpp"
 	"src/component.hpp"

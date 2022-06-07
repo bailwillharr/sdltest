@@ -8,9 +8,9 @@ namespace components {
 
 Renderer::Renderer(Object* parent) : Component(parent, TypeEnum::RENDERER)
 {
-	m_shader = parent->resMan()->get<resources::Shader>("basic.glsl");
-	m_mesh = parent->resMan()->get<resources::Mesh>("gun.mesh");
-	m_texture = parent->resMan()->get<resources::Texture>("gun.glraw");
+	m_shader = this->parent.res.get<resources::Shader>("basic.glsl");
+	m_mesh = this->parent.res.get<resources::Mesh>("gun.mesh");
+	m_texture = this->parent.res.get<resources::Texture>("gun.glraw");
 }
 
 Renderer::~Renderer()
@@ -28,7 +28,7 @@ void Renderer::render(glm::mat4 transform)
 
 void Renderer::setMesh(const std::string& name)
 {
-	m_mesh = m_parent->resMan()->get<resources::Mesh>(name);
+	m_mesh = parent.res.get<resources::Mesh>(name);
 }
 
 }

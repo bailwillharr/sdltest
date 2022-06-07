@@ -11,7 +11,11 @@
 int Object::s_object_count = 0;
 
 Object::Object(std::string name, Object* parent, struct GameIO things)
-	: m_name(name), m_gameIO(things), m_parent(parent)
+	: m_name(name), m_parent(parent),
+	m_gameIO(things),
+	win(*things.win),
+	inp(*things.input),
+	res(*things.resMan)
 {
 	s_object_count++;
 	// all objects come with at least a transform component
@@ -26,22 +30,6 @@ Object::~Object()
 #ifdef SDLTEST_DEBUG
 	std::cerr << "Object " << m_id << " '" << m_name << "' has been destroyed\n";
 #endif
-}
-
-
-Window* Object::window()
-{
-	return m_gameIO.win;
-}
-
-Input* Object::input()
-{
-	return m_gameIO.input;
-}
-
-ResourceManager* Object::resMan()
-{
-	return m_gameIO.resMan;
 }
 
 std::string Object::getName()

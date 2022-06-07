@@ -454,7 +454,7 @@ uint64_t Window::getStartTime() const
 	return m_startTime;
 }
 
-uint64_t Window::getLastFrameTime() const
+uint64_t Window::dt() const
 {
 	return m_lastFrameTime;
 }
@@ -476,4 +476,12 @@ void Window::resetAvgFPS()
 {
 	m_avgFpsStart = getNanos();
 	m_avgFpsStartCount = getFrameCount();
+}
+
+/* STATIC METHODS */
+
+// Display an error message box
+void Window::errorBox(const std::string& message)
+{
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game Error", message.c_str(), NULL);
 }

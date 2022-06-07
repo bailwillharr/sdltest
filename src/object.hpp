@@ -49,9 +49,9 @@ public:
 	Object& operator=(const Object&) = delete;
 	~Object();
 
-	Window* window();
-	Input* input();
-	ResourceManager* resMan();
+	Window& win;
+	Input& inp;
+	ResourceManager& res;
 
 	std::string getName();
 

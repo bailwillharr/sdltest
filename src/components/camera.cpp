@@ -15,6 +15,7 @@ Camera::Camera(Object* parent) : Component(parent, TypeEnum::CAMERA)
 	// if no other active camera, make this one active
 	if (s_activeCamera == -1) makeActive();
 
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 }
 
@@ -22,7 +23,7 @@ void Camera::updateCam(glm::mat4 transform)
 {
 
 	if (m_mode == Modes::PERSPECTIVE) {
-		if (m_parent->window()->getWindowResized()) {
+		if (parent.win.getWindowResized()) {
 			usePerspective(m_fovDeg);
 		}
 	}
@@ -31,7 +32,7 @@ void Camera::updateCam(glm::mat4 transform)
 
 	using namespace resources;
 
-	auto resPtrs = m_parent->resMan()->getAllResourcesOfType("shader");
+	auto resPtrs = parent.res.getAllResourcesOfType("shader");
 	for (const auto& resPtr : resPtrs) {
 		// shader ref count increased by 1, but only in this scope
 		auto lockedPtr = resPtr.lock();
@@ -64,7 +65,7 @@ void Camera::usePerspective(float fovDeg)
 
 	m_mode = Modes::PERSPECTIVE;
 	m_fovDeg = fovDeg;
-	glm::vec2 viewportDim = m_parent->window()->getViewportSize();
+	glm::vec2 viewportDim = parent.win.getViewportSize();
 	float fovRad = glm::radians(fovDeg);
 	m_projMatrix = glm::perspectiveFov(fovRad, viewportDim.x, viewportDim.y, NEAR, FAR);
 }

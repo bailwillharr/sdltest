@@ -8,6 +8,7 @@ namespace components {
 
 Transform::Transform(Object* parent) : Component(parent, TypeEnum::TRANSFORM)
 {
+
 }
 
 Transform::~Transform()
