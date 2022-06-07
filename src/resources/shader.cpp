@@ -3,34 +3,33 @@
 #include <glad/glad.h>
 
 #include <string>
-
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <span>
+
+static std::unique_ptr<std::vector<char>> readFile(const char * path)
+{
+	std::ifstream file(path, std::ios::binary | std::ios::ate);
+	file.exceptions(std::ifstream::failbit); // throw exception if file cannot be opened
+	size_t size = file.tellg();
+	file.seekg(0, std::ios::beg);
+	auto buf = std::make_unique<std::vector<char>>();
+	buf->resize(size);
+	file.rdbuf()->sgetn(buf->data(), size);
+	return buf;
+}
 
 static GLuint compile(const char *path, GLenum type)
 {
-	std::ifstream fp(path, std::ios::binary | std::ios::ate);
-    if (fp.is_open() == false) {
-        throw std::runtime_error("Error opening shader file: " + std::string(path));
-    }
-
-	fp.siz
-    // copy file into buffer
-    fseek(fp, 0, SEEK_END);
-    GLint len = (GLint)ftell(fp);
-    char *src = (GLchar *)calloc(1, len + 1);
-    if (src == NULL) {
-        throw std::runtime_error("Error allocating memory for shader src");
-    }
-    fseek(fp, 0, SEEK_SET);
-    fread(src, 1, len, fp);
-    fclose(fp);
+	auto src = readFile(path);
 
     // compile shader
     GLuint handle = glCreateShader(type);
-    glShaderSource(handle, 1, (const GLchar **)&src, (const GLint *)&len);
+	GLint size = src->size();
+	GLchar *data = src->data();
+    glShaderSource(handle, 1, &data, &size);
     glCompileShader(handle);
-    free(src);
 
     // check for compilation error
     GLint compiled;

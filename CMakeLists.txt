@@ -41,7 +41,7 @@ add_executable(sdltest
 
 # compiling options:
 
-set_property(TARGET sdltest PROPERTY CXX_STANDARD 17)
+set_property(TARGET sdltest PROPERTY CXX_STANDARD 20)
 set_property(TARGET sdltest PROPERTY CXX_STANDARD_REQUIRED ON)
 
 if (MSVC)
