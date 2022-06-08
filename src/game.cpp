@@ -73,10 +73,10 @@ void playGame()
 {
 
 	Window win("sdltest");
-	Input input(win);
+	Input input(win); /* Input Manager */
 	ResourceManager resMan;
-	SceneRoot mainScene("My Scene", { &win, &input, &resMan });
-
+	SceneRoot mainScene({ &win, &input, &resMan });
+	
 	mainScene.createChild("gun")->createComponent<components::Renderer>();
 	mainScene.getChild("gun")->createComponent<MyComponent>();
 

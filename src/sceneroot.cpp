@@ -9,17 +9,23 @@
 #include <iostream>
 #include <tuple>
 
-SceneRoot::SceneRoot(std::string name, struct GameIO things) : Object("root", nullptr, things), m_sceneName(name)
+SceneRoot::SceneRoot(struct GameIO things) : Object("root", nullptr, things)
 {
 #ifdef SDLTEST_DEBUG
-	std::cerr << "SceneRoot '" << m_sceneName << "' has been constructed\n";
+	std::cerr << "Empty SceneRoot has been constructed\n";
 #endif
+}
+
+SceneRoot::SceneRoot(const std::filesystem::path& file, struct GameIO things) : SceneRoot(things)
+{
+	// TODO: make this a resource
+	//loadFromSceneFile(file);
 }
 
 SceneRoot::~SceneRoot()
 {
 #ifdef SDLTEST_DEBUG
-	std::cerr << "SceneRoot class destroyed: '" << m_sceneName << "'\n";
+	std::cerr << "SceneRoot class destroyed\n";
 #endif
 }
 

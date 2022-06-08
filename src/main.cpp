@@ -10,6 +10,7 @@ int main(int, char *[])
 	}
 	catch (const std::exception& e) {
 		Window::errorBox(e.what());
+		return EXIT_FAILURE;
 	}
 
 	return EXIT_SUCCESS;

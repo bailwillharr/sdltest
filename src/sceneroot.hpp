@@ -11,11 +11,12 @@
 class SceneRoot : public Object {
 
 private:
-	std::string m_sceneName;
 
 public:
 	// create a new empty scene
-	SceneRoot(std::string name, struct GameIO things);
+	SceneRoot(struct GameIO things);
+	SceneRoot(const std::filesystem::path& file, struct GameIO things);
+
 	SceneRoot(const SceneRoot&) = delete;
 	SceneRoot& operator=(const SceneRoot&) = delete;
 	~SceneRoot();
