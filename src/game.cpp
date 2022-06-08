@@ -129,13 +129,14 @@ void playGame()
 
 	mainScene.createChild("gunMaster")->createComponent<ArrowsMovement>();
 
+	/*
 	for (int i = 0; i < 100; i++) {
 		for (int j = 0; j < 100; j++) {
 			const std::string name = "gun" + std::to_string(i) + "_" + std::to_string(j);
 			mainScene.getChild("gunMaster")->createChild(name)->getComponent<components::Transform>()->translate({ (float)i * 2.5f, 0.0f, (float)j * 16.0f });
 			mainScene.getChild("gunMaster")->getChild(name)->createComponent<components::Renderer>();
 		}
-	}
+	}*/
 
 #ifdef SDLTEST_DEBUG
 	mainScene.printTree();
@@ -167,7 +168,7 @@ void playGame()
 
 		if (win.getLastFrameStamp() >= lastTick + (BILLION / 20)) {
 			lastTick = win.getLastFrameStamp();
-			win.setTitle(std::to_string(win.getFPS()) + " fps, avg: " + std::to_string(win.getAvgFPS()) + " fps");
+			win.setTitle(std::to_string(win.getFPS()) + " fps, avg: " + std::to_string(win.getAvgFPS()) + " fps, frames: " + std::to_string(win.getFrameCount()));
 		}
 
 		// logic

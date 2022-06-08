@@ -11,6 +11,8 @@ Renderer::Renderer(Object* parent) : Component(parent, TypeEnum::RENDERER)
 	m_shader = this->parent.res.get<resources::Shader>("basic.glsl");
 	m_mesh = this->parent.res.get<resources::Mesh>("gun.mesh");
 	m_texture = this->parent.res.get<resources::Texture>("gun.glraw");
+
+	m_shader->setUniform("lightPos", { 3.0f, 20.0f, 0.0f });
 }
 
 Renderer::~Renderer()
@@ -20,7 +22,6 @@ Renderer::~Renderer()
 
 void Renderer::render(glm::mat4 transform)
 {
-	m_shader->setUniform("lightPos", { 3.0f, 20.0f, 0.0f });
 	m_shader->setUniform("modelMat", transform );
 	m_texture->bindTexture();
 	m_mesh->drawMesh(*m_shader);
