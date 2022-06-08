@@ -454,9 +454,9 @@ uint64_t Window::getStartTime() const
 	return m_startTime;
 }
 
-uint64_t Window::dt() const
+float Window::dt() const
 {
-	return m_lastFrameTime;
+	return (float)m_lastFrameTime / (float)BILLION;
 }
 
 uint64_t Window::getFPS() const
@@ -476,6 +476,11 @@ void Window::resetAvgFPS()
 {
 	m_avgFpsStart = getNanos();
 	m_avgFpsStartCount = getFrameCount();
+}
+
+void Window::infoBox(const std::string& title, const std::string& msg)
+{
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, title.c_str(), msg.c_str(), m_handle);
 }
 
 /* STATIC METHODS */

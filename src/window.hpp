@@ -194,11 +194,13 @@ public:
 	// returns the number of frames elapsed since window creation
 	uint64_t getFrameCount() const;
 	uint64_t getStartTime() const;;
-	uint64_t dt() const;
+	float dt() const; // returns delta time in seconds
 	uint64_t getFPS() const;
 	uint64_t getAvgFPS() const;
 
 	void resetAvgFPS();
+
+	void infoBox(const std::string& title, const std::string& msg);
 
 	/* STATIC METHODS */
 	static void errorBox(const std::string& message);

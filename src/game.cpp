@@ -30,8 +30,8 @@ public:
 
 	void onUpdate(glm::mat4 t) override
 	{
-		float dt = (float)parent.win.dt() / (float)BILLION;
-		tcomp->rotate(dt * 2.0f, { 0.0f, 1.0f, 0.0f });
+		const float dt = win.dt();
+		//tcomp->rotate(dt * 2.0f, { 0.0f, 1.0f, 0.0f });
 	}
 
 };
@@ -45,25 +45,33 @@ public:
 		CustomComponent(parent)
 	{
 		tcomp = this->parent.getComponent<components::Transform>();
+		float& x = tcomp->m_transformMatrix[3][0];
+		float& y = tcomp->m_transformMatrix[3][1];
+		float& z = tcomp->m_transformMatrix[3][2];
+
+		x -= 2.0f;
 	}
 
 	void onUpdate(glm::mat4 t) override {
-		const float& x = tcomp->m_transformMatrix[3][0];
-		const float& y = tcomp->m_transformMatrix[3][1];
-		const float& z = tcomp->m_transformMatrix[3][2];
-		float dt = (float)win.dt() / (float)BILLION;
-		float dx = inp.getAxis("movex");
-		float dy = (inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f);
-		float dz = inp.getAxis("movey");
+		float& x = tcomp->m_transformMatrix[3][0];
+		float& y = tcomp->m_transformMatrix[3][1];
+		float& z = tcomp->m_transformMatrix[3][2];
+		const float dt = win.dt();
+		const float dx = inp.getAxis("movex");
+		const float dy = (inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f);
+		const float dz = -inp.getAxis("movey");
 
 		float speed = 3.0f;
 
-		tcomp->translate({ dx * dt * speed, dy * speed * dt, -dz * dt * speed });
+		x += dx * dt * speed;
+		y += dy * dt * speed;
+		z += dz * dt * speed;
 
 		float rotDX = inp.getAxis("looky") * -0.005f;
 		float rotDY = inp.getAxis("lookx") * -0.005f;
 
 		tcomp->rotate(rotDY, glm::vec3{ 0.0f, 1.0f, 0.0f });
+		tcomp->rotate(rotDX, glm::vec3{ 1.0f, 0.0f, 0.0f });
 
 	}
 
@@ -85,8 +93,49 @@ void playGame()
 	mainScene.createChild("donut")->createComponent<components::Renderer>()->setMesh("donut.mesh");
 	//mainScene.getChild("donut")->createComponent<MyComponent>();
 
-	mainScene.createChild("cam")->createComponent<components::Camera>()->usePerspective(70.0f);
-	mainScene.getChild("cam")->createComponent<CameraController>();
+	mainScene.getChild("gun")->createChild("cam")->createComponent<components::Camera>()->usePerspective(70.0f);
+	mainScene.getChild("gun")->getChild("cam")->createComponent<CameraController>();
+
+	class ArrowsMovement : public components::CustomComponent {
+	public:
+		components::Transform* tcomp;
+
+		ArrowsMovement(Object* parent) :
+			CustomComponent(parent)
+		{
+			tcomp = this->parent.getComponent<components::Transform>();
+		}
+
+		void onUpdate(glm::mat4) override
+		{
+			float& x = tcomp->m_transformMatrix[3][0];
+			float& y = tcomp->m_transformMatrix[3][1];
+			float& z = tcomp->m_transformMatrix[3][2];
+			const float dt = win.dt();
+
+			const float speed = 100.0f;
+
+			if (win.getKey(inputs::Key::LEFT))
+				x += dt * speed;
+			if (win.getKey(inputs::Key::RIGHT))
+				x -= dt * speed;
+			if (win.getKey(inputs::Key::UP))
+				z += dt * speed;
+			if (win.getKey(inputs::Key::DOWN))
+				z -= dt * speed;
+		}
+	
+	};
+
+	mainScene.createChild("gunMaster")->createComponent<ArrowsMovement>();
+
+	for (int i = 0; i < 100; i++) {
+		for (int j = 0; j < 100; j++) {
+			const std::string name = "gun" + std::to_string(i) + "_" + std::to_string(j);
+			mainScene.getChild("gunMaster")->createChild(name)->getComponent<components::Transform>()->translate({ (float)i * 2.5f, 0.0f, (float)j * 16.0f });
+			mainScene.getChild("gunMaster")->getChild(name)->createComponent<components::Renderer>();
+		}
+	}
 
 #ifdef SDLTEST_DEBUG
 	mainScene.printTree();
@@ -128,7 +177,7 @@ void playGame()
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
 		if (win.getKeyPress(inputs::Key::TAB)) {
-			//SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "RESOURCES", resMan.getResourcesListString()->c_str(), win.m_handle);
+			win.infoBox("RESOURCES", resMan.getResourcesListString()->c_str());
 		}
 
 		mainScene.updateStuff();

@@ -100,7 +100,7 @@ void Object::getAllSubComponents(struct CompList& compList, glm::mat4 parentTran
 {
 	using namespace components;
 
-	const glm::mat4 newTransform = getComponent<Transform>()->m_transformMatrix * parentTransform;
+	const glm::mat4 newTransform = parentTransform * getComponent<Transform>()->m_transformMatrix;
 
 	for (const auto& compUnq : m_components) {
 		const auto comp = compUnq.get();
@@ -122,47 +122,3 @@ void Object::getAllSubComponents(struct CompList& compList, glm::mat4 parentTran
 		child->getAllSubComponents(compList, newTransform);
 	}
 }
-
-/*
-void Object::updateComponents(glm::mat4 transform)
-{
-	for (const auto& comp : m_components) {
-		comp->onUpdate(transform);
-	}
-}
-
-void Object::renderComponents(glm::mat4 transform)
-{
-	for (const auto& comp : m_components) {
-		comp->onRender(transform);
-	}
-}
-
-void Object::updateObjectAndChildren(glm::mat4 parentTransform)
-{
-	glm::mat4 newTransform;
-	const auto transform = getComponent<components::Transform>();
-	newTransform = parentTransform * transform->m_transformMatrix;
-
-	updateComponents(newTransform);
-
-	for (const auto& obj : m_children) {
-		obj->updateObjectAndChildren(newTransform);
-	}
-}
-
-void Object::renderObjectAndChildren(glm::mat4 parentTransform)
-{
-	glm::mat4 newTransform;
-	const auto transform = getComponent<components::Transform>();
-	newTransform = parentTransform * transform->m_transformMatrix;
-
-	renderComponents(newTransform);
-
-	for (const auto& obj : m_children) {
-		obj->renderObjectAndChildren(newTransform);
-	}
-
-}
-
-*/
