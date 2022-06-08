@@ -144,7 +144,7 @@ void playGame()
 
 	// menu, settings controls
 	input.addInputButton("fullscreen", inputs::Key::F11);
-	input.addInputButton("quit", inputs::Key::ESCAPE);
+	input.addInputButton("togglefocus", inputs::Key::ESCAPE);
 	input.addInputButton("quit", inputs::Key::Q);
 	// game buttons
 	input.addInputButton("fire", inputs::MouseButton::M_LEFT);
@@ -175,6 +175,11 @@ void playGame()
 
 		if (input.getButtonPress("fullscreen"))
 			win.toggleFullscreen();
+		if (input.getButtonPress("togglefocus")) {
+			bool captured = win.mouseCaptured();
+			win.setRelativeMouseMode(!captured);
+			input.setDeviceActive(InputDevice::MOUSE, !captured);
+		}
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
 		if (win.getKeyPress(inputs::Key::TAB)) {

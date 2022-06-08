@@ -1,8 +1,12 @@
 #include "resources/texture.hpp"
 
 #include <vector>
+#include <iostream>
 
 namespace resources {
+
+// -1 means invalid / no bind
+GLuint Texture::s_binded_texture = -1;
 
 Texture::Texture(const std::filesystem::path& resPath) : Resource(resPath, "texture")
 {
@@ -16,7 +20,7 @@ Texture::Texture(const std::filesystem::path& resPath) : Resource(resPath, "text
 	fread(&tex_data_offset, sizeof(uint64_t), 1, fp);
 
 	glGenTextures(1, &m_texture);
-	glBindTexture(GL_TEXTURE_2D, m_texture);
+	bindTexture(); // glBindTexture
 	fseek(fp, 0L, SEEK_END);
 	uint64_t end = ftell(fp);
 
@@ -34,12 +38,18 @@ Texture::Texture(const std::filesystem::path& resPath) : Resource(resPath, "text
 
 Texture::~Texture()
 {
-
+	if (s_binded_texture == m_texture) {
+		s_binded_texture = -1;
+	}
 }
 
 void Texture::bindTexture() const
 {
-	glBindTexture(GL_TEXTURE_2D, m_texture);
+	if (s_binded_texture != m_texture) {
+		std::cerr << "Texture bound\n";
+		glBindTexture(GL_TEXTURE_2D, m_texture);
+		s_binded_texture = m_texture;
+	}
 }
 
 }

@@ -338,16 +338,18 @@ bool Window::isFullscreen() const
 
 bool Window::setRelativeMouseMode(bool enabled)
 {
+	m_mouse.captured = enabled;
 	int code = SDL_SetRelativeMouseMode(static_cast<SDL_bool>(enabled));
 	if (code != 0) {
-		if (code == -1) {
-			return false;
-		} else {
-			throw std::runtime_error("Unable to set relative mouse mode: ");
-		}
+		throw std::runtime_error("Unable to set relative mouse mode");
 	} else {
 		return true;
 	}
+}
+
+bool Window::mouseCaptured()
+{
+	return m_mouse.captured;
 }
 
 // getting input

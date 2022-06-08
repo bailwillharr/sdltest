@@ -10,6 +10,8 @@ class Texture : public Resource {
 
 private:
 
+	static GLuint s_binded_texture;
+
 	GLuint m_texture;
 
 

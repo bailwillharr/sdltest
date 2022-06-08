@@ -75,6 +75,7 @@ private:
 		Sint32 yrel;
 		float xscroll;
 		float yscroll;
+		bool captured = false;
 	} m_mouse{ };
 
 	// private methods
@@ -141,6 +142,9 @@ public:
 
 	// Relative mouse mode captures the cursor for FPS style use. Returns false if unsupported.
 	bool setRelativeMouseMode(bool enabled);
+
+	// returns true if relative mouse mode is enabled
+	bool mouseCaptured();
 
 	// window events
 
