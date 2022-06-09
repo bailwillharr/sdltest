@@ -104,13 +104,13 @@ public:
 		const float speed = 1.0f;
 
 		if (win.getKey(inputs::Key::LEFT))
-			x += dt * speed;
-		if (win.getKey(inputs::Key::RIGHT))
 			x -= dt * speed;
+		if (win.getKey(inputs::Key::RIGHT))
+			x += dt * speed;
 		if (win.getKey(inputs::Key::UP))
-			z += dt * speed;
-		if (win.getKey(inputs::Key::DOWN))
 			z -= dt * speed;
+		if (win.getKey(inputs::Key::DOWN))
+			z += dt * speed;
 	}
 
 };

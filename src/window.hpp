@@ -204,7 +204,7 @@ public:
 
 	void resetAvgFPS();
 
-	void infoBox(const std::string& title, const std::string& msg);
+	bool infoBox(const std::string& title, const std::string& msg);
 
 	/* STATIC METHODS */
 	static void errorBox(const std::string& message);

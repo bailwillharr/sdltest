@@ -480,9 +480,14 @@ void Window::resetAvgFPS()
 	m_avgFpsStartCount = getFrameCount();
 }
 
-void Window::infoBox(const std::string& title, const std::string& msg)
+bool Window::infoBox(const std::string& title, const std::string& msg)
 {
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, title.c_str(), msg.c_str(), m_handle);
+	if (isFullscreen() == false) {
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, title.c_str(), msg.c_str(), m_handle);
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /* STATIC METHODS */
