@@ -54,6 +54,9 @@ public:
 class CameraController : public components::CustomComponent {
 public:
 
+	float yaw = 0.0f;
+	float pitch = 0.0f;
+
 	components::Transform* tcomp;
 
 	CameraController(Object* parent) :
@@ -65,25 +68,31 @@ public:
 	}
 
 	void onUpdate(glm::mat4 t) override {
+		constexpr float SPEED = 3.0f;
+		constexpr float MAX_PITCH = glm::pi<float>() / 2.0f - 0.001f;
+		constexpr float MIN_PITCH = -glm::pi<float>() / 2.0f + 0.001f;
+
 		const float dt = win.dt();
-		const float dx = inp.getAxis("movex");
-		const float dy = (inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f);
-		const float dz = -inp.getAxis("movey");
+		const float dx = inp.getAxis("movex") * dt * SPEED;
+		const float dy = ((inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f)) * dt * SPEED;
+		const float dz = (-inp.getAxis("movey")) * dt * SPEED;
 
-		float speed = 3.0f;
+		pitch += inp.getAxis("looky") * -0.005f;
 
-		tcomp->position.x += dx * dt * speed;
-		tcomp->position.y += dy * dt * speed;
-		tcomp->position.z += dz * dt * speed;
+		yaw += inp.getAxis("lookx") * -0.005f;
 
-		float rotDX = inp.getAxis("looky") * -0.005f;
-		float rotDY = inp.getAxis("lookx") * -0.005f;
+		const glm::vec3 dxRotated = glm::rotateY(glm::vec3{dx, 0.0f, 0.0f}, yaw);
+		const glm::vec3 dzRotated = glm::rotateY(glm::vec3{0.0f, 0.0f, dz}, yaw);
 
 		glm::vec3 lookDir{0.0f, 0.0f, -1.0f};
-		lookDir = glm::rotateY(lookDir, rotDY);
+		lookDir = glm::rotateX(lookDir, pitch);
+		lookDir = glm::rotateY(lookDir, yaw);
 
 		tcomp->rotation = glm::quatLookAt(lookDir, glm::vec3{0.0f, 1.0f, 0.0f});
 
+		tcomp->position += dzRotated;
+		tcomp->position += dxRotated;
+		tcomp->position.y += dy;
 	}
 
 };
