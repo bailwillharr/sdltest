@@ -15,47 +15,11 @@
 
 #include <glm/gtx/rotate_vector.hpp>
 
-class MyComponent : public components::CustomComponent {
-public:
-
-	components::Transform* tcomp;
-	components::Renderer* rcomp;
-
-	const float SPEED = 3.0f;
-	float sf = 1.0f;
-	float sfrate = SPEED;
-
-	MyComponent(Object* parent) : CustomComponent(parent)
-	{
-		tcomp = this->parent.getComponent<components::Transform>();
-		rcomp = this->parent.getComponent<components::Renderer>();
-
-		tcomp->position.z = -10.0f;
-
-		tcomp->rotation = glm::angleAxis(glm::pi<float>() / 2.0f, glm::vec3{0.0f, 1.0f, 0.0f});
-	}
-
-	void onUpdate(glm::mat4 t) override
-	{
-		const float dt = win.dt();
-		//tcomp->rotation.y += dt * 2.0f;
-
-		if (sf >= 10.0f) {
-			sfrate = -SPEED;
-		} else if (sf <= 1.0f) {
-			sfrate = SPEED;
-		}
-		sf += sfrate * dt;
-		tcomp->scale.x = sf;
-	}
-
-};
-
 class CameraController : public components::CustomComponent {
 public:
 
-	float yaw = 0.0f;
-	float pitch = 0.0f;
+	float m_yaw = 0.0f;
+	float m_pitch = 0.0f;
 
 	components::Transform* tcomp;
 
@@ -68,31 +32,85 @@ public:
 	}
 
 	void onUpdate(glm::mat4 t) override {
-		constexpr float SPEED = 3.0f;
-		constexpr float MAX_PITCH = glm::pi<float>() / 2.0f - 0.001f;
-		constexpr float MIN_PITCH = -glm::pi<float>() / 2.0f + 0.001f;
+
+		// calculate new position
 
 		const float dt = win.dt();
+		constexpr float SPEED = 3.0f;
+
 		const float dx = inp.getAxis("movex") * dt * SPEED;
 		const float dy = ((inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f)) * dt * SPEED;
 		const float dz = (-inp.getAxis("movey")) * dt * SPEED;
 
-		pitch += inp.getAxis("looky") * -0.005f;
+		// calculate new pitch and yaw
 
-		yaw += inp.getAxis("lookx") * -0.005f;
+		constexpr float MAX_PITCH = glm::pi<float>() / 2.0f;
+		constexpr float MIN_PITCH = -glm::pi<float>() / 2.0f;
 
-		const glm::vec3 dxRotated = glm::rotateY(glm::vec3{dx, 0.0f, 0.0f}, yaw);
-		const glm::vec3 dzRotated = glm::rotateY(glm::vec3{0.0f, 0.0f, dz}, yaw);
+		float dPitch = inp.getAxis("looky") * -0.005f;
+		m_pitch += dPitch;
+		if (m_pitch <= MIN_PITCH || m_pitch >= MAX_PITCH) {
+			m_pitch -= dPitch;
+		}
+		m_yaw += inp.getAxis("lookx") * -0.005f;
 
-		glm::vec3 lookDir{0.0f, 0.0f, -1.0f};
-		lookDir = glm::rotateX(lookDir, pitch);
-		lookDir = glm::rotateY(lookDir, yaw);
-
-		tcomp->rotation = glm::quatLookAt(lookDir, glm::vec3{0.0f, 1.0f, 0.0f});
-
+		// update position relative to camera direction in xz plane
+		const glm::vec3 dxRotated = glm::rotateY(glm::vec3{dx, 0.0f, 0.0f}, m_yaw);
+		const glm::vec3 dzRotated = glm::rotateY(glm::vec3{0.0f, 0.0f, dz}, m_yaw);
 		tcomp->position += dzRotated;
 		tcomp->position += dxRotated;
 		tcomp->position.y += dy;
+
+		// pitch quaternion
+		const float halfPitch = m_pitch/2.0f;
+		glm::quat pitchQuat;
+		pitchQuat.x = glm::sin(halfPitch);
+		pitchQuat.y = 0.0f;
+		pitchQuat.z = 0.0f;
+		pitchQuat.w = glm::cos(halfPitch);
+
+		// yaw quaternion
+		const float halfYaw = m_yaw/2.0f;
+		glm::quat yawQuat;
+		yawQuat.x = 0.0f;
+		yawQuat.y = glm::sin(halfYaw);
+		yawQuat.z = 0.0f;
+		yawQuat.w = glm::cos(halfYaw);
+
+		// update rotation
+		tcomp->rotation = yawQuat * pitchQuat;
+
+	}
+
+};
+
+class ArrowsMovement : public components::CustomComponent {
+public:
+	components::Transform* tcomp;
+
+	ArrowsMovement(Object* parent) :
+		CustomComponent(parent)
+	{
+		tcomp = this->parent.getComponent<components::Transform>();
+	}
+
+	void onUpdate(glm::mat4) override
+	{
+		float& x = tcomp->position.x;
+		float& y = tcomp->position.y;
+		float& z = tcomp->position.z;
+		const float dt = win.dt();
+
+		const float speed = 1.0f;
+
+		if (win.getKey(inputs::Key::LEFT))
+			x += dt * speed;
+		if (win.getKey(inputs::Key::RIGHT))
+			x -= dt * speed;
+		if (win.getKey(inputs::Key::UP))
+			z += dt * speed;
+		if (win.getKey(inputs::Key::DOWN))
+			z -= dt * speed;
 	}
 
 };
@@ -105,54 +123,16 @@ void playGame()
 	ResourceManager resMan;
 	SceneRoot mainScene({ &win, &input, &resMan });
 	
-	mainScene.createChild("gun")->createComponent<components::Renderer>();
-	mainScene.getChild("gun")->createComponent<MyComponent>();
-
 	mainScene.createChild("donut")->createComponent<components::Renderer>()->setMesh("donut.mesh");
 
 	mainScene.createChild("cam")->createComponent<components::Camera>()->usePerspective(70.0f);
 	mainScene.getChild("cam")->createComponent<CameraController>();
-
-	class ArrowsMovement : public components::CustomComponent {
-	public:
-		components::Transform* tcomp;
-
-		ArrowsMovement(Object* parent) :
-			CustomComponent(parent)
-		{
-			tcomp = this->parent.getComponent<components::Transform>();
-		}
-
-		void onUpdate(glm::mat4) override
-		{
-			float& x = tcomp->position.x;
-			float& y = tcomp->position.y;
-			float& z = tcomp->position.z;
-			const float dt = win.dt();
-
-			const float speed = 100.0f;
-
-			if (win.getKey(inputs::Key::LEFT))
-				x += dt * speed;
-			if (win.getKey(inputs::Key::RIGHT))
-				x -= dt * speed;
-			if (win.getKey(inputs::Key::UP))
-				z += dt * speed;
-			if (win.getKey(inputs::Key::DOWN))
-				z -= dt * speed;
-		}
-	
-	};
-
-	mainScene.createChild("gunMaster")->createComponent<ArrowsMovement>();
-
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 5; j++) {
-			const std::string name = "gun" + std::to_string(i) + "_" + std::to_string(j);
-			mainScene.getChild("gunMaster")->createChild(name)->getComponent<components::Transform>()->position = { (float)i * 2.5f, 0.0f, (float)j * 16.0f };
-			mainScene.getChild("gunMaster")->getChild(name)->createComponent<components::Renderer>();
-		}
-	}
+	mainScene.getChild("cam")->createChild("gun")->createComponent<components::Renderer>()->setMesh("gun.mesh");
+	mainScene.getChild("cam")->getChild("gun")->createComponent<ArrowsMovement>();
+	mainScene.getChild("cam")->getChild("gun")->getComponent<components::Transform>()
+		->position = glm::vec3{3.0f, -10.0f, -10.0f};
+	mainScene.getChild("cam")->getChild("gun")->getComponent<components::Transform>()
+		->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{0.0f, 1.0f, 0.0f});
 
 #ifdef SDLTEST_DEBUG
 	mainScene.printTree();
@@ -189,8 +169,13 @@ void playGame()
 
 		// logic
 
-		if (input.getButtonPress("fullscreen"))
-			win.toggleFullscreen();
+		if (input.getButtonPress("fullscreen")) {
+			if (win.isFullscreen()) {
+				win.setFullscreen(false);
+			} else {
+				win.setFullscreen(true, false); // disable exclusive mode, use borderless window
+			}
+		}
 		if (input.getButtonPress("togglefocus")) {
 			bool captured = win.mouseCaptured();
 			win.setRelativeMouseMode(!captured);

@@ -135,7 +135,7 @@ public:
 	// Returns true if the window should remain open
 	bool isRunning() const;
 
-	void setFullscreen(bool fullscreen);
+	void setFullscreen(bool fullscreen, bool exclusive=true);
 	void toggleFullscreen();
 
 	bool isFullscreen() const;

@@ -313,9 +313,9 @@ bool Window::isRunning() const
 	return !m_shouldClose;
 }
 
-void Window::setFullscreen(bool fullscreen)
+void Window::setFullscreen(bool fullscreen, bool exclusive)
 {
-	if (SDL_SetWindowFullscreen(m_handle, fullscreen ? SDL_WINDOW_FULLSCREEN : 0) != 0) {
+	if (SDL_SetWindowFullscreen(m_handle, fullscreen ? (exclusive ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_FULLSCREEN_DESKTOP) : 0) != 0) {
 		throw std::runtime_error("Unable to set window to fullscreen/windowed");
 	}
 	m_fullscreen = fullscreen;
