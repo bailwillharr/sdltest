@@ -21,6 +21,8 @@ public:
 	float m_yaw = 0.0f;
 	float m_pitch = 0.0f;
 
+	glm::vec3 dr{0.0f, 0.0f, 0.0f}; // velocity
+
 	components::Transform* tcomp;
 
 	CameraController(Object* parent) :
@@ -38,28 +40,32 @@ public:
 		const float dt = win.dt();
 		constexpr float SPEED = 3.0f;
 
-		const float dx = inp.getAxis("movex") * dt * SPEED;
-		const float dy = ((inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f)) * dt * SPEED;
-		const float dz = (-inp.getAxis("movey")) * dt * SPEED;
+		const float d2x = inp.getAxis("movex") * SPEED;
+		const float d2y = ((inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f)) * SPEED;
+		const float d2z = (-inp.getAxis("movey")) * SPEED;
 
 		// calculate new pitch and yaw
 
 		constexpr float MAX_PITCH = glm::pi<float>() / 2.0f;
 		constexpr float MIN_PITCH = -glm::pi<float>() / 2.0f;
 
-		float dPitch = inp.getAxis("looky") * -0.005f;
+		float dPitch = inp.getAxis("looky") * -2.0f * dt;
 		m_pitch += dPitch;
 		if (m_pitch <= MIN_PITCH || m_pitch >= MAX_PITCH) {
 			m_pitch -= dPitch;
 		}
-		m_yaw += inp.getAxis("lookx") * -0.005f;
+		m_yaw += inp.getAxis("lookx") * -2.0f * dt;
 
 		// update position relative to camera direction in xz plane
-		const glm::vec3 dxRotated = glm::rotateY(glm::vec3{dx, 0.0f, 0.0f}, m_yaw);
-		const glm::vec3 dzRotated = glm::rotateY(glm::vec3{0.0f, 0.0f, dz}, m_yaw);
-		tcomp->position += dzRotated;
-		tcomp->position += dxRotated;
-		tcomp->position.y += dy;
+		const glm::vec3 d2xRotated = glm::rotateY(glm::vec3{d2x, 0.0f, 0.0f}, m_yaw);
+		const glm::vec3 d2zRotated = glm::rotateY(glm::vec3{0.0f, 0.0f, d2z}, m_yaw);
+		dr += (d2xRotated + d2zRotated) * dt;
+		dr.y += d2y * dt;
+
+		// update pos
+		tcomp->position.x += dr.x * dt;
+		tcomp->position.y += dr.y * dt;
+		tcomp->position.z += dr.z * dt;
 
 		// pitch quaternion
 		const float halfPitch = m_pitch/2.0f;
@@ -185,6 +191,7 @@ void playGame()
 			win.setCloseFlag();
 		if (win.getKeyPress(inputs::Key::TAB)) {
 			win.infoBox("RESOURCES", resMan.getResourcesListString()->c_str());
+			win.setVSync(!win.getVSync());
 		}
 
 		mainScene.updateStuff();
