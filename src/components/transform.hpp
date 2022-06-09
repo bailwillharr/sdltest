@@ -14,21 +14,18 @@ namespace components {
 
 class Transform : public Component {
 
+// Scale, rotate (XYZ), translate
+
 private:
+	glm::mat4 m_transformMatrix{1.0f};
 
 public:
 	Transform(Object*);
 	~Transform() override;
 
-	glm::mat4 m_transformMatrix{1.0f};
-
-	glm::vec3 getPosition();
-	glm::vec3 getScale();
-	glm::quat getRotation();
-
-	void translate(glm::vec3 t);
-	void rotate(float radians, glm::vec3 t);
-	void scale(glm::vec3 factor);
+	glm::vec3 position{0.0f};
+	glm::quat rotation{};
+	glm::vec3 scale{1.0f};
 
 };
 

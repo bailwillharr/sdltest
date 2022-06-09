@@ -2,6 +2,8 @@
 
 #include "components/transform.hpp"
 
+#include <glm/gtx/euler_angles.hpp>
+
 #include <vector>
 #include <memory>
 #include <type_traits>
@@ -100,7 +102,20 @@ void Object::getAllSubComponents(struct CompList& compList, glm::mat4 parentTran
 {
 	using namespace components;
 
-	const glm::mat4 newTransform = parentTransform * getComponent<Transform>()->m_transformMatrix;
+	glm::mat4 objTransform{1.0f};
+
+	auto t = getComponent<Transform>();
+
+	// rotation
+	objTransform = glm::mat4_cast(t->rotation);
+
+	// position
+	reinterpret_cast<glm::vec3&>(objTransform[3]) = t->position;
+	
+	// scale (effectively applied first
+	objTransform = glm::scale(objTransform, t->scale);
+
+	const glm::mat4 newTransform = parentTransform * objTransform;
 
 	for (const auto& compUnq : m_components) {
 		const auto comp = compUnq.get();
