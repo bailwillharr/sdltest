@@ -46,6 +46,8 @@ set_property(TARGET sdltest PROPERTY CXX_STANDARD_REQUIRED ON)
 
 if (MSVC)
 	target_compile_options(sdltest PUBLIC /W3)
+	# Build in parallel under Visual Studio. Not enabled by default.
+	target_compile_options(sdltest INTERFACE "/MP")
 endif()
 
 target_include_directories(sdltest PUBLIC src)

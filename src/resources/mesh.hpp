@@ -6,10 +6,6 @@
 
 #include <glad/glad.h>
 
-#include <assimp/cimport.h>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 
