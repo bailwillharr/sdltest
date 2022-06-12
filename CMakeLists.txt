@@ -67,6 +67,9 @@ endif()
 
 # SDL2:
 set(SDL2_DISABLE_INSTALL ON)
+set(SDL_SHARED ON)
+set(SDL_STATIC OFF)
+set(SDL_TEST OFF)
 add_subdirectory(vendor/SDL)
 
 #include
@@ -81,8 +84,7 @@ add_custom_command(
 	TARGET sdltest PRE_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_if_different
 	$<TARGET_FILE:SDL2::SDL2> $<TARGET_FILE_DIR:sdltest>)
-install(TARGETS SDL2 EXPORT SDL2Targets
-	RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+install(TARGETS SDL2 RUNTIME)
 
 # GLM:
 add_subdirectory(vendor/glm)
