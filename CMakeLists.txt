@@ -56,6 +56,8 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 	target_compile_definitions(sdltest PUBLIC SDLTEST_DEBUG)
 endif()
 
+
+
 # libraries:
 
 # MinGW library if using it
@@ -63,26 +65,42 @@ if (MINGW)
 	target_link_libraries(sdltest PUBLIC mingw32)
 endif()
 
-# SDL2
-find_package(SDL2 REQUIRED)
-target_link_libraries(sdltest PUBLIC ${SDL2_LIBRARIES})
-target_include_directories(sdltest PUBLIC ${SDL2_INCLUDE_DIRS})
+# SDL2:
+set(SDL2_DISABLE_INSTALL ON)
+add_subdirectory(vendor/SDL)
 
-# GLM
-find_package(glm REQUIRED)
-target_include_directories(sdltest PUBLIC ${GLM_INCLUDE_DIRS})
+#include
+target_include_directories(sdltest PUBLIC vendor/SDL/include)
 
-# GLAD
+# linking
+target_link_libraries(sdltest PUBLIC SDL2::SDL2)
+target_link_libraries(sdltest PUBLIC SDL2::SDL2main)
+
+# copy DLL
+add_custom_command(
+	TARGET sdltest PRE_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different
+	$<TARGET_FILE:SDL2::SDL2> $<TARGET_FILE_DIR:sdltest>)
+install(TARGETS SDL2 EXPORT SDL2Targets
+	RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+
+# GLM:
+add_subdirectory(vendor/glm)
+target_include_directories(sdltest PUBLIC vendor/glm)
+
+# GLAD:
 add_subdirectory(vendor/glad)
 target_link_libraries(sdltest PUBLIC glad)
 target_include_directories(sdltest PUBLIC vendor/glad/include)
+
+
 
 # linking options:
 
 # If not in Debug mode, use '-mwindows'
 set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE TRUE)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-	#set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE FALSE)
+	set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE FALSE)
 endif()
 
 add_custom_command(
