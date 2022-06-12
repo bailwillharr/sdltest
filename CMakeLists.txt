@@ -66,10 +66,10 @@ if (MINGW)
 endif()
 
 # SDL2:
-set(SDL2_DISABLE_INSTALL ON)
-set(SDL_SHARED ON)
-set(SDL_STATIC OFF)
-set(SDL_TEST OFF)
+set(SDL2_DISABLE_INSTALL ON CACHE INTERNAL "" FORCE)
+set(SDL_SHARED ON CACHE INTERNAL "" FORCE)
+set(SDL_STATIC OFF CACHE INTERNAL "" FORCE)
+set(SDL_TEST OFF CACHE INTERNAL "" FORCE)
 add_subdirectory(vendor/SDL)
 
 #include
@@ -84,7 +84,7 @@ add_custom_command(
 	TARGET sdltest PRE_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_if_different
 	$<TARGET_FILE:SDL2::SDL2> $<TARGET_FILE_DIR:sdltest>)
-install(TARGETS SDL2 RUNTIME)
+install(TARGETS SDL2 RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
 # GLM:
 add_subdirectory(vendor/glm)
