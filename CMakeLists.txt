@@ -74,8 +74,8 @@ set(SDL2_DISABLE_INSTALL ON CACHE INTERNAL "" FORCE)
 set(SDL_SHARED ON CACHE INTERNAL "" FORCE)
 set(SDL_STATIC OFF CACHE INTERNAL "" FORCE)
 set(SDL_TEST OFF CACHE INTERNAL "" FORCE)
-add_subdirectory(vendor/SDL)
-target_include_directories(sdltest PUBLIC vendor/SDL/include)
+add_subdirectory(libraries/SDL)
+target_include_directories(sdltest PUBLIC libraries/SDL/include)
 target_link_libraries(sdltest PUBLIC SDL2::SDL2)
 target_link_libraries(sdltest PUBLIC SDL2::SDL2main)
 add_custom_command(
@@ -84,8 +84,8 @@ add_custom_command(
 	$<TARGET_FILE:SDL2::SDL2> $<TARGET_FILE_DIR:sdltest>)
 
 # GLM:
-add_subdirectory(vendor/glm)
-target_include_directories(sdltest PUBLIC vendor/glm)
+add_subdirectory(libraries/glm)
+target_include_directories(sdltest PUBLIC libraries/glm)
 
 # GLAD:
 set(GLAD_PROFILE "core" CACHE INTERNAL "" FORCE)
@@ -96,9 +96,9 @@ else()
 	set(GLAD_GENERATOR "c" CACHE INTERNAL "" FORCE)
 endif()
 set(GLAD_SPEC "gl" CACHE INTERNAL "" FORCE)
-add_subdirectory(vendor/glad)
+add_subdirectory(libraries/glad)
 target_link_libraries(sdltest PUBLIC glad)
-target_include_directories(sdltest PUBLIC vendor/glad/include)
+target_include_directories(sdltest PUBLIC libraries/glad/include)
 
 
 
