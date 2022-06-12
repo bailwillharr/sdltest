@@ -75,15 +75,9 @@ set(SDL_SHARED ON CACHE INTERNAL "" FORCE)
 set(SDL_STATIC OFF CACHE INTERNAL "" FORCE)
 set(SDL_TEST OFF CACHE INTERNAL "" FORCE)
 add_subdirectory(vendor/SDL)
-
-#include
 target_include_directories(sdltest PUBLIC vendor/SDL/include)
-
-# linking
 target_link_libraries(sdltest PUBLIC SDL2::SDL2)
 target_link_libraries(sdltest PUBLIC SDL2::SDL2main)
-
-# copy DLL
 add_custom_command(
 	TARGET sdltest PRE_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -94,6 +88,14 @@ add_subdirectory(vendor/glm)
 target_include_directories(sdltest PUBLIC vendor/glm)
 
 # GLAD:
+set(GLAD_PROFILE "core" CACHE INTERNAL "" FORCE)
+set(GLAD_API "gl=3.3" CACHE INTERNAL "" FORCE)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	set(GLAD_GENERATOR "c-debug" CACHE INTERNAL "" FORCE)
+else()
+	set(GLAD_GENERATOR "c" CACHE INTERNAL "" FORCE)
+endif()
+set(GLAD_SPEC "gl" CACHE INTERNAL "" FORCE)
 add_subdirectory(vendor/glad)
 target_link_libraries(sdltest PUBLIC glad)
 target_include_directories(sdltest PUBLIC vendor/glad/include)
