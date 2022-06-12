@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(sdltest LANGUAGES CXX VERSION 1.0)
+set(SDLTEST_VERSION_MAJOR 0)
+set(SDLTEST_VERSION_MINOR 2)
+
+project(sdltest LANGUAGES CXX
+	VERSION "${SDLTEST_VERSION_MAJOR}.${SDLTEST_VERSION_MINOR}"
+)
 
 add_executable(sdltest 
 	"src/main.cpp"
@@ -52,9 +57,8 @@ endif()
 
 target_include_directories(sdltest PUBLIC src)
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-	target_compile_definitions(sdltest PUBLIC SDLTEST_DEBUG)
-endif()
+configure_file(config.h.in config.h)
+target_include_directories(sdltest PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
 
 
@@ -84,7 +88,6 @@ add_custom_command(
 	TARGET sdltest PRE_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_if_different
 	$<TARGET_FILE:SDL2::SDL2> $<TARGET_FILE_DIR:sdltest>)
-install(TARGETS SDL2 RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
 # GLM:
 add_subdirectory(vendor/glm)
@@ -100,7 +103,7 @@ target_include_directories(sdltest PUBLIC vendor/glad/include)
 # linking options:
 
 # If not in Debug mode, use '-mwindows'
-set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE TRUE)
+#set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE TRUE)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 	set_property(TARGET sdltest PROPERTY WIN32_EXECUTABLE FALSE)
 endif()
@@ -113,3 +116,6 @@ add_custom_command(
 # install:
 install(TARGETS sdltest DESTINATION bin)
 install(DIRECTORY res/ DESTINATION share/sdltest)
+if (WIN32)
+	install(TARGETS SDL2 RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+endif(WIN32)

@@ -1,5 +1,7 @@
 #include "game.hpp"
 
+#include "config.h"
+
 #include "window.hpp"
 #include "input.hpp"
 
@@ -49,12 +51,12 @@ public:
 		constexpr float MAX_PITCH = glm::pi<float>() / 2.0f;
 		constexpr float MIN_PITCH = -glm::pi<float>() / 2.0f;
 
-		float dPitch = inp.getAxis("looky") * -2.0f * dt;
+		float dPitch = inp.getAxis("looky") * -0.002f;
 		m_pitch += dPitch;
 		if (m_pitch <= MIN_PITCH || m_pitch >= MAX_PITCH) {
 			m_pitch -= dPitch;
 		}
-		m_yaw += inp.getAxis("lookx") * -2.0f * dt;
+		m_yaw += inp.getAxis("lookx") * -0.002f;
 
 		// update position relative to camera direction in xz plane
 		const glm::vec3 d2xRotated = glm::rotateY(glm::vec3{d2x, 0.0f, 0.0f}, m_yaw);
@@ -124,7 +126,7 @@ public:
 void playGame()
 {
 
-	Window win("sdltest");
+	Window win("sdltest v" + std::to_string(SDLTEST_VERSION_MAJOR) + "." + std::to_string(SDLTEST_VERSION_MINOR));
 	Input input(win); /* Input Manager */
 	ResourceManager resMan;
 	SceneRoot mainScene({ &win, &input, &resMan });
@@ -140,7 +142,7 @@ void playGame()
 	mainScene.getChild("cam")->getChild("gun")->getComponent<components::Transform>()
 		->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{0.0f, 1.0f, 0.0f});
 
-#ifdef SDLTEST_DEBUG
+#ifndef NDEBUG
 	mainScene.printTree();
 #endif
 

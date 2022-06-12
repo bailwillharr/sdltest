@@ -11,7 +11,7 @@
 
 SceneRoot::SceneRoot(struct GameIO things) : Object("root", nullptr, things)
 {
-#ifdef SDLTEST_DEBUG
+#ifndef NDEBUG
 	std::cerr << "Empty SceneRoot has been constructed\n";
 #endif
 }
@@ -24,7 +24,7 @@ SceneRoot::SceneRoot(const std::filesystem::path& file, struct GameIO things) : 
 
 SceneRoot::~SceneRoot()
 {
-#ifdef SDLTEST_DEBUG
+#ifndef NDEBUG
 	std::cerr << "SceneRoot class destroyed\n";
 #endif
 }

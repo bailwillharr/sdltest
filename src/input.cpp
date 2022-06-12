@@ -8,7 +8,7 @@
 
 Input::Input(const Window &win) : m_win(win)
 {
-#ifdef SDLTEST_DEBUG
+#ifndef NDEBUG
 	std::cerr << "Input handler for '" << m_win.getTitle() << "' has been constructed\n";
 #endif
 

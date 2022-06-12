@@ -1,0 +1,4 @@
+#pragma once
+
+#define SDLTEST_VERSION_MAJOR @sdltest_VERSION_MAJOR@
+#define SDLTEST_VERSION_MINOR @sdltest_VERSION_MINOR@

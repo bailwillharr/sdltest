@@ -22,14 +22,14 @@ Object::Object(std::string name, Object* parent, struct GameIO things)
 	s_object_count++;
 	// all objects come with at least a transform component
 	createComponent<components::Transform>();
-#ifdef SDLTEST_DEBUG
+#ifndef NDEBUG
 	std::cerr << "Object " << m_id << " '" << m_name << "' has been constructed\n";
 #endif
 }
 
 Object::~Object()
 {
-#ifdef SDLTEST_DEBUG
+#ifndef NDEBUG
 	std::cerr << "Object " << m_id << " '" << m_name << "' has been destroyed\n";
 #endif
 }

@@ -104,7 +104,7 @@ Shader::Shader(const std::filesystem::path& resPath) : Resource(resPath, "shader
 		GLenum type;
 		glGetActiveAttrib(m_program, i, 63, NULL, &size, &type, nameBuf);
 		m_attributes[nameBuf] = Attribute{size, static_cast<UniformType>(type), (GLuint)i};
-#ifdef SDLTEST_DEBUG
+#ifndef NDEBUG
         std::cerr << "Attrib " << nameBuf << " index: " << i << "\n";
 #endif
 	}
@@ -119,7 +119,7 @@ Shader::~Shader()
 void Shader::makeActive() const
 {
 	if (s_activeProgram != m_program) {
-#ifdef SDLTEST_DEBUG
+#ifndef NDEBUG
         std::cerr << "Shader used\n";
 #endif
 		glUseProgram(m_program);
