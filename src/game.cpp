@@ -186,13 +186,22 @@ static void gameLoop(Window& win, Input& input, ResourceManager& resMan, SceneRo
 	win.setRelativeMouseMode(true);
 
 	uint64_t lastTick = win.getNanos();
+	uint64_t lastLongTick = lastTick;
+	uint64_t avgFps = 0;
+
+	constexpr int TICKFREQ = 20; // in Hz
 
 	// single-threaded game loop
 	while (win.isRunning()) {
 
-		if (win.getLastFrameStamp() >= lastTick + (BILLION / 20)) {
+		if (win.getLastFrameStamp() >= lastTick + (BILLION / TICKFREQ)) {
 			lastTick = win.getLastFrameStamp();
-			win.setTitle(std::to_string(win.getFPS()) + " fps, avg: " + std::to_string(win.getAvgFPS()) + " fps, frames: " + std::to_string(win.getFrameCount()));
+			win.setTitle(std::to_string(win.getFPS()) + " fps, avg: " + std::to_string(avgFps) + " fps, frames: " + std::to_string(win.getFrameCount()));
+		}
+		if (win.getLastFrameStamp() >= lastLongTick + (BILLION * 5)) {
+			lastLongTick = win.getLastFrameStamp();
+			avgFps = win.getAvgFPS();
+			win.resetAvgFPS();
 		}
 
 		// logic
