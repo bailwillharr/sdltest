@@ -1,7 +1,5 @@
 #include "resource_manager.hpp"
 
-#include <vector>
-
 #ifdef _MSC_VER
 #include <windows.h>
 #define MAX_PATH 260

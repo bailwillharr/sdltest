@@ -3,10 +3,6 @@
 #include "resource.hpp"
 
 #include <unordered_map>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <filesystem>
 
 // Doesn't own resources, only holds weak_ptrs
 

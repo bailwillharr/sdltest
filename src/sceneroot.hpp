@@ -2,10 +2,7 @@
 
 #include "object.hpp"
 
-#include <utility>
-#include <vector>
-#include <string>
-#include <memory>
+#include <filesystem>
 
 // Holds everything you would expect to find in a game scene
 class SceneRoot : public Object {

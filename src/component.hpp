@@ -1,16 +1,9 @@
 #pragma once
 
-#include "window.hpp"
-#include "input.hpp"
-#include "resource_manager.hpp"
-
-#include <glm/mat4x4.hpp>
-
-#include <string>
-#include <memory>
-#include <list>
-
 class Object;
+class Window;
+class Input;
+class ResourceManager;
 
 class Component {
 

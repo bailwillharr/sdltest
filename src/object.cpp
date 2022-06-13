@@ -1,13 +1,10 @@
 #include "object.hpp"
 
 #include "components/transform.hpp"
+#include "components/camera.hpp"
+#include "components/renderer.hpp"
+#include "components/custom.hpp"
 
-#include <glm/gtx/euler_angles.hpp>
-
-#include <vector>
-#include <memory>
-#include <type_traits>
-#include <stdexcept>
 #include <iostream>
 
 int Object::s_object_count = 0;

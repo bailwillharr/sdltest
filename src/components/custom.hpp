@@ -4,8 +4,6 @@
 
 #include <glm/mat4x4.hpp>
 
-#include <string>
-
 namespace components {
 
 	class CustomComponent : public Component {

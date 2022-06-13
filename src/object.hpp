@@ -1,14 +1,6 @@
 #pragma once
 
-#include "component.hpp"
-#include "components/transform.hpp"
-#include "components/camera.hpp"
-#include "components/renderer.hpp"
-#include "components/custom.hpp"
-
-#include "window.hpp"
-#include "input.hpp"
-#include "resource_manager.hpp"
+#include <glm/mat4x4.hpp>
 
 #include <list>
 #include <vector>
@@ -16,7 +8,14 @@
 #include <memory>
 #include <stdexcept>
 
+class Window;
+class Input;
+class ResourceManager;
+
+class Component;
+
 namespace components {
+	class Transform;
 	class Camera;
 	class Renderer;
 	class CustomComponent;

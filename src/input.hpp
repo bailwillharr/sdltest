@@ -1,14 +1,13 @@
 #pragma once
 
-#include "window.hpp"
-
-#include "inputs/keyboard.hpp"
 #include "inputs/mouse.hpp"
+#include "inputs/keyboard.hpp"
 
-#include <array>
 #include <vector>
+#include <array>
 #include <string>
-#include <memory>
+
+class Window;
 
 enum class InputDevice : int {
 	MOUSE,

@@ -1,6 +1,9 @@
 #include "components/camera.hpp"
 
+#include "resource_manager.hpp"
 #include "resources/shader.hpp"
+
+#include "window.hpp"
 
 static const std::string VIEW_MAT_UNIFORM = "viewMat";
 static const std::string PROJ_MAT_UNIFORM = "projMat";

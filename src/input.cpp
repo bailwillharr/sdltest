@@ -17,7 +17,7 @@ Input::Input(const Window &win) : m_win(win)
 
 Input::~Input()
 {
-#ifdef SDLTES_DEBUG
+#ifndef NDEBUG
 	std::cerr << "Input handler destroyed\n";
 #endif
 }

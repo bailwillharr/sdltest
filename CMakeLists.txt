@@ -9,7 +9,11 @@ project(sdltest LANGUAGES CXX
 
 add_executable(sdltest 
 	"src/main.cpp"
-	"src/game.cpp"
+
+	"src/game/game.cpp"
+	"src/game/camera_controller.cpp"
+	"src/game/camera_controller.hpp"
+
 	"src/window.cpp"
 	"src/input.cpp"
 	"src/object.cpp"
@@ -25,7 +29,7 @@ add_executable(sdltest
 	"src/resource_manager.cpp"
 	"src/resource.cpp"
 
-	"src/game.hpp"
+	"src/game/game.hpp"
 	"src/window.hpp"
 	"src/input.hpp"
 	"src/component.hpp"
@@ -42,7 +46,7 @@ add_executable(sdltest
 	"src/resource.hpp"
 	"src/resources/shader.hpp"
 	"src/resources/texture.hpp"
-)
+ )
 
 # compiling options:
 
