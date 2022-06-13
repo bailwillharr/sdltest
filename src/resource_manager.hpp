@@ -2,6 +2,7 @@
 
 #include "resource.hpp"
 
+#include <vector>
 #include <unordered_map>
 
 // Doesn't own resources, only holds weak_ptrs

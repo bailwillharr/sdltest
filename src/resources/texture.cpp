@@ -46,9 +46,6 @@ Texture::~Texture()
 void Texture::bindTexture() const
 {
 	if (s_binded_texture != m_texture) {
-#ifndef NDEBUG
-		std::cerr << "Texture bound\n";
-#endif
 		glBindTexture(GL_TEXTURE_2D, m_texture);
 		s_binded_texture = m_texture;
 	}

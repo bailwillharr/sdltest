@@ -115,8 +115,9 @@ static void gameLoop(Window& win, Input& input, ResourceManager& resMan, SceneRo
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
 		if (win.getKeyPress(inputs::Key::TAB)) {
-			win.infoBox("RESOURCES", resMan.getResourcesListString()->c_str());
-			win.setVSync(!win.getVSync());
+			if (win.infoBox("RESOURCES", resMan.getResourcesListString()->c_str()) == false) {
+				win.setVSync(!win.getVSync());
+			}
 		}
 
 		mainScene.updateStuff();

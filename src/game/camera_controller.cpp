@@ -29,7 +29,8 @@ void CameraController::onUpdate(glm::mat4 t)
 	constexpr float SPEED = 10.0f;
 
 	const float dx = inp.getAxis("movex") * SPEED;
-	const float dy = ((inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f)) * SPEED;
+	//const float dy = ((inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f)) * SPEED;
+	const float dy = 0.0f;
 	const float dz = (-inp.getAxis("movey")) * SPEED;
 
 	// calculate new pitch and yaw
