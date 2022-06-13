@@ -123,14 +123,27 @@ public:
 
 };
 
+static void addObjects(SceneRoot& mainScene);
+static void addInputs(Input& input);
+static void gameLoop(Window& win, Input& input, ResourceManager& resMan, SceneRoot& mainScene);
+
 void playGame()
 {
 
-	Window win("sdltest v" + std::to_string(SDLTEST_VERSION_MAJOR) + "." + std::to_string(SDLTEST_VERSION_MINOR));
+	Window win("sdltest");
 	Input input(win); /* Input Manager */
 	ResourceManager resMan;
 	SceneRoot mainScene({ &win, &input, &resMan });
+
+	addObjects(mainScene);
+	addInputs(input);
+
+	gameLoop(win, input, resMan, mainScene);
 	
+}
+
+static void addObjects(SceneRoot& mainScene)
+{
 	mainScene.createChild("donut")->createComponent<components::Renderer>()->setMesh("donut.mesh");
 
 	mainScene.createChild("cam")->createComponent<components::Camera>()->usePerspective(70.0f);
@@ -138,14 +151,17 @@ void playGame()
 	mainScene.getChild("cam")->createChild("gun")->createComponent<components::Renderer>()->setMesh("gun.mesh");
 	mainScene.getChild("cam")->getChild("gun")->createComponent<ArrowsMovement>();
 	mainScene.getChild("cam")->getChild("gun")->getComponent<components::Transform>()
-		->position = glm::vec3{3.0f, -10.0f, -10.0f};
+		->position = glm::vec3{ 3.0f, -10.0f, -10.0f };
 	mainScene.getChild("cam")->getChild("gun")->getComponent<components::Transform>()
-		->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{0.0f, 1.0f, 0.0f});
+		->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{ 0.0f, 1.0f, 0.0f });
 
 #ifndef NDEBUG
 	mainScene.printTree();
 #endif
+}
 
+static void addInputs(Input& input)
+{
 	// menu, settings controls
 	input.addInputButton("fullscreen", inputs::Key::F11);
 	input.addInputButton("togglefocus", inputs::Key::Q);
@@ -161,6 +177,10 @@ void playGame()
 	// looking around
 	input.addInputAxis("lookx", inputs::MouseAxis::X);
 	input.addInputAxis("looky", inputs::MouseAxis::Y);
+}
+
+static void gameLoop(Window& win, Input& input, ResourceManager& resMan, SceneRoot& mainScene)
+{
 
 	win.setVSync(false);
 	win.setRelativeMouseMode(true);
@@ -180,7 +200,8 @@ void playGame()
 		if (input.getButtonPress("fullscreen")) {
 			if (win.isFullscreen()) {
 				win.setFullscreen(false);
-			} else {
+			}
+			else {
 				win.setFullscreen(true, false); // disable exclusive mode, use borderless window
 			}
 		}
