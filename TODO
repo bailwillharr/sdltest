@@ -1,7 +1,8 @@
 IMMEDIATE:
 (DONE) Load meshes from files as resources
-- Camera component (with 2D or 3D option)
-- Textures as resources
+(DONE) Camera component (with 2D or 3D option)
+(DONE) Textures as resources
+- Load scene from file
 LATER:
 - Sound
 - File writing/saving
