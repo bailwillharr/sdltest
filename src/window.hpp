@@ -71,8 +71,8 @@ private:
 		std::array<enum ButtonDelta, 8> deltas;
 		Sint32 x;
 		Sint32 y;
-		Sint32 xrel;
-		Sint32 yrel;
+		Sint32 dx;
+		Sint32 dy;
 		float xscroll;
 		float yscroll;
 		bool captured = false;
@@ -178,9 +178,9 @@ public:
 	// retrieves mouse y coordinate normalised for OpenGL
 	float getMouseNormY() const;
 	// retrieves dx of the mouse since the last frame
-	int getMouseXRel() const;
+	int getMouseDX() const;
 	// retrieves dy of the mouse since the last frame
-	int getMouseYRel() const;
+	int getMouseDY() const;
 	// retrieves amount scrolled vertically
 	float getMouseScrollX() const;
 	// retrieves amount scrolled horizontally

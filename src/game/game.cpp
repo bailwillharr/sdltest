@@ -89,12 +89,12 @@ static void gameLoop(Window& win, Input& input, ResourceManager& resMan, SceneRo
 
 		if (win.getLastFrameStamp() >= lastTick + (BILLION / TICKFREQ)) {
 			lastTick = win.getLastFrameStamp();
-			win.setTitle(std::to_string(win.getFPS()) + " fps, avg: " + std::to_string(avgFps) + " fps, frames: " + std::to_string(win.getFrameCount()));
 		}
 		if (win.getLastFrameStamp() >= lastLongTick + (BILLION * 5)) {
 			lastLongTick = win.getLastFrameStamp();
 			avgFps = win.getAvgFPS();
 			win.resetAvgFPS();
+			win.setTitle(std::to_string(win.getFPS()) + " fps, avg: " + std::to_string(avgFps) + " fps, frames: " + std::to_string(win.getFrameCount()));
 		}
 
 		// logic

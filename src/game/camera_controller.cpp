@@ -26,7 +26,7 @@ void CameraController::onUpdate(glm::mat4 t)
 	// calculate new position
 
 	const float dt = win.dt();
-	constexpr float SPEED = 10.0f;
+	constexpr float SPEED = 1000.0f;
 
 	const float dx = inp.getAxis("movex") * SPEED;
 	//const float dy = ((inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f)) * SPEED;
@@ -69,5 +69,12 @@ void CameraController::onUpdate(glm::mat4 t)
 
 	// update rotation
 	tcomp->rotation = yawQuat * pitchQuat;
+
+	if (win.getKeyPress(inputs::Key::P)) {
+		win.infoBox("POSITION",
+			"x: " + std::to_string(tcomp->position.x) +
+			"y: " + std::to_string(tcomp->position.y) +
+			"z: " + std::to_string(tcomp->position.x));
+	}
 
 }

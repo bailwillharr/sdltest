@@ -48,31 +48,32 @@ std::shared_ptr<T> ResourceManager::create(const std::string& name)
 template <class T>
 std::shared_ptr<T> ResourceManager::get(const std::string& name)
 {
+
 	if (std::is_base_of<Resource, T>::value == false) {
 		throw std::runtime_error("ResourceManager::get() error: specified type is not a subclass of 'Resource'");
 	}
 
-	bool resourceExists = true;
-	std::weak_ptr<Resource> res;
-	try {
-		res = m_resources.at(name);
-	} catch (std::out_of_range &e) {
-		(void)e;
-		resourceExists = false;
-	}
-	if (res.expired()) {
-		resourceExists = false;
-		m_resources.erase(name);
-	}
+	if (m_resources.contains(name)) {
 
-	if (resourceExists) {
-		auto castedSharedPtr = std::dynamic_pointer_cast<T>(res.lock());
-		if (castedSharedPtr == nullptr) {
-			throw std::runtime_error("error: attempt to get Resource which already exists as another type");
-		} else {
-			return castedSharedPtr;
+		std::weak_ptr<Resource> res = m_resources.at(name);
+
+		if (res.expired() == false) {
+			// resource definitely exists
+			auto castedSharedPtr = std::dynamic_pointer_cast<T>(res.lock());
+			if (castedSharedPtr == nullptr) {
+				throw std::runtime_error("error: attempt to get Resource which already exists as another type");
+			}
+			else {
+				return castedSharedPtr;
+			}
 		}
-	} else {
-		return create<T>(name);
+		else {
+			// Resource in map but no longer exists. Delete it.
+			m_resources.erase(name);
+		}
+
 	}
+	
+	return create<T>(name);
+
 }

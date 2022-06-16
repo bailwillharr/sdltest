@@ -30,9 +30,9 @@ float Input::getDeviceAxis(enum InputDevice device, int axis) const
 		case InputDevice::MOUSE:
 			switch (static_cast<inputs::MouseAxis>(axis)) {
 				case inputs::MouseAxis::X:
-					return static_cast<float>(m_win.getMouseXRel());
+					return static_cast<float>(m_win.getMouseDX());
 				case inputs::MouseAxis::Y:
-					return static_cast<float>(m_win.getMouseYRel());
+					return static_cast<float>(m_win.getMouseDY());
 				case inputs::MouseAxis::X_SCR:
 					return m_win.getMouseScrollX();
 				case inputs::MouseAxis::Y_SCR:

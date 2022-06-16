@@ -106,8 +106,8 @@ void Window::resetInputDeltas()
 	m_keyboard.deltas.fill(ButtonDelta::SAME);
 	
 	m_mouse.deltas.fill(ButtonDelta::SAME);
-	m_mouse.xrel = 0;
-	m_mouse.yrel = 0;
+	m_mouse.dx = 0;
+	m_mouse.dy = 0;
 	m_mouse.xscroll = 0.0f;
 	m_mouse.yscroll = 0.0f;
 }
@@ -176,8 +176,8 @@ void Window::onMouseMotionEvent(SDL_MouseMotionEvent &e)
 {
 	m_mouse.x = e.x;
 	m_mouse.y = e.y;
-	m_mouse.xrel = e.xrel;
-	m_mouse.yrel = e.yrel;
+	m_mouse.dx = e.xrel;
+	m_mouse.dy = e.yrel;
 }
 
 void Window::onMouseWheelEvent(SDL_MouseWheelEvent &e)
@@ -408,14 +408,14 @@ float Window::getMouseNormY() const
 	return ((float)m_mouse.y * -2.0f / (float)m_winSize.y) + 1.0f;
 }
 
-int Window::getMouseXRel() const
+int Window::getMouseDX() const
 {
-	return static_cast<int>(m_mouse.xrel);
+	return static_cast<int>(m_mouse.dx);
 }
 
-int Window::getMouseYRel() const
+int Window::getMouseDY() const
 {
-	return static_cast<int>(m_mouse.yrel);
+	return static_cast<int>(m_mouse.dy);
 }
 
 float Window::getMouseScrollX() const

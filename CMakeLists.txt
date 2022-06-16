@@ -22,6 +22,7 @@ add_executable(sdltest
 	"src/components/custom.cpp"
 	"src/components/transform.cpp"
 	"src/components/renderer.cpp"
+	"src/components/ui.cpp"
 	"src/components/camera.cpp"
 	"src/resources/mesh.cpp"
 	"src/resources/shader.cpp"
@@ -39,6 +40,7 @@ add_executable(sdltest
 	"src/components/camera.hpp"
 	"src/components/renderer.hpp"
 	"src/components/transform.hpp"
+	"src/components/ui.hpp"
 	"src/inputs/keyboard.hpp"
 	"src/inputs/mouse.hpp"
 	"src/resources/mesh.hpp"
@@ -46,7 +48,7 @@ add_executable(sdltest
 	"src/resource.hpp"
 	"src/resources/shader.hpp"
 	"src/resources/texture.hpp"
- )
+)
 
 # compiling options:
 
@@ -104,7 +106,10 @@ add_subdirectory(libraries/glad)
 target_link_libraries(sdltest PUBLIC glad)
 target_include_directories(sdltest PUBLIC libraries/glad/include)
 
-
+# freetype
+add_subdirectory(libraries/freetype)
+target_link_libraries(sdltest PUBLIC freetype)
+target_include_directories(sdltest PUBLIC libraries/freetype/include)
 
 # linking options:
 
