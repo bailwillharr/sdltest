@@ -3,13 +3,9 @@
 #include "inputs/keyboard.hpp"
 #include "inputs/mouse.hpp"
 
-#ifdef _MSC_VER
 #pragma warning (push, 0)
 #include <SDL.h>
 #pragma warning (pop)
-#else
-#include <SDL2/SDL.h>
-#endif
 
 #include <glm/vec2.hpp>
 
