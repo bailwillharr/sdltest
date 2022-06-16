@@ -13,6 +13,7 @@ public:
 		TRANSFORM,
 		CAMERA,
 		RENDERER,
+		UI,
 		CUSTOM,
 	};
 

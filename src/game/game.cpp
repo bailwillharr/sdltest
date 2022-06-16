@@ -9,6 +9,7 @@
 #include "resource_manager.hpp"
 #include "sceneroot.hpp"
 
+#include "components/ui.hpp"
 #include "components/renderer.hpp"
 #include "components/transform.hpp"
 #include "components/camera.hpp"
@@ -34,6 +35,9 @@ void playGame()
 
 static void addObjects(SceneRoot& mainScene)
 {
+
+	mainScene.createChild("hud")->createComponent<components::UI>();
+
 	mainScene.createChild("floor")->createComponent<components::Renderer>()->setMesh("floor.mesh");
 	mainScene.getChild("floor")->getComponent<components::Renderer>()->setTexture("floor.glraw");
 	mainScene.getChild("floor")->getComponent<components::Transform>()->scale = glm::vec3{128.0f, 1.0f, 128.0f};

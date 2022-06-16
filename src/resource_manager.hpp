@@ -26,11 +26,11 @@ public:
 
 	std::vector<std::weak_ptr<Resource>> getAllResourcesOfType(const std::string& type);
 
+	std::filesystem::path getFilePath(const std::string& name);
+
 private:
 	std::filesystem::path m_resourcesPath;
 	std::unordered_map<std::string, std::weak_ptr<Resource>> m_resources;
-
-	std::filesystem::path getFilePath(const std::string& name);
 
 };
 
