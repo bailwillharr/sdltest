@@ -2,13 +2,15 @@
 
 #include "component.hpp"
 
+#include "resources/font.hpp"
+
 #include <glm/mat4x4.hpp>
+
+#include <memory>
 
 namespace components {
 
 class UI : public Component {
-
-private:
 
 public:
 	UI(Object*);
@@ -16,6 +18,9 @@ public:
 
 	// called every frame, do not call manually
 	void render(glm::mat4 transform);
+
+private:
+	std::shared_ptr<resources::Font> m_font;
 
 };
 
