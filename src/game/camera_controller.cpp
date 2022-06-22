@@ -17,7 +17,7 @@ CameraController::CameraController(Object* parent) :
 {
 	tcomp = this->parent.getComponent<components::Transform>();
 
-	tcomp->position.x -= 2.0f;
+	tcomp->position.x -= 0.25f;
 }
 
 void CameraController::onUpdate(glm::mat4 t)
@@ -26,7 +26,7 @@ void CameraController::onUpdate(glm::mat4 t)
 	// calculate new position
 
 	const float dt = win.dt();
-	constexpr float SPEED = 1000.0f;
+	constexpr float SPEED = 10.0f;
 
 	const float dx = inp.getAxis("movex") * SPEED;
 	//const float dy = ((inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f)) * SPEED;

@@ -40,15 +40,16 @@ static void addObjects(SceneRoot& mainScene)
 
 	mainScene.createChild("floor")->createComponent<components::Renderer>()->setMesh("floor.mesh");
 	mainScene.getChild("floor")->getComponent<components::Renderer>()->setTexture("floor.glraw");
-	mainScene.getChild("floor")->getComponent<components::Transform>()->scale = glm::vec3{128.0f, 1.0f, 128.0f};
+	mainScene.getChild("floor")->getComponent<components::Transform>()->scale = glm::vec3{16.0f, 16.0f, 16.0f};
 	mainScene.getChild("floor")->getComponent<components::Transform>()->position = glm::vec3{ 0.0f, 0.0f, 0.0f };
 
 	mainScene.createChild("cam")->createComponent<components::Camera>()->usePerspective(70.0f);
 	mainScene.getChild("cam")->createComponent<CameraController>();
-	mainScene.getChild("cam")->getComponent<components::Transform>()->position = { 0.0f, 50.0f, 0.0f };
+	mainScene.getChild("cam")->getComponent<components::Transform>()->position = { 0.0f, 6.25f, 0.0f };
+
 	mainScene.getChild("cam")->createChild("gun")->createComponent<components::Renderer>()->setMesh("gun.mesh");
 	mainScene.getChild("cam")->getChild("gun")->getComponent<components::Transform>()
-		->position = glm::vec3{ 3.0f, -10.0f, -10.0f };
+		->position = glm::vec3{ 0.375f, -1.25f, -1.25f };
 	mainScene.getChild("cam")->getChild("gun")->getComponent<components::Transform>()
 		->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{ 0.0f, 1.0f, 0.0f });
 

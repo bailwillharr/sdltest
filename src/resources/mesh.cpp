@@ -18,6 +18,9 @@ static void loadMeshFromFile(const std::filesystem::path& path, std::vector<Vert
 	struct MeshFileHeader header{};
 
 	FILE* fp = fopen(path.string().c_str(), "rb");
+	if (fp == NULL) {
+		throw std::runtime_error("Unable to open mesh file " + path.string());
+	}
 
 	fread(&header, sizeof(struct MeshFileHeader), 1, fp);
 

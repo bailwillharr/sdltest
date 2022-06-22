@@ -3,7 +3,6 @@
 #include "object.hpp"
 #include "resource_manager.hpp"
 
-#include <stdexcept>
 #include <iostream>
 
 namespace components {

@@ -6,8 +6,6 @@
 
 #include <glm/mat4x4.hpp>
 
-#include <memory>
-
 namespace components {
 
 class UI : public Component {
