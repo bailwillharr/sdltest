@@ -33,6 +33,11 @@ static void loadMeshFromFile(const std::filesystem::path& path, std::vector<Vert
 	fclose(fp);
 }
 
+static void loadObjFromFile(const std::filesystem::path& path, std::vector<Vertex>* vertices, std::vector<unsigned int>* indices)
+{
+
+}
+
 // -1 means invalidated
 int Mesh::s_active_vao = -1;
 
@@ -56,16 +61,11 @@ void Mesh::drawMesh(const Shader& shader)
 Mesh::Mesh(const std::filesystem::path& resPath) : Resource(resPath, "mesh")
 {
 	
-	loadMeshFromFile(resPath, &m_vertices, &m_indices);
-
-	/*
-	m_vertices.push_back({ {0.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{0.0f, 1.0f} });
-	m_vertices.push_back({ {1.0f, 0.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{1.0f, 1.0f} });
-	m_vertices.push_back({ {0.0f, 1.0f, 0.0f},		{0.0f, 0.0f, -1.0f},	{0.0f, 0.0f} });
-	m_indices.push_back(0);
-	m_indices.push_back(1);
-	m_indices.push_back(2);
-	*/
+	if (resPath.extension() == "obj") {
+		loadObjFromFile(resPath, &m_vertices, &m_indices);
+	} else {
+		loadMeshFromFile(resPath, &m_vertices, &m_indices);
+	}
 
 	glGenVertexArrays(1, &m_vao);
 	bindVAO();

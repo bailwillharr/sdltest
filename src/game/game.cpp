@@ -36,22 +36,32 @@ void playGame()
 static void addObjects(SceneRoot& mainScene)
 {
 
-	mainScene.createChild("hud")->createComponent<components::UI>();
+	using namespace components;
 
-	mainScene.createChild("floor")->createComponent<components::Renderer>()->setMesh("floor.mesh");
-	mainScene.getChild("floor")->getComponent<components::Renderer>()->setTexture("floor.glraw");
-	mainScene.getChild("floor")->getComponent<components::Transform>()->scale = glm::vec3{16.0f, 16.0f, 16.0f};
-	mainScene.getChild("floor")->getComponent<components::Transform>()->position = glm::vec3{ 0.0f, 0.0f, 0.0f };
+	auto hud = mainScene.createChild("hud")->createComponent<UI>();
 
-	mainScene.createChild("cam")->createComponent<components::Camera>()->usePerspective(70.0f);
-	mainScene.getChild("cam")->createComponent<CameraController>();
-	mainScene.getChild("cam")->getComponent<components::Transform>()->position = { 0.0f, 6.25f, 0.0f };
+	auto floor = mainScene.createChild("floor");
+	auto floorTransform = floor->getComponent<Transform>();
+	floorTransform->scale = glm::vec3{16.0f, 16.0f, 16.0f};
+	floorTransform->position = glm::vec3{ 0.0f, 0.0f, 0.0f };
+	auto floorRenderer = floor->createComponent<Renderer>();
+	floorRenderer->setMesh("floor.mesh");
+	floor->getComponent<Renderer>()->setTexture("floor.glraw");
 
-	mainScene.getChild("cam")->createChild("gun")->createComponent<components::Renderer>()->setMesh("gun.mesh");
-	mainScene.getChild("cam")->getChild("gun")->getComponent<components::Transform>()
-		->position = glm::vec3{ 0.375f, -1.25f, -1.25f };
-	mainScene.getChild("cam")->getChild("gun")->getComponent<components::Transform>()
-		->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{ 0.0f, 1.0f, 0.0f });
+	auto cam = mainScene.createChild("cam");
+	cam->getComponent<Transform>()->position = { 0.0f, 6.25f, 0.0f };
+	cam->createComponent<Camera>()->usePerspective(70.0f);
+	cam->createComponent<CameraController>();
+
+	auto gun = cam->createChild("gun");
+	auto gunTransform = gun->getComponent<Transform>();
+	gunTransform->position = glm::vec3{ 0.375f, -1.25f, -1.25f };
+	gunTransform->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{ 0.0f, 1.0f, 0.0f });
+	gunTransform->scale = glm::vec3{ 0.125f, 0.125f, 0.125f };
+	gun->createComponent<Renderer>()->setMesh("gun.mesh");
+
+	auto cube = mainScene.createChild("cube");
+	cube->createComponent<Renderer>()->setMesh("cube.mesh");
 
 #ifndef NDEBUG
 	mainScene.printTree();

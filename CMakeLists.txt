@@ -28,6 +28,7 @@ add_executable(sdltest
 	"src/resources/shader.cpp"
 	"src/resources/texture.cpp"
 	"src/resources/font.cpp"
+	"src/resources/fileformats/wavefront_obj.cpp"
 	"src/resource_manager.cpp"
 	"src/resource.cpp"
 
@@ -50,6 +51,7 @@ add_executable(sdltest
 	"src/resources/shader.hpp"
 	"src/resources/texture.hpp"
 	"src/resources/font.hpp"
+	"src/resources/fileformats/wavefront_obj.hpp"
 )
 
 # compiling options:
