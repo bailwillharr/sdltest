@@ -11,8 +11,7 @@ namespace components {
 Renderer::Renderer(Object* parent) : Component(parent, TypeEnum::RENDERER)
 {
 	m_shader = this->parent.res.get<resources::Shader>("basic.glsl");
-	m_mesh = this->parent.res.get<resources::Mesh>("gun.mesh");
-	m_texture = this->parent.res.get<resources::Texture>("gun.glraw");
+	m_texture = this->parent.res.get<resources::Texture>("missing.glraw");
 
 	m_shader->setUniform("lightPos", { 3.0f, 100.0f, 0.0f });
 }

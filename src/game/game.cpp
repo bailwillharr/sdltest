@@ -42,26 +42,65 @@ static void addObjects(SceneRoot& mainScene)
 
 	auto floor = mainScene.createChild("floor");
 	auto floorTransform = floor->getComponent<Transform>();
+	auto floorRenderer = floor->createComponent<Renderer>();
+	floor->getComponent<Renderer>()->setTexture("floor.glraw");
 	floorTransform->scale = glm::vec3{16.0f, 16.0f, 16.0f};
 	floorTransform->position = glm::vec3{ 0.0f, 0.0f, 0.0f };
-	auto floorRenderer = floor->createComponent<Renderer>();
 	floorRenderer->setMesh("floor.mesh");
-	floor->getComponent<Renderer>()->setTexture("floor.glraw");
 
 	auto cam = mainScene.createChild("cam");
-	cam->getComponent<Transform>()->position = { 0.0f, 6.25f, 0.0f };
+	constexpr float HEIGHT_INCHES = 6.0f * 12.0f;
+	// eye level is about 4.5 inches below height
+	constexpr float EYE_LEVEL = (HEIGHT_INCHES - 4.5f) * 25.4f / 1000.0f;
+	cam->getComponent<Transform>()->position = { 0.0f, EYE_LEVEL, 0.0f };
 	cam->createComponent<Camera>()->usePerspective(70.0f);
 	cam->createComponent<CameraController>();
 
-	auto gun = cam->createChild("gun");
+	//auto gun = cam->createChild("gun");
+	auto gun = mainScene.createChild("gun");
 	auto gunTransform = gun->getComponent<Transform>();
-	gunTransform->position = glm::vec3{ 0.375f, -1.25f, -1.25f };
+	auto gunRenderer = gun->createComponent<Renderer>();
+	//gunTransform->position = glm::vec3{ 0.375f, -1.25f, -1.25f };
+	gunTransform->position = glm::vec3{ 1.0f, 1.0f, 0.5f };
 	gunTransform->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{ 0.0f, 1.0f, 0.0f });
 	gunTransform->scale = glm::vec3{ 0.125f, 0.125f, 0.125f };
-	gun->createComponent<Renderer>()->setMesh("gun.mesh");
+	gunRenderer->setMesh("gun.mesh");
+	gunRenderer->setTexture("gun.glraw");
+
+	class Resizable : public CustomComponent {
+	public:
+
+		Transform* tcomp;
+
+		Resizable(Object* parent) : CustomComponent(parent)
+		{
+			tcomp = parent->getComponent<Transform>();
+		}
+
+		void onUpdate(glm::mat4 t) override
+		{
+			const float dt = win.dt();
+
+			if (win.getKey(inputs::Key::UP)) {
+				tcomp->scale.x += 1.0f * dt;
+				tcomp->scale.y += 1.0f * dt;
+				tcomp->scale.z += 1.0f * dt;
+			}
+			if (win.getKey(inputs::Key::DOWN)) {
+				tcomp->scale.x -= 1.0f * dt;
+				tcomp->scale.y -= 1.0f * dt;
+				tcomp->scale.z -= 1.0f * dt;
+			}
+		}
+	};
+
+	gun->createComponent<Resizable>();
 
 	auto cube = mainScene.createChild("cube");
-	cube->createComponent<Renderer>()->setMesh("cube.mesh");
+	auto cubeTransform = cube->getComponent<Transform>();
+	auto cubeRenderer = cube->createComponent<Renderer>();
+	cubeTransform->position = glm::vec3{0.0f, 1.0f, 0.0f};
+	cubeRenderer->setMesh("cube.mesh");
 
 #ifndef NDEBUG
 	mainScene.printTree();

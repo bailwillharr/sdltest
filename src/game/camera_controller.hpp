@@ -16,5 +16,9 @@ private:
 	components::Transform* tcomp;
 	float m_yaw = 0.0f;
 	float m_pitch = 0.0f;
+	
+	bool isJumping = false;
+	float dy = 0.0f;
+	float standingHeight;
 
 };

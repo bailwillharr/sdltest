@@ -1,0 +1,12 @@
+a = -g
+v = -gt + V
+s = -0.5*g*t^2 + V*t
+
+-1/2gt^2 + Vt - s = 0
+1/2gt^2 - Vt + s = 0
+t = (V +- sqrt(V^2 - 2gs)) / g
+Vt = 1/2gt^2 + s
+
+Jump velocity for duration of '2t' and max height of 's'
+0 = V + at
+0 = V - gt

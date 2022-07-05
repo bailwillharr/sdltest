@@ -11,6 +11,7 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include <iostream>
 
 CameraController::CameraController(Object* parent) :
 	CustomComponent(parent)
@@ -25,12 +26,35 @@ void CameraController::onUpdate(glm::mat4 t)
 
 	// calculate new position
 
+	// use one unit per meter
+
 	const float dt = win.dt();
-	constexpr float SPEED = 10.0f;
+
+	// jumping
+	constexpr float G = -9.8f;
+	constexpr float JUMPDURATION = 10.0f;
+	constexpr float JUMPVEL = -G * JUMPDURATION / 2.0f;
+
+	if (inp.getButtonPress("jump") && isJumping == false) {
+		isJumping = true;
+		dy = JUMPVEL;
+		standingHeight = tcomp->position.y;
+		std::cout << "JUMPVEL: " << JUMPVEL << "\n";
+	}
+
+	if (isJumping) {
+		dy += G * dt;
+		tcomp->position.y += dy * dt;
+		if (tcomp->position.y < standingHeight) {
+			isJumping = false;
+			dy = 0.0f;
+			tcomp->position.y = standingHeight;
+		}
+	}
+
+	constexpr float SPEED = 1.0f;
 
 	const float dx = inp.getAxis("movex") * SPEED;
-	//const float dy = ((inp.getButton("jump") ? 10.0f : 0.0f) - (inp.getButton("sneak") ? 10.0f : 0.0f)) * SPEED;
-	const float dy = 0.0f;
 	const float dz = (-inp.getAxis("movey")) * SPEED;
 
 	// calculate new pitch and yaw
