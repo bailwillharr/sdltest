@@ -79,7 +79,8 @@ static void addObjects(SceneRoot& mainScene)
 
 		void onUpdate(glm::mat4 t) override
 		{
-			const float dt = win.dt();
+			const float dt = win.dt() * 5.0f;
+
 
 			if (win.getKey(inputs::Key::UP)) {
 				tcomp->scale.x += 1.0f * dt;

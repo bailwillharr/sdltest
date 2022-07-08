@@ -31,25 +31,32 @@ void CameraController::onUpdate(glm::mat4 t)
 	const float dt = win.dt();
 
 	// jumping
-	constexpr float G = -9.8f;
-	constexpr float JUMPDURATION = 10.0f;
-	constexpr float JUMPVEL = -G * JUMPDURATION / 2.0f;
+	constexpr float G = 9.8f;
+	constexpr float JUMPHEIGHT = 16.0f * 25.4f / 1000.0f; // 16 inches
+	constexpr float JUMPVEL = 2.82231110971133017648; //std::sqrt(2 * G * JUMPHEIGHT);
+	//constexpr float JUMPDURATION = 0.5f;
+	//constexpr float JUMPVEL = G * JUMPDURATION / 2.0f;
 
-	if (inp.getButtonPress("jump") && isJumping == false) {
+	if (inp.getButton("jump") && isJumping == false) {
 		isJumping = true;
 		dy = JUMPVEL;
 		standingHeight = tcomp->position.y;
-		std::cout << "JUMPVEL: " << JUMPVEL << "\n";
 	}
 
 	if (isJumping) {
-		dy += G * dt;
+		dy -= G * dt;
 		tcomp->position.y += dy * dt;
 		if (tcomp->position.y < standingHeight) {
 			isJumping = false;
 			dy = 0.0f;
 			tcomp->position.y = standingHeight;
 		}
+	}
+
+	if (win.getButtonPress(inputs::MouseButton::M_LEFT) && isJumping == false) {
+		standingHeight = tcomp->position.y;
+		tcomp->position.y = 50.0f;
+		isJumping = true;
 	}
 
 	constexpr float SPEED = 1.0f;
