@@ -1,11 +1,16 @@
 IMMEDIATE:
+- Better mesh file loading (get materials?)
+- Add controller support
+- UI
+
+LATER:
+- Load scene from file
+- Sound
+- File writing/saving
+
+MUCH LATER:
+- custom scripted components with LUA
+
 (DONE) Load meshes from files as resources
 (DONE) Camera component (with 2D or 3D option)
 (DONE) Textures as resources
-- Load scene from file
-LATER:
-- Sound
-- File writing/saving
-- UI
-MUCH LATER:
-- custom scripted components with LUA

@@ -56,11 +56,9 @@ static void addObjects(SceneRoot& mainScene)
 	cam->createComponent<Camera>()->usePerspective(70.0f);
 	cam->createComponent<CameraController>();
 
-	//auto gun = cam->createChild("gun");
 	auto gun = mainScene.createChild("gun");
 	auto gunTransform = gun->getComponent<Transform>();
 	auto gunRenderer = gun->createComponent<Renderer>();
-	//gunTransform->position = glm::vec3{ 0.375f, -1.25f, -1.25f };
 	gunTransform->position = glm::vec3{ 1.0f, 1.0f, 0.5f };
 	gunTransform->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{ 0.0f, 1.0f, 0.0f });
 	gunTransform->scale = glm::vec3{ 0.125f, 0.125f, 0.125f };
@@ -111,8 +109,6 @@ static void addObjects(SceneRoot& mainScene)
 static void addInputs(Input& input)
 {
 	// menu, settings controls
-	input.addInputButton("fullscreen", inputs::Key::F11);
-	input.addInputButton("togglefocus", inputs::Key::Q);
 	input.addInputButton("quit", inputs::Key::ESCAPE);
 	// game buttons
 	input.addInputButton("fire", inputs::MouseButton::M_LEFT);
@@ -130,7 +126,7 @@ static void addInputs(Input& input)
 static void gameLoop(Window& win, Input& input, ResourceManager& resMan, SceneRoot& mainScene)
 {
 
-	win.setVSync(false);
+	win.setVSync(true);
 	win.setRelativeMouseMode(true);
 
 	uint64_t lastTick = win.getNanos();
@@ -154,7 +150,7 @@ static void gameLoop(Window& win, Input& input, ResourceManager& resMan, SceneRo
 
 		// logic
 
-		if (input.getButtonPress("fullscreen")) {
+		if (win.getKeyPress(inputs::Key::F11)) {
 			if (win.isFullscreen()) {
 				win.setFullscreen(false);
 			}
@@ -162,7 +158,7 @@ static void gameLoop(Window& win, Input& input, ResourceManager& resMan, SceneRo
 				win.setFullscreen(true, false); // disable exclusive mode, use borderless window
 			}
 		}
-		if (input.getButtonPress("togglefocus")) {
+		if (win.getKeyPress(inputs::Key::Q)) {
 			bool captured = win.mouseCaptured();
 			win.setRelativeMouseMode(!captured);
 			input.setDeviceActive(InputDevice::MOUSE, !captured);
@@ -170,9 +166,10 @@ static void gameLoop(Window& win, Input& input, ResourceManager& resMan, SceneRo
 		if (input.getButtonPress("quit"))
 			win.setCloseFlag();
 		if (win.getKeyPress(inputs::Key::TAB)) {
-			if (win.infoBox("RESOURCES", resMan.getResourcesListString()->c_str()) == false) {
-				win.setVSync(!win.getVSync());
-			}
+			win.infoBox("RESOURCES", resMan.getResourcesListString()->c_str());
+		}
+		if (win.getKeyPress(inputs::Key::V)) {
+			win.setVSync(!win.getVSync());
 		}
 
 		mainScene.updateStuff();
