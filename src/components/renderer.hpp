@@ -14,12 +14,6 @@ namespace components {
 
 class Renderer : public Component {
 
-private:
-
-	std::shared_ptr<resources::Shader> m_shader;
-	std::shared_ptr<resources::Mesh> m_mesh;
-	std::shared_ptr<resources::Texture> m_texture;
-
 public:
 	Renderer(Object*);
 	~Renderer() override;
@@ -29,6 +23,13 @@ public:
 
 	void setMesh(const std::string& name);
 	void setTexture(const std::string& name);
+
+	std::shared_ptr<resources::Mesh> m_mesh;
+
+private:
+
+	std::shared_ptr<resources::Shader> m_shader;
+	std::shared_ptr<resources::Texture> m_texture;
 	
 };
 

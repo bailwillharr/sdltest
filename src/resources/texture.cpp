@@ -1,5 +1,8 @@
 #include "resources/texture.hpp"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #include <vector>
 #include <iostream>
 
@@ -8,9 +11,34 @@ namespace resources {
 // -1 means invalid / no bind
 GLuint Texture::s_binded_texture = -1;
 
-Texture::Texture(const std::filesystem::path& resPath) : Resource(resPath, "texture")
+static void readPNG(const std::string& path, std::vector<uint8_t>& texbuf, int *width, int *height, bool *isRGBA)
 {
-  	FILE *fp = fopen(resPath.string().c_str(), "rb");
+	int x, y, n;
+	unsigned char *data = stbi_load(path.c_str(), &x, &y, &n, 0);
+
+	if (data == NULL) {
+		std::runtime_error("Unable to open texture file");
+	}
+
+	const size_t size = x * y * n;
+
+	texbuf.resize(size);
+	memcpy(texbuf.data(), data, size);
+
+	*width = x;
+	*height = y;
+	if (n == 4) {
+		*isRGBA = true;
+	} else {
+		*isRGBA = false;
+	}
+
+	stbi_image_free(data);
+}
+
+static void readGLRaw(const std::string& path, std::vector<uint8_t>& texbuf, int *width, int *height, bool *isRGBA)
+{
+	FILE *fp = fopen(path.c_str(), "rb");
 	if (!fp) {
 		std::runtime_error("Unable to open texture file");
 	}
@@ -19,19 +47,45 @@ Texture::Texture(const std::filesystem::path& resPath) : Resource(resPath, "text
 	uint64_t tex_data_offset;
 	fread(&tex_data_offset, sizeof(uint64_t), 1, fp);
 
-	glGenTextures(1, &m_texture);
-	bindTexture(); // glBindTexture
-	fseek(fp, 0L, SEEK_END);
+		fseek(fp, 0L, SEEK_END);
 	uint64_t end = ftell(fp);
 
-	std::vector<uint8_t> texbuf;
 	texbuf.resize(end);
 	fseek(fp, tex_data_offset, SEEK_SET);
 	fread(texbuf.data(), 1, end, fp);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 4096, 4096, 0, GL_RGB, GL_UNSIGNED_BYTE, texbuf.data());
-
 	fclose(fp);
+
+	*width = 4096;
+	*height = 4096;
+	*isRGBA = false;
+
+}
+
+Texture::Texture(const std::filesystem::path& resPath) : Resource(resPath, "texture")
+{
+	
+	std::vector<uint8_t> texbuf;
+
+	int width, height;
+	bool isRGBA;
+
+	if (resPath.extension() == ".png") {
+		readPNG(resPath, texbuf, &width, &height, &isRGBA);
+	} else {
+		readGLRaw(resPath, texbuf, &width, &height, &isRGBA);
+	}
+  	
+	glGenTextures(1, &m_texture);
+	
+	bindTexture(); // glBindTexture
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	if (isRGBA) {
+		std::cerr << "width: " << width << " height: " << height << " size: " << texbuf.size() << "\n";
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texbuf.data());
+	} else {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texbuf.data());
+	}
 
 	glGenerateMipmap(GL_TEXTURE_2D); 
 }

@@ -11,7 +11,7 @@ namespace components {
 Renderer::Renderer(Object* parent) : Component(parent, TypeEnum::RENDERER)
 {
 	m_shader = this->parent.res.get<resources::Shader>("basic.glsl");
-	m_texture = this->parent.res.get<resources::Texture>("missing.glraw");
+	m_texture = this->parent.res.get<resources::Texture>("shizo_nft.png");
 
 	m_shader->setUniform("lightPos", { 3.0f, 100.0f, 0.0f });
 }

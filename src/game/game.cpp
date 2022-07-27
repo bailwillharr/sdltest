@@ -2,7 +2,12 @@
 
 #include "config.h"
 
+
+
 #include "camera_controller.hpp"
+#include "terrain.hpp"
+
+
 
 #include "window.hpp"
 #include "input.hpp"
@@ -43,7 +48,7 @@ static void addObjects(SceneRoot& mainScene)
 	auto floor = mainScene.createChild("floor");
 	auto floorTransform = floor->getComponent<Transform>();
 	auto floorRenderer = floor->createComponent<Renderer>();
-	floor->getComponent<Renderer>()->setTexture("floor.glraw");
+	floor->getComponent<Renderer>()->setTexture("shizo_nft.png");
 	floorTransform->scale = glm::vec3{16.0f, 16.0f, 16.0f};
 	floorTransform->position = glm::vec3{ 0.0f, 0.0f, 0.0f };
 	floorRenderer->setMesh("floor.mesh");
@@ -63,7 +68,7 @@ static void addObjects(SceneRoot& mainScene)
 	gunTransform->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{ 0.0f, 1.0f, 0.0f });
 	gunTransform->scale = glm::vec3{ 0.125f, 0.125f, 0.125f };
 	gunRenderer->setMesh("gun.mesh");
-	gunRenderer->setTexture("gun.glraw");
+	gunRenderer->setTexture("shizo_nft.png");
 
 	class Resizable : public CustomComponent {
 	public:
@@ -100,6 +105,10 @@ static void addObjects(SceneRoot& mainScene)
 	auto cubeRenderer = cube->createComponent<Renderer>();
 	cubeTransform->position = glm::vec3{0.0f, 1.0f, 0.0f};
 	cubeRenderer->setMesh("cube.mesh");
+
+	auto tringle = mainScene.createChild("tringle");
+	tringle->createComponent<Renderer>()->m_mesh = getChunkMesh(0, 0);
+	tringle->getComponent<Transform>()->position = {-2.0f, 0.0f, 0.0f};
 
 #ifndef NDEBUG
 	mainScene.printTree();
@@ -155,7 +164,8 @@ static void gameLoop(Window& win, Input& input, ResourceManager& resMan, SceneRo
 				win.setFullscreen(false);
 			}
 			else {
-				win.setFullscreen(true, false); // disable exclusive mode, use borderless window
+				//win.setFullscreen(true, false); // disable exclusive mode, use borderless window
+				win.setFullscreen(true, true); // use exclusive fullscreen
 			}
 		}
 		if (win.getKeyPress(inputs::Key::Q)) {

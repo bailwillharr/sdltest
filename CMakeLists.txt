@@ -13,6 +13,8 @@ add_executable(sdltest
 	"src/game/game.cpp"
 	"src/game/camera_controller.cpp"
 	"src/game/camera_controller.hpp"
+	"src/game/terrain.hpp"
+	"src/game/terrain.cpp"
 
 	"src/window.cpp"
 	"src/input.cpp"
@@ -114,6 +116,9 @@ target_include_directories(sdltest PUBLIC libraries/glad/include)
 add_subdirectory(libraries/freetype)
 target_link_libraries(sdltest PUBLIC freetype)
 target_include_directories(sdltest PUBLIC libraries/freetype/include)
+
+# stb
+target_include_directories(sdltest PUBLIC libraries/stb)
 
 # linking options:
 

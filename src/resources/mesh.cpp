@@ -49,6 +49,26 @@ void Mesh::bindVAO() const
 	}
 }
 
+void Mesh::initMesh()
+{
+	glGenVertexArrays(1, &m_vao);
+	bindVAO();
+	glGenBuffers(1, &m_vbo);
+	glGenBuffers(1, &m_ebo);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	glBufferData(GL_ARRAY_BUFFER, m_vertices.size()*sizeof(Vertex), &m_vertices[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &(m_indices[0]), GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)offsetof(Vertex, pos));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)offsetof(Vertex, norm));
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)offsetof(Vertex, uv));
+}
+
 void Mesh::drawMesh(const Shader& shader)
 {
 	bindVAO();
@@ -58,29 +78,21 @@ void Mesh::drawMesh(const Shader& shader)
 #endif
 }
 
+Mesh::Mesh(const std::vector<Vertex>& vertices) : Resource("", "mesh")
+{
+	// a horribly inefficient helper-constructor for custom meshes
+	m_vertices = vertices; // COPY over vertices
+	for (int i = 0; i < m_vertices.size(); i++) {
+		m_indices.push_back(i);
+	}
+	initMesh();
+}
+
+// To be used with the resource manager
 Mesh::Mesh(const std::filesystem::path& resPath) : Resource(resPath, "mesh")
 {
-	
-	if (resPath.extension() == "obj") {
-		loadObjFromFile(resPath, &m_vertices, &m_indices);
-	} else {
-		loadMeshFromFile(resPath, &m_vertices, &m_indices);
-	}
-
-	glGenVertexArrays(1, &m_vao);
-	bindVAO();
-	glGenBuffers(1, &m_vbo);
-	glGenBuffers(1, &m_ebo);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, m_vertices.size()*sizeof(resources::Vertex), &m_vertices[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &(m_indices[0]), GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)offsetof(Vertex, pos));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)offsetof(Vertex, norm));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)offsetof(Vertex, uv));
+	loadMeshFromFile(resPath, &m_vertices, &m_indices);
+	initMesh();
 }
 
 Mesh::~Mesh()
