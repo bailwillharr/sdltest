@@ -13,7 +13,7 @@ Renderer::Renderer(Object* parent) : Component(parent, TypeEnum::RENDERER)
 	m_shader = this->parent.res.get<resources::Shader>("shaders/basic.glsl");
 	m_texture = this->parent.res.get<resources::Texture>("textures/missing.png");
 
-	m_shader->setUniform("lightPos", { 1000.0f, 1000.0f, 400.0f });
+	m_shader->setUniform("lightPos", { 10.0f, 10.0f, 4.0f });
 }
 
 Renderer::~Renderer()
