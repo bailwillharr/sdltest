@@ -4,6 +4,7 @@
 
 #include "camera_controller.hpp"
 #include "terrain.hpp"
+#include "meshgen.hpp"
 
 #include "window.hpp"
 #include "input.hpp"
@@ -93,6 +94,8 @@ static void addObjects(SceneRoot& mainScene)
 	chartTransform->scale = {1.0f, 10.0f * 12.0f * 25.4f * 0.001f, 1.0f};
 	chartTransform->position = {1.0f, 0.0f, 1.0f};
 	chartTransform->rotation = glm::angleAxis(glm::half_pi<float>(), glm::vec3{0.0f, 1.0f, 0.0f});
+
+	genSphereMesh(1.0f, 4);
 
 #ifndef NDEBUG
 	mainScene.printTree();

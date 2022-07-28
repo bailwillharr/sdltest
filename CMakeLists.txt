@@ -15,6 +15,8 @@ add_executable(sdltest
 	"src/game/camera_controller.hpp"
 	"src/game/terrain.hpp"
 	"src/game/terrain.cpp"
+	"src/game/meshgen.hpp"
+	"src/game/meshgen.cpp"
 
 	"src/window.cpp"
 	"src/input.cpp"
