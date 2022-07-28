@@ -95,7 +95,7 @@ static void addObjects(SceneRoot& mainScene)
 	chartTransform->position = {1.0f, 0.0f, 1.0f};
 	chartTransform->rotation = glm::angleAxis(glm::half_pi<float>(), glm::vec3{0.0f, 1.0f, 0.0f});
 
-	mainScene.createChild("sphere")->createComponent<Renderer>()->m_mesh = genSphereMesh(3.0f, 32);
+	mainScene.createChild("sphere")->createComponent<Renderer>()->m_mesh = genSphereMesh(1.0f, 32);
 	mainScene.getChild("sphere")->getComponent<Renderer>()->setTexture("textures/stonebrick.png");
 	mainScene.getChild("sphere")->getComponent<Transform>()->position = {0.0f, 1.0f, 0.0f};
 

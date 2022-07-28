@@ -35,6 +35,9 @@ std::unique_ptr<resources::Mesh> genSphereMesh(float r, int detail)
 			glm::vec3 vector2 = (vertices.end() - 2)->pos - (vertices.end() - 3)->pos;
 			glm::vec3 norm = glm::normalize(glm::cross(vector1, vector2));
 
+
+			// TODO: FIX NORMALS
+
 			for (auto it = vertices.end() - 6; it != vertices.end(); it++) {
 				it->norm = norm;
 			}
