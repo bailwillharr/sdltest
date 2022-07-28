@@ -11,13 +11,15 @@ namespace resources {
 // -1 means invalid / no bind
 GLuint Texture::s_binded_texture = -1;
 
-static void readPNG(const std::string& path, std::vector<uint8_t>& texbuf, int *width, int *height, bool *isRGBA)
+// returns false if unable to open file
+static bool readPNG(const std::string& path, std::vector<uint8_t>& texbuf, int *width, int *height, bool *isRGBA)
 {
 	int x, y, n;
 	unsigned char *data = stbi_load(path.c_str(), &x, &y, &n, 0);
 
-	if (data == NULL) {
-		std::runtime_error("Unable to open texture file");
+
+	if (data == nullptr) {
+		return false;
 	}
 
 	const size_t size = x * y * n;
@@ -34,13 +36,16 @@ static void readPNG(const std::string& path, std::vector<uint8_t>& texbuf, int *
 	}
 
 	stbi_image_free(data);
+
+	return true;
+
 }
 
-static void readGLRaw(const std::string& path, std::vector<uint8_t>& texbuf, int *width, int *height, bool *isRGBA)
+static bool readGLRaw(const std::string& path, std::vector<uint8_t>& texbuf, int *width, int *height, bool *isRGBA)
 {
 	FILE *fp = fopen(path.c_str(), "rb");
 	if (!fp) {
-		std::runtime_error("Unable to open texture file");
+		return false;
 	}
 
 	fseek(fp, 0x02, SEEK_SET);
@@ -60,6 +65,8 @@ static void readGLRaw(const std::string& path, std::vector<uint8_t>& texbuf, int
 	*height = 4096;
 	*isRGBA = false;
 
+	return true;
+
 }
 
 Texture::Texture(const std::filesystem::path& resPath) : Resource(resPath, "texture")
@@ -68,12 +75,16 @@ Texture::Texture(const std::filesystem::path& resPath) : Resource(resPath, "text
 	std::vector<uint8_t> texbuf;
 
 	int width, height;
-	bool isRGBA;
+	bool isRGBA, success;
 
 	if (resPath.extension() == ".png") {
-		readPNG(resPath.string(), texbuf, &width, &height, &isRGBA);
+		success = readPNG(resPath.string(), texbuf, &width, &height, &isRGBA);
 	} else {
-		readGLRaw(resPath.string(), texbuf, &width, &height, &isRGBA);
+		success = readGLRaw(resPath.string(), texbuf, &width, &height, &isRGBA);
+	}
+
+	if (!success) {
+		throw std::runtime_error("Unable to open texture: " + resPath.string());
 	}
   	
 	glGenTextures(1, &m_texture);

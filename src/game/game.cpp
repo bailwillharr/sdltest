@@ -2,12 +2,8 @@
 
 #include "config.h"
 
-
-
 #include "camera_controller.hpp"
 #include "terrain.hpp"
-
-
 
 #include "window.hpp"
 #include "input.hpp"
@@ -49,8 +45,8 @@ static void addObjects(SceneRoot& mainScene)
 	auto floor = mainScene.createChild("floor");
 	auto floorTransform = floor->getComponent<Transform>();
 	auto floorRenderer = floor->createComponent<Renderer>();
-	floor->getComponent<Renderer>()->setTexture("stonebrick.png");
 	floorTransform->position = glm::vec3{ 0.0f, 0.0f, 0.0f };
+	floorRenderer->setTexture("textures/stonebrick.png");
 	floorRenderer->m_mesh = std::make_unique<resources::Mesh>(std::vector<Vertex>{
 		{ { -16.0f, 0.0f, -16.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f,  0.0f  } },
 		{ {  16.0f, 0.0f, -16.0f }, { 0.0f, 1.0f, 0.0f }, { GRASS_DENSITY, 0.0f  } },
@@ -71,15 +67,32 @@ static void addObjects(SceneRoot& mainScene)
 	auto gun = mainScene.createChild("gun");
 	auto gunTransform = gun->getComponent<Transform>();
 	auto gunRenderer = gun->createComponent<Renderer>();
-	gunTransform->position = glm::vec3{ 1.0f, 1.0f, 0.5f };
+	gunTransform->position = glm::vec3{ 1.0f, 5.0f * 12.0f * 25.4f * 0.001f, 1.0f };
 	gunTransform->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{ 0.0f, 1.0f, 0.0f });
-	gunTransform->scale = glm::vec3{ 0.125f, 0.125f, 0.125f };
-	gunRenderer->setMesh("gun.mesh");
-	gunRenderer->setTexture("gun.glraw");
+	constexpr float GUN_SCALE = 9.0f / 560.0f;
+	gunTransform->scale *= GUN_SCALE;
+	gunRenderer->setMesh("meshes/gun.mesh");
+	gunRenderer->setTexture("textures/gun.png");
 
 	auto tringle = mainScene.createChild("tringle");
 	tringle->createComponent<Renderer>()->m_mesh = getChunkMesh(0, 0);
 	tringle->getComponent<Transform>()->position = {-2.0f, 0.0f, 0.0f};
+
+	auto chart = mainScene.createChild("chart");
+	auto chartTransform = chart->getComponent<Transform>();
+	auto chartRenderer = chart->createComponent<Renderer>();
+	chartRenderer->m_mesh = std::make_unique<resources::Mesh>(std::vector<Vertex>{
+		{ { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f  } },
+		{ { 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f  } },
+		{ { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f } },
+		{ { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f } },
+		{ { 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f  } },
+		{ { 1.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 0.0f } }
+	});
+	chartRenderer->setTexture("textures/ten_feet.png");
+	chartTransform->scale = {1.0f, 10.0f * 12.0f * 25.4f * 0.001f, 1.0f};
+	chartTransform->position = {1.0f, 0.0f, 1.0f};
+	chartTransform->rotation = glm::angleAxis(glm::half_pi<float>(), glm::vec3{0.0f, 1.0f, 0.0f});
 
 #ifndef NDEBUG
 	mainScene.printTree();

@@ -9,7 +9,7 @@ namespace components {
 
 UI::UI(Object* parent) : Component(parent, TypeEnum::UI)
 {
-	const std::string FONTFILE{ "LiberationMono-Regular.ttf" };
+	const std::string FONTFILE{ "fonts/LiberationMono-Regular.ttf" };
 	m_font = parent->res.get<resources::Font>(FONTFILE);
 }
 

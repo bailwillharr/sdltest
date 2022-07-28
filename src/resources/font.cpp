@@ -25,7 +25,7 @@ Font::Font(const std::filesystem::path& resPath) : Resource(resPath, "font")
 	}
 	else if (err != 0) {
 		FT_Done_FreeType(library);
-		throw std::runtime_error("Unable to open font 'font.ttf'");
+		throw std::runtime_error("Unable to open font '" + resPath.string() + "'");
 	}
 
 	err = FT_Set_Pixel_Sizes(face, 0, 64);
