@@ -45,13 +45,20 @@ static void addObjects(SceneRoot& mainScene)
 
 	auto hud = mainScene.createChild("hud")->createComponent<UI>();
 
+	constexpr float GRASS_DENSITY = 32.0f;
 	auto floor = mainScene.createChild("floor");
 	auto floorTransform = floor->getComponent<Transform>();
 	auto floorRenderer = floor->createComponent<Renderer>();
-	floor->getComponent<Renderer>()->setTexture("shizo_nft.png");
-	floorTransform->scale = glm::vec3{16.0f, 16.0f, 16.0f};
+	floor->getComponent<Renderer>()->setTexture("stonebrick.png");
 	floorTransform->position = glm::vec3{ 0.0f, 0.0f, 0.0f };
-	floorRenderer->setMesh("floor.mesh");
+	floorRenderer->m_mesh = std::make_unique<resources::Mesh>(std::vector<Vertex>{
+		{ { -16.0f, 0.0f, -16.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f,  0.0f  } },
+		{ {  16.0f, 0.0f, -16.0f }, { 0.0f, 1.0f, 0.0f }, { GRASS_DENSITY, 0.0f  } },
+		{ { -16.0f, 0.0f,  16.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f,  GRASS_DENSITY } },
+		{ { -16.0f, 0.0f,  16.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f,  GRASS_DENSITY } },
+		{ {  16.0f, 0.0f, -16.0f }, { 0.0f, 1.0f, 0.0f }, { GRASS_DENSITY, 0.0f  } },
+		{ {  16.0f, 0.0f,  16.0f }, { 0.0f, 1.0f, 0.0f }, { GRASS_DENSITY, GRASS_DENSITY } }
+	});
 
 	auto cam = mainScene.createChild("cam");
 	constexpr float HEIGHT_INCHES = 6.0f * 12.0f;
@@ -68,43 +75,7 @@ static void addObjects(SceneRoot& mainScene)
 	gunTransform->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{ 0.0f, 1.0f, 0.0f });
 	gunTransform->scale = glm::vec3{ 0.125f, 0.125f, 0.125f };
 	gunRenderer->setMesh("gun.mesh");
-	gunRenderer->setTexture("shizo_nft.png");
-
-	class Resizable : public CustomComponent {
-	public:
-
-		Transform* tcomp;
-
-		Resizable(Object* parent) : CustomComponent(parent)
-		{
-			tcomp = parent->getComponent<Transform>();
-		}
-
-		void onUpdate(glm::mat4 t) override
-		{
-			const float dt = win.dt() * 5.0f;
-
-
-			if (win.getKey(inputs::Key::UP)) {
-				tcomp->scale.x += 1.0f * dt;
-				tcomp->scale.y += 1.0f * dt;
-				tcomp->scale.z += 1.0f * dt;
-			}
-			if (win.getKey(inputs::Key::DOWN)) {
-				tcomp->scale.x -= 1.0f * dt;
-				tcomp->scale.y -= 1.0f * dt;
-				tcomp->scale.z -= 1.0f * dt;
-			}
-		}
-	};
-
-	gun->createComponent<Resizable>();
-
-	auto cube = mainScene.createChild("cube");
-	auto cubeTransform = cube->getComponent<Transform>();
-	auto cubeRenderer = cube->createComponent<Renderer>();
-	cubeTransform->position = glm::vec3{0.0f, 1.0f, 0.0f};
-	cubeRenderer->setMesh("cube.mesh");
+	gunRenderer->setTexture("gun.glraw");
 
 	auto tringle = mainScene.createChild("tringle");
 	tringle->createComponent<Renderer>()->m_mesh = getChunkMesh(0, 0);

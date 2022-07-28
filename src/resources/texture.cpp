@@ -71,15 +71,19 @@ Texture::Texture(const std::filesystem::path& resPath) : Resource(resPath, "text
 	bool isRGBA;
 
 	if (resPath.extension() == ".png") {
-		readPNG(resPath, texbuf, &width, &height, &isRGBA);
+		readPNG(resPath.string(), texbuf, &width, &height, &isRGBA);
 	} else {
-		readGLRaw(resPath, texbuf, &width, &height, &isRGBA);
+		readGLRaw(resPath.string(), texbuf, &width, &height, &isRGBA);
 	}
   	
 	glGenTextures(1, &m_texture);
 	
 	bindTexture(); // glBindTexture
+	
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 	if (isRGBA) {
 		std::cerr << "width: " << width << " height: " << height << " size: " << texbuf.size() << "\n";
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texbuf.data());
