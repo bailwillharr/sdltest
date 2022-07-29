@@ -9,9 +9,11 @@
 
 std::unique_ptr<resources::Mesh> genSphereMesh(float r, int detail)
 {
+	using namespace glm;
+
 	std::vector<Vertex> vertices{};
 
-	float angleStep = glm::two_pi<float>() / (float)detail;
+	float angleStep = two_pi<float>() / (float)detail;
 
 	for (int i = 0; i < detail; i++) {
 		// theta goes north-to-south
@@ -22,14 +24,27 @@ std::unique_ptr<resources::Mesh> genSphereMesh(float r, int detail)
 			float phi = j * angleStep;
 			float phi2 = phi + angleStep;
 
+			vec3 top_left{		r * sin(phi)  * cos(theta),
+								r * cos(phi),
+								r * sin(phi)  * sin(theta)	};
+			vec3 bottom_left{	r * sin(phi)  * cos(theta2),
+								r * cos(phi),
+								r * sin(phi)  * sin(theta2)	};
+			vec3 top_right{		r * sin(phi2) * cos(theta),
+								r * cos(phi2),
+								r * sin(phi2) * sin(theta)	};
+			vec3 bottom_right{	r * sin(phi2) * cos(theta2),
+								r * cos(phi2),
+								r * sin(phi2) * sin(theta2)	};
+
 			// triangle 1
-			vertices.push_back({{r * glm::cos(phi) * glm::cos(theta), r * glm::sin(theta), r * glm::sin(phi) * glm::cos(theta)}, {}, {0.0f, 0.0f}});
-			vertices.push_back({{r * glm::cos(phi) * glm::cos(theta2), r * glm::sin(theta2), r * glm::sin(phi) * glm::cos(theta2)}, {}, {0.0f, 0.0f}});
-			vertices.push_back({{r * glm::cos(phi2) * glm::cos(theta), r * glm::sin(theta), r * glm::sin(phi2) * glm::cos(theta)}, {}, {0.0f, 0.0f}});
+			vertices.push_back({top_left, {}, {0.0f, 0.0f}});
+			vertices.push_back({bottom_left, {}, {0.0f, 1.0f}});
+			vertices.push_back({bottom_right, {}, {1.0f, 1.0f}});
 			// triangle 2
-			vertices.push_back({{r * glm::cos(phi) * glm::cos(theta2), r * glm::sin(theta2), r * glm::sin(phi) * glm::cos(theta2)}, {}, {1.0f, 1.0f}});
-			vertices.push_back({{r * glm::cos(phi2) * glm::cos(theta2), r * glm::sin(theta2), r * glm::sin(phi2) * glm::cos(theta2)}, {}, {1.0f, 1.0f}});
-			vertices.push_back({{r * glm::cos(phi2) * glm::cos(theta), r * glm::sin(theta), r * glm::sin(phi2) * glm::cos(theta)}, {}, {1.0f, 1.0f}});
+			vertices.push_back({top_right, {}, {1.0f, 0.0f}});
+			vertices.push_back({top_left, {}, {0.0f, 0.0f}});
+			vertices.push_back({bottom_right, {}, {1.0f, 1.0f}});
 
 			glm::vec3 vector1 = (vertices.end() - 1)->pos - (vertices.end() - 2)->pos;
 			glm::vec3 vector2 = (vertices.end() - 2)->pos - (vertices.end() - 3)->pos;
@@ -37,6 +52,7 @@ std::unique_ptr<resources::Mesh> genSphereMesh(float r, int detail)
 
 
 			// TODO: FIX NORMALS
+			norm = -norm;
 
 			for (auto it = vertices.end() - 6; it != vertices.end(); it++) {
 				it->norm = norm;

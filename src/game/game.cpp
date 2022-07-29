@@ -61,15 +61,15 @@ static void addObjects(SceneRoot& mainScene)
 	constexpr float HEIGHT_INCHES = 6.0f * 12.0f;
 	// eye level is about 4.5 inches below height
 	constexpr float EYE_LEVEL = (HEIGHT_INCHES - 4.5f) * 25.4f / 1000.0f;
-	cam->getComponent<Transform>()->position = { 0.0f, EYE_LEVEL, 0.0f };
+	cam->getComponent<Transform>()->position = { 0.0f, EYE_LEVEL, 8.0f };
 	cam->createComponent<Camera>()->usePerspective(70.0f);
 	cam->createComponent<CameraController>();
 
 	auto gun = mainScene.createChild("gun");
 	auto gunTransform = gun->getComponent<Transform>();
 	auto gunRenderer = gun->createComponent<Renderer>();
-	gunTransform->position = glm::vec3{ 1.0f, 5.0f * 12.0f * 25.4f * 0.001f, 1.0f };
-	gunTransform->rotation = glm::angleAxis(glm::pi<float>(), glm::vec3{ 0.0f, 1.0f, 0.0f });
+	gunTransform->position = glm::vec3{ 5.8f, 0.1f, 1.2f };
+	gunTransform->rotation = glm::angleAxis(glm::half_pi<float>(), glm::vec3{ 0.0f, 0.0f, 1.0f });
 	constexpr float GUN_SCALE = 9.0f / 560.0f;
 	gunTransform->scale *= GUN_SCALE;
 	gunRenderer->setMesh("meshes/gun.mesh");
@@ -92,12 +92,32 @@ static void addObjects(SceneRoot& mainScene)
 	});
 	chartRenderer->setTexture("textures/ten_feet.png");
 	chartTransform->scale = {1.0f, 10.0f * 12.0f * 25.4f * 0.001f, 1.0f};
-	chartTransform->position = {1.0f, 0.0f, 1.0f};
+	chartTransform->position = {6.0f, 0.0f, 1.0f};
 	chartTransform->rotation = glm::angleAxis(glm::half_pi<float>(), glm::vec3{0.0f, 1.0f, 0.0f});
 
-	mainScene.createChild("sphere")->createComponent<Renderer>()->m_mesh = genSphereMesh(1.0f, 32);
-	mainScene.getChild("sphere")->getComponent<Renderer>()->setTexture("textures/stonebrick.png");
-	mainScene.getChild("sphere")->getComponent<Transform>()->position = {0.0f, 1.0f, 0.0f};
+	auto sphere = mainScene.createChild("sphere");
+	sphere->createComponent<Renderer>()->m_mesh = genSphereMesh(1.0f, 10);
+	sphere->getComponent<Renderer>()->setTexture("textures/grass.png");
+	sphere->getComponent<Transform>()->position = {0.0f, 1.0f, 0.0f};
+
+	class Spin : public CustomComponent {
+	public:
+		float yaw = 0.0f;
+
+		Spin(Object* parent) : CustomComponent(parent) {}
+
+		void onUpdate(glm::mat4) override
+		{
+			auto t = parent.getComponent<Transform>();
+			float dt = parent.win.dt();
+			constexpr float SPEED = 0.2f;
+			yaw += dt * SPEED;
+			yaw = glm::mod(yaw, glm::two_pi<float>());
+			t->rotation = glm::angleAxis(yaw, glm::vec3{0.0f, 1.0f, 0.0f});
+		}
+	};
+
+	sphere->createComponent<Spin>();
 
 #ifndef NDEBUG
 	mainScene.printTree();
