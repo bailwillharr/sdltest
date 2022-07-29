@@ -96,9 +96,9 @@ static void addObjects(SceneRoot& mainScene)
 	chartTransform->rotation = glm::angleAxis(glm::half_pi<float>(), glm::vec3{0.0f, 1.0f, 0.0f});
 
 	auto sphere = mainScene.createChild("sphere");
-	sphere->createComponent<Renderer>()->m_mesh = genSphereMesh(1.0f, 10);
+	sphere->createComponent<Renderer>()->m_mesh = genSphereMesh(25.0f, 50);
 	sphere->getComponent<Renderer>()->setTexture("textures/grass.png");
-	sphere->getComponent<Transform>()->position = {0.0f, 1.0f, 0.0f};
+	sphere->getComponent<Transform>()->position = {0.0f, 25.0f, -50.0f};
 
 	class Spin : public CustomComponent {
 	public:
